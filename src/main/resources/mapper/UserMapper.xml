@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hawksoft.platform.dao.UserDao">
+
+    <!--查询用户信息-->
+    <select id="findUser" parameterType="Map" resultType="com.hawksoft.platform.entity.User">
+        SELECT uname,title,privilege,name_cn,gender,phone,email,register_date
+        FROM tuser
+        WHERE uname = #{uname} AND password = #{password}
+    </select>
+
+    <!--根据用户名查询用户-->
+    <select id="findUserByName" parameterType="String" resultType="com.hawksoft.platform.entity.User">
+        SELECT uname,title,privilege,name_cn,gender,phone,email,register_date
+        FROM tuser
+        WHERE uname = #{uname}
+    </select>
+
+    <!--插入数据-->
+    <insert id="saveUser" parameterType="com.hawksoft.platform.entity.User">
+        INSERT INTO tuser
+        (uname,password,title,privilege,name_cn,gender,phone,email,register_date)
+        VALUES
+        (#{uname},#{password},#{title},#{privilege},#{name_cn},#{gender},#{phone},#{email},#{register_date})
+    </insert>
+
+</mapper>

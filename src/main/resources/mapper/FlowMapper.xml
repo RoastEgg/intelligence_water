@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hawksoft.platform.dao.FlowDao">
+    <sql id="key">
+        <!--去掉最后一个,号  -->
+        <trim suffixOverrides=",">
+            <if test="flowId!=null">
+                flowId,
+            </if>
+            <if test="stnId!=null">
+                stnId,
+            </if>
+            <if test="avgSpeed!=null">
+                avgSpeed,
+            </if>
+            <if test="riverArea!=null">
+                riverArea,
+            </if>
+            <if test="avgFlow!=null">
+                avgFlow,
+            </if>
+            <if test="collectionTime!=null">
+                collectionTime,
+            </if>
+            <if test="state!=null">
+                state,
+            </if>
+            <if test="dayFlow!=null">
+                dayFlow,
+            </if>
+            <if test="weekFlow!=null">
+                weekFlow,
+            </if>
+            <if test="monthFlow!=null">
+                monthFlow,
+            </if>
+            <if test="yearFlow!=null">
+                yearFlow,
+            </if>
+            <if test="totalFlow!=null">
+                totalFlow,
+            </if>
+            <if test="remark!=null">
+                remark,
+            </if>
+        </trim>
+    </sql>
+    <sql id="value">
+        <!--去掉最后一个,号  -->
+        <trim suffixOverrides=",">
+            <if test="flowId!=null">
+                #{flowId},
+            </if>
+            <if test="stnId!=null">
+                #{stnId},
+            </if>
+            <if test="avgSpeed!=null">
+                #{avgSpeed},
+            </if>
+            <if test="riverArea!=null">
+                #{riverArea},
+            </if>
+            <if test="avgFlow!=null">
+                #{avgFlow},
+            </if>
+            <if test="collectionTime!=null">
+                #{collectionTime},
+            </if>
+            <if test="state!=null">
+                #{state},
+            </if>
+            <if test="dayFlow!=null">
+                #{dayFlow},
+            </if>
+            <if test="weekFlow!=null">
+                #{weekFlow},
+            </if>
+            <if test="monthFlow!=null">
+                #{monthFlow},
+            </if>
+            <if test="yearFlow!=null">
+                #{yearFlow},
+            </if>
+            <if test="totalFlow!=null">
+                #{totalFlow},
+            </if>
+            <if test="remark!=null">
+                #{remark},
+            </if>
+        </trim>
+    </sql>
+
+    <!--通过站点ID查询实时流量汇总数据（最新即最近一个时间的数据）-->
+    <select id="queryLastFlowByStdId" parameterType="int" resultType="com.hawksoft.platform.entity.Flow">
+        SELECT stnId,avgSpeed,riverArea,avgFlow,collectionTime,state,dayFlow,weekFlow ,monthFlow,yearFlow,totalFlow,remark
+        FROM flow
+        WHERE
+          collectionTime =
+          (
+          SELECT MAX(collectionTime)
+          FROM flow
+          WHERE stnId = #{stnId}
+          )
+        and stnId = #{stnId}
+    </select>
+
+    <!--根据日期查询当日流量数据-->
+    <select id = "queryFlowByDate" parameterType="Map" resultType="com.hawksoft.platform.entity.Flow">
+        SELECT avgSpeed,riverArea,avgFlow,collectionTime,state,dayFlow,remark
+        FROM flow
+            where collectionTime =
+                (SELECT MAX(collectionTime)
+                  FROM flow
+                      WHERE DATE_FORMAT(collectionTime,'%Y-%m-%d') = DATE_FORMAT(#{date},'%Y-%m-%d'))
+
+    </select>
+
+    <!--根据日期查询本周流量数据-->
+    <select id = "queryFlowByWeek" parameterType="Map" resultType="com.hawksoft.platform.entity.Flow">
+        SELECT avgSpeed,riverArea,avgFlow,collectionTime,state,weekFlow,remark
+        FROM flow
+        where collectionTime =
+        (SELECT max(collectionTime)
+          FROM flow
+              WHERE YEARWEEK(date_format(collectionTime,'%Y-%m-%d')) = YEARWEEK(#{date}))
+
+    </select>
+
+    <!--根据日期查询本月流量数据-->
+    <select id = "queryFlowByMonth" parameterType="Map" resultType="com.hawksoft.platform.entity.Flow">
+        SELECT avgSpeed,riverArea,avgFlow,collectionTime,state,monthFlow,remark
+        FROM flow
+        where collectionTime =
+          (SELECT max(collectionTime)
+            FROM flow
+            WHERE YEAR(collectionTime) = YEAR(#{date})
+            AND MONTH(collectionTime) = MONTH(#{date}))
+
+    </select>
+
+    <!--根据日期查询今年流量数据-->
+    <select id = "queryFlowByYear" parameterType="Map" resultType="com.hawksoft.platform.entity.Flow">
+        SELECT avgSpeed,riverArea,avgFlow,collectionTime,state,yearFlow,remark
+        FROM flow
+          where collectionTime =
+            (SELECT max(collectionTime)
+             FROM flow
+             WHERE YEAR(collectionTime) = YEAR(#{date}))
+    </select>
+
+    <select id = "queryAllFlow" parameterType="Map" resultType="com.hawksoft.platform.entity.Flow">
+        SELECT avgSpeed,riverArea,avgFlow,collectionTime,state,totalFlow,remark
+        FROM flow
+        where collectionTime =
+          (SELECT max(collectionTime)
+           FROM flow)
+    </select>
+
+    <!-- 通过站点ID和时间查询该站点这段时间内流量汇总数据 -->
+    <select id="queryFlowByStdIdTime" parameterType="Map" resultType="com.hawksoft.platform.entity.Flow">
+        SELECT avgSpeed,riverArea,avgFlow,collectionTime,state,dayFlow,weekFlow,monthFlow,yearFlow,totalFlow,remark
+        FROM flow
+        WHERE
+          stnId = #{stnId}
+          and collectionTime >= #{startTime}
+          and collectionTime <![CDATA[ <= ]]> #{endTime}
+          ORDER by collectionTime
+    </select>
+
+    <!-- 查询这段时间内流量汇总数据 -->
+    <select id="queryAllFlowByTime" parameterType="Map" resultType="com.hawksoft.platform.entity.Flow">
+        SELECT stnId,avgSpeed,riverArea,avgFlow,collectionTime,state,dayFlow,weekFlow ,monthFlow,yearFlow,totalFlow,remark
+        FROM flow
+        WHERE 1=1
+          <if test="stnId!=null">
+              and stnId = #{stnId}
+          </if>
+          and collectionTime >= #{startTime}
+          and collectionTime <![CDATA[ <= ]]> #{endTime}
+    </select>
+
+<!--  保存流量汇总信息 -->
+    <insert id="saveFlow" parameterType="com.hawksoft.platform.entity.Flow" useGeneratedKeys="true" keyProperty="flowId">
+        INSERT INTO flow (<include refid="key"/>)
+        VALUES (<include refid="value"/>)
+    </insert>
+
+    <!-- set 标签会自动判断哪个是最后的一个字段，会自动去掉最后一个，号 -->
+    <update id="updateFlow" parameterType="map">
+        UPDATE flow
+        <set>
+            <if test="stnId!=null">
+                stnId=#{stnId},
+            </if>
+            <if test="avgSpeed!=null">
+                avgSpeed=#{avgSpeed},
+            </if>
+            <if test="riverArea!=null">
+                riverArea=#{riverArea},
+            </if>
+            <if test="avgFlow!=null">
+                avgFlow=#{avgFlow},
+            </if>
+            <if test="collectionTime!=null">
+                collectionTime=#{collectionTime},
+            </if>
+            <if test="state!=null">
+                state=#{state},
+            </if>
+            <if test="dayFlow!=null">
+                dayFlow=#{dayFlow},
+            </if>
+            <if test="weekFlow!=null">
+                weekFlow=#{weekFlow},
+            </if>
+            <if test="monthFlow!=null">
+                monthFlow=#{monthFlow},
+            </if>
+            <if test="yearFlow!=null">
+                yearFlow=#{yearFlow},
+            </if>
+            <if test="totalFlow!=null">
+                totalFlow=#{totalFlow},
+            </if>
+            <if test="remark!=null">
+                remark=#{remark},
+            </if>
+        </set>
+        WHERE flowId=#{flowId}
+    </update>
+
+    <!-- 通过ID删除 flow 表里的流速流量记录 -->
+    <delete id="deleteFlow" parameterType="map">
+        DELETE
+          FROM flow
+          WHERE flowId = #{flowId}
+    </delete>
+
+    <!-- 取最新的DAYS条实时水位 -->
+    <select id="lastFlowRecordsNum" parameterType="Map" resultType="com.hawksoft.platform.entity.Flow">
+        SELECT *
+        FROM flow
+        WHERE
+        stnId = #{stnId}
+        ORDER by collectionTime DESC
+        limit #{days}
+    </select>
+
+</mapper>
