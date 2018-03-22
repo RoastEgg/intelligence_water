@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hawksoft.platform.dao.SpeedFlowDao">
+
+    <!--获取站点的流速流量的最新数据-->
+    <select id="queryLastSpeedFlowByStdId" parameterType="int" resultType="com.hawksoft.platform.entity.SpeedFlow">
+        SELECT stnId,waterSpeed1,waterSpeed2,waterSpeed3,waterSpeed4,waterSpeed5,
+                waterFlow1,waterFlow2,waterFlow3,waterFlow4,waterFlow5,
+                state1,state2,state3,state4,state5,
+                picOrVideo,collectionTime,instockTime,
+                FilePath1,FilePath2,FilePath3,FilePath4,FilePath5
+          FROM speedflow
+          WHERE
+            collectionTime =
+            (
+              SELECT MAX(collectionTime)
+                FROM speedflow
+                WHERE stnId = #{stnId}
+            )
+          and stnId = #{stnId}
+    </select>
+
+    <!--获取站点的流速流量数据-->
+    <select id="querySpeedFlowByStdIdTime" parameterType="Map" resultType="com.hawksoft.platform.entity.SpeedFlow">
+        SELECT stnId,waterSpeed1,waterSpeed2,waterSpeed3,waterSpeed4,waterSpeed5,
+                waterFlow1,waterFlow2,waterFlow3,waterFlow4,waterFlow5,
+                state1,state2,state3,state4,state5,
+                picOrVideo,collectionTime,instockTime,
+                FilePath1,FilePath2,FilePath3,FilePath4,FilePath5
+          FROM speedflow
+          WHERE
+            stnId = #{stnId}
+            and collectionTime >= #{startTime}
+            and collectionTime <![CDATA[ <= ]]> #{endTime}
+            ORDER by collectionTime
+    </select>
+    <sql id="key">
+        <!--去掉最后一个,号  -->
+        <trim suffixOverrides=",">
+            <if test="speedflowid!=null">
+                speedflowid,
+            </if>
+            <if test="stnId!=null">
+                stnId,
+            </if>
+            <if test="waterSpeed1!=null">
+                waterSpeed1,
+            </if>
+            <if test="waterFlow1!=null">
+                waterFlow1,
+            </if>
+            <if test="waterSpeed2!=null">
+                waterSpeed2,
+            </if>
+            <if test="waterFlow2!=null">
+                waterFlow2,
+            </if>
+            <if test="waterSpeed3!=null">
+                waterSpeed3,
+            </if>
+            <if test="waterFlow3!=null">
+                waterFlow3,
+            </if>
+            <if test="waterSpeed4!=null">
+                waterSpeed4,
+            </if>
+            <if test="waterFlow4!=null">
+                waterFlow4,
+            </if>
+            <if test="waterSpeed5!=null">
+                waterSpeed5,
+            </if>
+            <if test="waterFlow5!=null">
+                waterFlow5,
+            </if>
+            <if test="state1!=null">
+                state1,
+            </if>
+            <if test="state2!=null">
+                state2,
+            </if>
+            <if test="state3!=null">
+                state3,
+            </if>
+            <if test="state4!=null">
+                state4,
+            </if>
+            <if test="state5!=null">
+                state5,
+            </if>
+
+            <if test="picOrVideo!=null">
+                picOrVideo,
+            </if>
+            <if test="FilePath1!=null">
+                FilePath1,
+            </if>
+            <if test="FilePath2!=null">
+                FilePath2,
+            </if>
+            <if test="FilePath3!=null">
+                FilePath3,
+            </if>
+            <if test="FilePath4!=null">
+                FilePath4,
+            </if>
+            <if test="FilePath5!=null">
+                FilePath5,
+            </if>
+
+            <if test="collectionTime!=null">
+                collectionTime,
+            </if>
+            <if test="instockTime!=null">
+                instockTime,
+            </if>
+        </trim>
+    </sql>
+    <sql id="value">
+        <!--去掉最后一个,号  -->
+        <trim suffixOverrides=",">
+            <if test="speedflowid!=null">
+               #{speedflowid},
+            </if>
+            <if test="stnId!=null">
+                #{stnId},
+            </if>
+            <if test="waterSpeed1!=null">
+                #{waterSpeed1},
+            </if>
+            <if test="waterFlow1!=null">
+                #{waterFlow1},
+            </if>
+            <if test="waterSpeed2!=null">
+                #{waterSpeed2},
+            </if>
+            <if test="waterFlow2!=null">
+                #{waterFlow2},
+            </if>
+            <if test="waterSpeed3!=null">
+                #{waterSpeed3},
+            </if>
+            <if test="waterFlow3!=null">
+                #{waterFlow3},
+            </if>
+            <if test="waterSpeed4!=null">
+                #{waterSpeed4},
+            </if>
+            <if test="waterFlow4!=null">
+                #{waterFlow4},
+            </if>
+            <if test="waterSpeed5!=null">
+                #{waterSpeed5},
+            </if>
+            <if test="waterFlow5!=null">
+                #{waterFlow5},
+            </if>
+            <if test="state1!=null">
+                #{state1},
+            </if>
+            <if test="state2!=null">
+                #{state2},
+            </if>
+            <if test="state3!=null">
+                #{state3},
+            </if>
+            <if test="state4!=null">
+                #{state4},
+            </if>
+            <if test="state5!=null">
+                #{state5},
+            </if>
+
+            <if test="picOrVideo!=null">
+                #{picOrVideo},
+            </if>
+            <if test="FilePath1!=null">
+                #{FilePath1},
+            </if>
+            <if test="FilePath2!=null">
+                #{FilePath2},
+            </if>
+            <if test="FilePath3!=null">
+                #{FilePath3},
+            </if>
+            <if test="FilePath4!=null">
+                #{FilePath4},
+            </if>
+            <if test="FilePath5!=null">
+                #{FilePath5},
+            </if>
+
+            <if test="collectionTime!=null">
+                #{collectionTime},
+            </if>
+            <if test="instockTime!=null">
+                #{instockTime},
+            </if>
+        </trim>
+    </sql>
+    <insert id="saveSpeedFlow" parameterType="com.hawksoft.platform.entity.SpeedFlow" useGeneratedKeys="true" keyProperty="speedflowid">
+           insert into speedflow(<include refid="key"/>) VALUES (<include refid="value"/>)
+    </insert>
+
+    <!-- set 标签会自动判断哪个是最后的一个字段，会自动去掉最后一个，号 -->
+    <update id="updateSpeedFlow" parameterType="map">
+        UPDATE speedflow
+        <set>
+            <if test="stnId!=null">
+                stnId=#{stnId},
+            </if>
+            <if test="waterSpeed1!=null">
+                waterSpeed1=#{waterSpeed1},
+            </if>
+            <if test="waterFlow1!=null">
+                waterFlow1=#{waterFlow1},
+            </if>
+            <if test="waterSpeed2!=null">
+                waterSpeed2=#{waterSpeed2},
+            </if>
+            <if test="waterFlow2!=null">
+                waterFlow2=#{waterFlow2},
+            </if>
+            <if test="waterSpeed3!=null">
+                waterSpeed3=#{waterSpeed3},
+            </if>
+            <if test="waterFlow3!=null">
+                waterFlow3=#{waterFlow3},
+            </if>
+            <if test="waterSpeed4!=null">
+                waterSpeed4=#{waterSpeed4},
+            </if>
+            <if test="waterFlow4!=null">
+                waterFlow4=#{waterFlow4},
+            </if>
+            <if test="waterSpeed5!=null">
+                waterSpeed5=#{waterSpeed5},
+            </if>
+            <if test="waterFlow5!=null">
+                waterFlow5=#{waterFlow5},
+            </if>
+            <if test="state1!=null">
+                state1=#{state1},
+            </if>
+            <if test="state2!=null">
+                state2=#{state2},
+            </if>
+            <if test="state3!=null">
+                state3=#{state3},
+            </if>
+            <if test="state4!=null">
+                state4=#{state4},
+            </if>
+            <if test="state5!=null">
+                state5=#{state5},
+            </if>
+
+            <if test="picOrVideo!=null">
+                picOrVideo=#{picOrVideo},
+            </if>
+            <if test="FilePath1!=null">
+                FilePath1=#{FilePath1},
+            </if>
+            <if test="FilePath2!=null">
+                FilePath2=#{FilePath2},
+            </if>
+            <if test="FilePath3!=null">
+                FilePath3=#{FilePath3},
+            </if>
+            <if test="FilePath4!=null">
+                FilePath4=#{FilePath4},
+            </if>
+            <if test="FilePath5!=null">
+                FilePath5=#{FilePath5},
+            </if>
+
+            <if test="collectionTime!=null">
+                collectionTime=#{collectionTime},
+            </if>
+            <if test="instockTime!=null">
+                instockTime=#{instockTime},
+            </if>
+
+        </set>
+        WHERE speedflowid=#{speedflowid}
+    </update>
+
+    <!-- 通过ID删除 speedflow 表里的流速流量记录 -->
+    <delete id="deleteSpeedFlow" parameterType="map">
+        DELETE FROM speedflow WHERE speedflowid = #{speedflowid}
+    </delete>
+    <sql id="dynamicField">
+       <trim suffixOverrides=",">
+           speedflowid,stnId,
+           <if test="cameraNo==1">
+               waterSpeed1,waterFlow1,state1,FilePath1,
+           </if>
+           <if test="cameraNo==2">
+               waterSpeed2,waterFlow2,state2,FilePath2,
+           </if>
+           <if test="cameraNo==3">
+               waterSpeed3,waterFlow3,state3,FilePath3,
+           </if>
+           <if test="cameraNo==4">
+               waterSpeed4,waterFlow4,state4,FilePath4,
+           </if>
+           <if test="cameraNo==5">
+               waterSpeed5,waterFlow5,state5,FilePath5,
+           </if>
+           picOrVideo,collectionTime,instockTime,
+       </trim>
+   </sql>
+    <!-- 通过站点ID和时间查询该站点这段时间内流速流量数据-->
+    <!-- map(stnId 站点编号,startTime 开始时间,endTime 结束时间,cameraNo 摄像机序号为1至5号) -->
+    <select id="querySpeedFlowByStdIdTimeCamera" parameterType="Map" resultType="com.hawksoft.platform.entity.SpeedFlow">
+        SELECT <include refid="dynamicField"/> FROM speedflow WHERE
+        stnId = #{stnId}
+        and collectionTime >= #{startTime}
+        and collectionTime <![CDATA[ <= ]]> #{endTime}
+    </select>
+
+    <!--查询这段时间内流速流量数据-->
+    <select id="queryAllSpeedFlowByTime" parameterType="Map" resultType="com.hawksoft.platform.entity.SpeedFlow">
+        SELECT * FROM speedflow WHERE 1=1
+        <if test="stnId!=null">
+           and stnId = #{stnId}
+        </if>
+        and collectionTime >= #{startTime}
+        and collectionTime <![CDATA[ <= ]]> #{endTime}
+    </select>
+
+    <!--通过站点ID和采集时间取得唯一一条获取站点的流速流量记录-->
+    <select id="findSpeedFlowByStdIdTime" parameterType="Map" resultType="com.hawksoft.platform.entity.SpeedFlow">
+        SELECT *
+        FROM speedflow
+        WHERE
+        stnId = #{stnId}
+        and collectionTime = #{collectionTime}
+    </select>
+
+
+    <!--获取当前流速记录数目-->
+    <select id="getRecentRecords" parameterType="Map" resultType="com.hawksoft.platform.entity.SpeedFlow">
+       SELECT *
+        FROM speedflow
+        WHERE
+        stnId = #{stnId}
+        ORDER by collectionTime DESC
+        limit #{days}
+    </select>
+
+</mapper>

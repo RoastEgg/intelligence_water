@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hawksoft.platform.dao.WaterDao">
+
+    <resultMap id="waterAndStation" type="com.hawksoft.platform.entity.Water">
+        <id column="id" property="id"></id>
+        <result column="stnId" property="stnId"></result>
+        <result column="waterLevel" property="waterLevel"></result>
+        <association property="waterStation" javaType="com.hawksoft.platform.entity.WaterStation">
+            <id column="stnId" property="id"></id>
+            <result column="stnCode" property="stnCode"></result>
+            <result column="stnName" property="stnName"></result>
+            <result column="stnAddr" property="stnAddr"></result>
+            <result column="picUrl" property="picUrl"></result>
+            <result column="province" property="province"></result>
+            <result column="city" property="city"></result>
+            <result column="x" property="x"></result>
+            <result column="y" property="y"></result>
+            <result column="institute" property="institute"></result>
+            <result column="stnType" property="stnType"></result>
+            <result column="stnNote" property="stnNote"></result>
+        </association>
+    </resultMap>
+
+    <!--获取所有站点的最新数据-->
+    <select id="findLastWater" resultMap="waterAndStation">
+        SELECT
+        w.id,w.stnId,w.waterLevel,ws.*
+        FROM
+        water w,waterstation ws
+        WHERE w.c_time in
+        (
+        SELECT MAX(c_time)
+        FROM water
+        GROUP BY stnId
+        )
+        AND
+        w.stnId = ws.id;
+    </select>
+
+    <!--取最新的DAYS条实时水位-->
+    <select id="lastWaterRecordsNum" parameterType="Map" resultType="com.hawksoft.platform.entity.Water">
+        SELECT * FROM water
+        WHERE
+        stnId = #{stnId}
+        ORDER by c_time DESC
+        limit #{days}
+    </select>
+
+    <!--查询历史水位信息-->
+    <select id="hisWater" parameterType="Map" resultType="com.hawksoft.platform.entity.Water">
+        SELECT * FROM water
+          WHERE
+          DATE_FORMAT(c_time,'%Y-%m-%d') >= #{startTime}
+          AND
+          DATE_FORMAT(c_time,'%Y-%m-%d') <![CDATA[ <= ]]> #{endTime}
+          AND
+          stnId = #{stnId}
+          ORDER by c_time
+    </select>
+
+    <!--查询某一个指定时间的历史水位信息-->
+    <select id="hisWaterLevelPic" parameterType="Map" resultType="com.hawksoft.platform.entity.Water">
+        SELECT * FROM water
+        WHERE
+        c_time = #{currTime}
+        AND
+        stnId = #{stnId}
+    </select>
+
+    <!--获取所有的站点信息-->
+    <select id="queryAllWaterStation" parameterType="Map" resultType="com.hawksoft.platform.entity.WaterStation">
+        SELECT
+          * FROM waterstation
+        <if test="stnType != null">
+           ${stnType}
+        </if>
+    </select>
+
+    <!--获取所有城市数据-->
+    <select id="queryCityData" resultType="String">
+        SELECT DISTINCT (city)  FROM waterstation;
+    </select>
+
+    <!--获取最新的水位数据通过站点id-->
+    <select id="queryLastWaterByStnId" parameterType="int" resultType="com.hawksoft.platform.entity.Water">
+        SELECT * FROM water WHERE
+          c_time =
+          (
+          SELECT MAX(c_time) FROM water
+            WHERE stnId = #{stnId}
+          )
+          AND stnId = #{stnId}
+          order by c_time
+    </select>
+
+    <!--插入数据-->
+    <insert id="saveWater" parameterType="com.hawksoft.platform.entity.Water">
+        INSERT INTO water
+          (stnId,waterLevel,c_time,picPath)
+          VALUES
+          (#{stnId},#{waterLevel},#{c_time},#{picPath})
+    </insert>
+
+    <select id="queryPicPathByStnId"  resultType="String">
+        SELECT picPath
+          FROM water
+          WHERE   DATE_FORMAT(c_time,'%Y-%m-%d') =
+          (SELECT  DATE_FORMAT(MAX(c_time),'%Y-%m-%d')
+            FROM water
+            WHERE stnId = #{stnId})
+          AND stnId = #{stnId}
+          limit 10
+    </select>
+
+
+    <insert id="saveWaterWarm" parameterType="com.hawksoft.platform.entity.WaterWarn">
+        insert into water_early_waring (stnId, wl_yellow, wl_orange, wl_red, waring_value, wl_status)
+          values
+          (#{stnId}, #{wl_yellow}, #{wl_orange}, #{wl_red}, #{waring_value}, #{wl_status});
+    </insert>
+
+    <insert id="saveCameraArgs" parameterType="com.hawksoft.platform.entity.CameraArgs">
+        INSERT INTO camera_args (RR,exposure,intensity,tone_up,cam_def,stnId)
+          VALUES
+          (#{RR},#{exposure},#{intensity},#{tone_up},#{cam_def},#{stnId})
+    </insert>
+
+    <!--根据相机id查询相机参数-->
+    <select id = "findCameraArgsById" parameterType="int" resultType="com.hawksoft.platform.entity.CameraArgs">
+        SELECT
+        RR,exposure,intensity,tone_up,cam_def,stnId,cam_type,id
+        FROM camera_args
+        WHERE id = #{id}
+    </select>
+
+    <select id="findCameraArgsByStnId" parameterType="int" resultType="com.hawksoft.platform.entity.CameraArgs">
+        SELECT
+          *
+          FROM camera_args WHERE stnId = #{stnId}
+    </select>
+
+    <!--根据相机id查询非默认的相机参数-->
+    <select id="findCameraArgsNoDefaultById" parameterType="int" resultType="com.hawksoft.platform.entity.CameraArgs">
+        SELECT
+        RR,exposure,intensity,tone_up,cam_def,stnId,cam_type,id
+        FROM camera_args
+        WHERE  id = #{id} AND cam_def = 2
+    </select>
+
+    <select id="findCameraArgsNoDefault" parameterType="int" resultType="com.hawksoft.platform.entity.CameraArgs">
+        SELECT
+          * FROM camera_args WHERE stnId = #{stnId} AND cam_def = 2
+    </select>
+
+    <delete id="deleteCameraArgsNoDefaultById" parameterType="int">
+        DELETE FROM camera_args WHERE id = #{id}
+    </delete>
+    
+    <update id="updateWaterWarn" parameterType="com.hawksoft.platform.entity.WaterEarlyWarn">
+
+        UPDATE  water_early_waring
+        <trim prefix="set" suffixOverrides=",">
+          <if test="wl_orange != null">
+              wl_orange = #{wl_orange},
+          </if>
+          <if test="wl_yellow != null">
+              wl_yellow = #{wl_yellow},
+          </if>
+          <if test="wl_red != null">
+              wl_red = #{wl_red},
+          </if>
+          <if test="warning_level != null">
+             warning_level = #{warning_level},
+          </if>
+          <if test="warning_values != null">
+              warning_values = #{warning_values},
+          </if>
+          <if test="wl_status != null">
+              wl_status = #{wl_status},
+          </if>
+        </trim>
+          WHERE stnId = #{stnId}
+    </update>
+
+    <select id="getWaterWarn"  resultType="com.hawksoft.platform.entity.WaterEarlyWarn">
+        <if test="type == 1">
+            SELECT id,stnId,wl_yellow,wl_orange,wl_red,wl_status FROM water_early_waring WHERE stnId = #{stnId}
+        </if>
+        <if test="type == 2">
+            SELECT id,stnId,warning_level,warning_values,wl_status FROM water_early_waring WHERE stnId = #{stnId}
+        </if>
+    </select>
+
+
+</mapper>

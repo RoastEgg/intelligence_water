@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hawksoft.platform.dao.WaterQualityDao">
+    <!--获取水质站点的最新数据-->
+    <select id="queryLastWaterQualityByStnId" parameterType="int" resultType="com.hawksoft.platform.entity.WaterQuality">
+        SELECT id,stnId,temperature,ph,dissolvedOxygen,redox,transparency,conductivity,
+                turbidity,NH3,collectionTime,instockTime,state,picOrVideo,FilePath
+          FROM waterquality
+            WHERE
+            collectionTime =
+            (
+             SELECT MAX(collectionTime)
+                FROM waterquality
+                WHERE stnId = #{stnId}
+            )
+          and stnId = #{stnId}
+    </select>
+
+    <!--取得某个指标的实时水质-->
+    <select id="queryLastWaterQualityByStnIdType" parameterType="Map" resultType="com.hawksoft.platform.entity.WaterQuality">
+        SELECT id,stnId,temperature,ph,dissolvedOxygen,redox,transparency,conductivity,
+                turbidity,NH3,collectionTime
+        FROM waterquality
+        WHERE
+        stnId = #{stnId}
+        and collectionTime >= #{startTime}
+        and collectionTime <![CDATA[ <= ]]> #{endTime}
+        order by collectionTime
+    </select>
+
+    <!--获取站点的上周水质数据-->
+    <select id="queryLastWeekWaterQuality" parameterType="Map" resultType="com.hawksoft.platform.entity.WaterQuality">
+        SELECT stnId,temperature,ph,dissolvedOxygen,redox,transparency,conductivity,
+                turbidity,NH3,collectionTime,instockTime,state,picOrVideo,FilePath
+          FROM waterquality
+          WHERE
+            stnId = #{stnId}
+            and collectionTime >= #{startTime}
+            and collectionTime <![CDATA[ <= ]]> #{endTime}
+    </select>
+    <sql id="key">
+        <!--去掉最后一个,号  -->
+        <trim suffixOverrides=",">
+            <if test="id!=null">
+                id,
+            </if>
+            <if test="stnId!=null">
+                stnId,
+            </if>
+            <if test="temperature!=null">
+                temperature,
+            </if>
+            <if test="ph!=null">
+                ph,
+            </if>
+            <if test="dissolvedOxygen!=null">
+                dissolvedOxygen,
+            </if>
+            <if test="redox!=null">
+                redox,
+            </if>
+            <if test="transparency!=null">
+                transparency,
+            </if>
+            <if test="conductivity!=null">
+                conductivity,
+            </if>
+            <if test="turbidity!=null">
+                turbidity,
+            </if>
+            <if test="NH3!=null">
+                NH3,
+            </if>
+            <if test="collectionTime!=null">
+                collectionTime,
+            </if>
+            <if test="instockTime!=null">
+                instockTime,
+            </if>
+            <if test="state!=null">
+                state,
+            </if>
+            <if test="picOrVideo!=null">
+                picOrVideo,
+            </if>
+            <if test="FilePath!=null">
+                FilePath,
+            </if>
+        </trim>
+    </sql>
+    <sql id="value">
+        <!--去掉最后一个,号  -->
+        <trim suffixOverrides=",">
+            <if test="id!=null">
+                #{id},
+            </if>
+            <if test="stnId!=null">
+                #{stnId},
+            </if>
+            <if test="temperature!=null">
+                #{temperature},
+            </if>
+            <if test="ph!=null">
+                #{ph},
+            </if>
+            <if test="dissolvedOxygen!=null">
+                #{dissolvedOxygen},
+            </if>
+            <if test="redox!=null">
+                #{redox},
+            </if>
+            <if test="transparency!=null">
+                #{transparency},
+            </if>
+            <if test="conductivity!=null">
+                #{conductivity},
+            </if>
+            <if test="turbidity!=null">
+                #{turbidity},
+            </if>
+            <if test="NH3!=null">
+                #{NH3},
+            </if>
+            <if test="collectionTime!=null">
+                #{collectionTime},
+            </if>
+            <if test="instockTime!=null">
+                #{instockTime},
+            </if>
+            <if test="state!=null">
+                #{state},
+            </if>
+            <if test="picOrVideo!=null">
+                #{picOrVideo},
+            </if>
+            <if test="FilePath!=null">
+                #{FilePath},
+            </if>
+        </trim>
+    </sql>
+    <insert id="saveWaterQuality" parameterType="com.hawksoft.platform.entity.WaterQuality" useGeneratedKeys="true" keyProperty="id">
+           insert into waterquality(<include refid="key"/>) VALUES (<include refid="value"/>)
+    </insert>
+
+    <!-- set 标签会自动判断哪个是最后的一个字段，会自动去掉最后一个，号 -->
+    <update id="updateWaterQuality" parameterType="map">
+        UPDATE waterquality
+        <set>
+            <if test="stnId!=null">
+                stnId=#{stnId},
+            </if>
+            <if test="temperature!=null">
+                temperature=#{temperature},
+            </if>
+            <if test="ph!=null">
+                ph=#{ph},
+            </if>
+            <if test="dissolvedOxygen!=null">
+                dissolvedOxygen=#{dissolvedOxygen},
+            </if>
+            <if test="redox!=null">
+                redox=#{redox},
+            </if>
+            <if test="transparency!=null">
+                transparency=#{transparency},
+            </if>
+            <if test="conductivity!=null">
+                conductivity=#{conductivity},
+            </if>
+            <if test="turbidity!=null">
+                turbidity=#{turbidity},
+            </if>
+            <if test="NH3!=null">
+                NH3=#{NH3},
+            </if>
+            <if test="collectionTime!=null">
+                collectionTime=#{collectionTime},
+            </if>
+            <if test="instockTime!=null">
+                instockTime=#{instockTime},
+            </if>
+            <if test="state!=null">
+                state=#{state},
+            </if>
+            <if test="picOrVideo!=null">
+                picOrVideo=#{picOrVideo},
+            </if>
+            <if test="FilePath!=null">
+                FilePath=#{FilePath},
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <!-- 通过ID删除 waterquality表里的水质记录 -->
+    <delete id="deleteWaterQuality" parameterType="map">
+        DELETE FROM waterquality WHERE id = #{id}
+    </delete>
+
+    <!--取得某个指标的实时水质-->
+    <select id="lastWaterQualityRecordsNum" parameterType="Map" resultType="com.hawksoft.platform.entity.WaterQuality">
+        SELECT *
+        FROM waterquality
+        WHERE
+        stnId = #{stnId}
+       order by collectionTime DESC
+       limit #{days}
+    </select>
+
+</mapper>

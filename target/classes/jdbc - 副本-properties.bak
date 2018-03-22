@@ -1,0 +1,4 @@
+driverClass=com.mysql.jdbc.Driver
+url=jdbc:mysql://localhost:3306/hawksoft?useUnicode=true&characterEncoding=UTF-8
+name=root
+password=123456
