@@ -10,11 +10,11 @@ public class Flow implements Serializable {
 
 
     private int flowId;                 //flowId
-    private int stnId;                  //站点id
-    private Double avgSpeed;            //平均流速
+    private int stnId;                  //站点id   ***
+    private Double avgSpeed;            //平均流速  *** 早上小，下午大
     private Double riverArea;           //河道断面面积
-    private Double avgFlow;             //平均流量
-    private String collectionTime;     //采集时间
+    private Double avgFlow;             //平均流量  *** 早上小，下午大
+    private String collectionTime;     //采集时间   ***
     private String state;               //状态编号（1为绿色，代表正常；2为灰色，代表机器问题或设备维护中没数据；3为红色，代表设备损坏）
     private Double dayFlow;             //日平均流量
     private Double weekFlow;            //周平均流量

@@ -2,10 +2,12 @@ package com.hawksoft.platform.socket;
 
 
 import com.hawksoft.platform.constant.WaterConstant;
+import com.hawksoft.platform.entity.UnmannedBoat;
 import com.hawksoft.platform.entity.Water;
 import com.hawksoft.platform.entity.WaterQuality;
 import com.hawksoft.platform.entity.SpeedFlow;
 import com.hawksoft.platform.service.SpeedFlowService;
+import com.hawksoft.platform.service.UnmannedBoatService;
 import com.hawksoft.platform.service.WaterQualityService;
 import com.hawksoft.platform.service.WaterService;
 import org.springframework.context.ApplicationContext;
@@ -21,6 +23,7 @@ public class SocketSaveToDB {
 
     private static WaterService waterService;
     private static WaterQualityService waterQualityService;
+    private static UnmannedBoatService unmannedBoatService;
     private static SpeedFlowService speedFlowService;
     private static double RiverArea1=15.23;//摄像头1的断面面积
     private static double RiverArea2=14.31;//摄像头2的断面面积
@@ -213,6 +216,43 @@ public class SocketSaveToDB {
             waterQualityService.saveWaterQuality(quality);
         } else {
             System.out.println("Init Water Quality Service Failed!");
+        }
+    }
+
+    public static void saveUB(RtuHeaderInfo headerInfo, String ubData){
+        UnmannedBoat unmannedBoat = new UnmannedBoat();
+        unmannedBoat.setLongitude(Double.parseDouble(ubData.substring(0,4)));
+        unmannedBoat.setLatitude(Double.parseDouble(ubData.substring(4,8)));
+        unmannedBoat.setCourse(Double.parseDouble(ubData.substring(8,12)));
+        unmannedBoat.setOriginalSpeed(Double.parseDouble(ubData.substring(12,16)));
+        unmannedBoat.setTrailAngle(Double.parseDouble(ubData.substring(16,20)));
+        unmannedBoat.setManualCourse(Double.parseDouble(ubData.substring(20,24)));
+        unmannedBoat.setAutoCourse(Double.parseDouble(ubData.substring(24,28)));
+        unmannedBoat.setSpacing(Double.parseDouble(ubData.substring(28,32)));
+        unmannedBoat.setYawDistance(Double.parseDouble(ubData.substring(32,36)));
+        unmannedBoat.setLeftOutput(Double.parseDouble(ubData.substring(36,40)));
+        unmannedBoat.setRightOutput(Double.parseDouble(ubData.substring(40,44)));
+        unmannedBoat.setAccelerator(Double.parseDouble(ubData.substring(44,48)));
+        unmannedBoat.setCourseChangeRate(Double.parseDouble(ubData.substring(48,52)));
+        unmannedBoat.setYawChangeRate(Double.parseDouble(ubData.substring(52,56)));
+        unmannedBoat.setSailingSpeed(Double.parseDouble(ubData.substring(56,60)));
+        unmannedBoat.setTargetSpeed(Double.parseDouble(ubData.substring(60,64)));
+        unmannedBoat.setObstacleDistance(Double.parseDouble(ubData.substring(64,68)));
+        unmannedBoat.setObstacleAngle(Double.parseDouble(ubData.substring(68,72)));
+
+        unmannedBoat.setNumber(headerInfo.getUbNo());
+        unmannedBoat.setTime(headerInfo.getStime());
+
+        if (unmannedBoatService == null){
+            initEnv();
+        }
+
+        if (unmannedBoatService != null){
+            System.out.println(">>>>>>>" + unmannedBoat.toString());
+            unmannedBoatService.saveUnmannedBoat(unmannedBoat);
+        }
+        else {
+            System.out.println("Init unmanned Boat Service Failed!");
         }
     }
 

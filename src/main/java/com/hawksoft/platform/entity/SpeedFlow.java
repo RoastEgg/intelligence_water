@@ -8,16 +8,16 @@ import java.io.Serializable;
 public class SpeedFlow implements Serializable {
 
     private int speedflowid;       //流速流量id
-    private int stnId;              //站点id
-    private Double waterSpeed1;     //camera1流速
+    private int stnId;              //站点id       ***
+    private Double waterSpeed1;     //camera1流速  ***
     private Double waterFlow1;      //camera1流量
-    private Double waterSpeed2;     //camera2流速
+    private Double waterSpeed2;     //camera2流速  ***
     private Double waterFlow2;      //camera2流量
-    private Double waterSpeed3;     //camera3流速
+    private Double waterSpeed3;     //camera3流速  ***
     private Double waterFlow3;      //camera3流量
-    private Double waterSpeed4;     //camera4流速
+    private Double waterSpeed4;     //camera4流速  ***
     private Double waterFlow4;      //camera4流量
-    private Double waterSpeed5;     //camera5流速
+    private Double waterSpeed5;     //camera5流速  ***
     private Double waterFlow5;      //camera5流量
     private Integer state1;           //camera1设备状态
     private Integer state2;           //camera2设备状态

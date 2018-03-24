@@ -20,6 +20,7 @@ public class SocketServiceLoader implements ServletContextListener {
             try {
 				socketThread = new SocketThread(null);
                 socketThread.start();
+                //在这里新建一个线程，在每天固定的时间节点生成数据并写入数据库中
 			} catch (Exception e) {
 	            System.out.println("SocketThread创建socket服务出错");
 	            e.printStackTrace();

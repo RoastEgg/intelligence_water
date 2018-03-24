@@ -9,17 +9,17 @@ import java.math.BigDecimal;
 public class WaterQuality implements Serializable {
 
     private int id;
-    private Integer stnId;              //站点编号
-    private String temperature;        //温度值
-    private Double ph;                  //PH值
-    private Double dissolvedOxygen;    //溶解氧值
-    private Double redox;               //氧化还原值
+    private Integer stnId;              //站点编号  ***
+    private String temperature;        //温度值     *** random的时候多参照几个区间
+    private Double ph;                  //PH值      ***
+    private Double dissolvedOxygen;    //溶解氧值    ***
+    private Double redox;               //氧化还原值  ***
     private Double transparency;       //透明度值
     private Double conductivity;       //电导率
     private Double turbidity;          //浊度值
     private Double NH3;                 //氨氮值
-    private String collectionTime;     //采集时间
-    private String instockTime;        //入库时间
+    private String collectionTime;     //采集时间    ***
+    private String instockTime;        //入库时间    ***
     private String state;               //状态编号（1为绿色，代表正常；2为灰色，代表机器问题或设备维护中没数据；3为红色，代表设备损坏）
     private String picOrVideo;         //文件是图片还是视频（p为图片；v为视频)
     private String FilePath;           //文件地址

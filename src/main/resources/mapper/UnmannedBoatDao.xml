@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hawksoft.platform.dao.UnmannedBoatDao">
+
+    <sql id="key">
+        <trim suffixOverrides=",">
+            <if test="id!=null">
+                id,
+            </if>
+            <if test="number!=null">
+                number,
+            </if>
+            <if test="course!=null">
+                course,
+            </if>
+            <if test="originalSpeed!=null">
+                originalSpeed,
+            </if>
+            <if test="trailAngle!=null">
+                trailAngle,
+            </if>
+            <if test="manualCourse!=null">
+                manualCourse,
+            </if>
+            <if test="autoCourse!=null">
+                autoCourse,
+            </if>
+            <if test="spacing!=null">
+                spacing,
+            </if>
+            <if test="yawDistance!=null">
+                yawDistance,
+            </if>
+            <if test="leftOutput!=null">
+                leftOutput,
+            </if>
+            <if test="rightOutput!=null">
+                rightOutput,
+            </if>
+            <if test="accelerator!=null">
+                accelerator,
+            </if>
+            <if test="courseChangeRate!=null">
+                courseChangeRate,
+            </if>
+            <if test="yawChangeRate!=null">
+                yawChangeRate,
+            </if>
+            <if test="sailingSpeed!=null">
+                sailingSpeed,
+            </if>
+            <if test="targetSpeed!=null">
+                targetSpeed,
+            </if>
+            <if test="longitude!=null">
+                longitude,
+            </if>
+            <if test="latitude!=null">
+                latitude,
+            </if>
+            <if test="obstacleDistance!=null">
+                obstacleDistance,
+            </if>
+            <if test="obstacleAngle!=null">
+                obstacleAngle,
+            </if>
+            <if test="time!=null">
+                time,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="value">
+        <trim suffixOverrides=",">
+            <if test="id!=null">
+                #{id},
+            </if>
+            <if test="number!=null">
+                #{number},
+            </if>
+            <if test="course!=null">
+                #{course},
+            </if>
+            <if test="originalSpeed!=null">
+                #{originalSpeed},
+            </if>
+            <if test="trailAngle!=null">
+                #{trailAngle},
+            </if>
+            <if test="manualCourse!=null">
+                #{manualCourse},
+            </if>
+            <if test="autoCourse!=null">
+                #{autoCourse},
+            </if>
+            <if test="spacing!=null">
+                #{spacing},
+            </if>
+            <if test="yawDistance!=null">
+                #{yawDistance},
+            </if>
+            <if test="leftOutput!=null">
+                #{leftOutput},
+            </if>
+            <if test="rightOutput!=null">
+                #{rightOutput},
+            </if>
+            <if test="accelerator!=null">
+                #{accelerator},
+            </if>
+            <if test="courseChangeRate!=null">
+                #{courseChangeRate},
+            </if>
+            <if test="yawChangeRate!=null">
+                #{yawChangeRate},
+            </if>
+            <if test="sailingSpeed!=null">
+                #{sailingSpeed},
+            </if>
+            <if test="targetSpeed!=null">
+                #{targetSpeed},
+            </if>
+            <if test="longitude!=null">
+                #{longitude},
+            </if>
+            <if test="latitude!=null">
+                #{latitude},
+            </if>
+            <if test="obstacleDistance!=null">
+                #{obstacleDistance},
+            </if>
+            <if test="obstacleAngle!=null">
+                #{obstacleAngle},
+            </if>
+            <if test="time!=null">
+                #{time},
+            </if>
+        </trim>
+    </sql>
+
+    <!--插入无人船数据-->
+    <insert id="saveUnmannedBoat" parameterType="com.hawksoft.platform.entity.WaterQuality" useGeneratedKeys="true" keyProperty="id">
+        insert into UnmannedBoat(<include refid="key"/>) VALUES (<include refid="value"/>)
+    </insert>
+
+
+
+
+</mapper>

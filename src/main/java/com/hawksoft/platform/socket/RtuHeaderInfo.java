@@ -4,6 +4,7 @@ public class RtuHeaderInfo {
     private int type;
     private int siteNo;
     private int cameraId;
+    private String ubNo;//无人船编号
     private int value;
     private String filename;
     private String stime;
@@ -32,6 +33,14 @@ public class RtuHeaderInfo {
 
     public void setCameraId(int cameraId) {
         this.cameraId = cameraId;
+    }
+
+    public String getUbNo() {
+        return ubNo;
+    }
+
+    public void setUbNo(String ubNo) {
+        this.ubNo = ubNo;
     }
 
     public int getValue() {

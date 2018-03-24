@@ -3,6 +3,7 @@ package com.hawksoft.platform.socket;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.net.Socket;
 import java.net.SocketException;
 import java.time.LocalDateTime;
@@ -111,6 +112,12 @@ public class SocketOperate extends Thread {
                                 saveFile(din, dbFile, size);
                                 SocketSaveToDB.save(headerInfo, dbFile, filename.replace("_", ":"));
                                 break; // case break;
+                            case UB:
+                                byte[] contentUB = new byte[size];
+                                readData(din, contentUB, size);
+                                SocketSaveToDB.saveUB(headerInfo,
+                                        new String(Arrays.copyOfRange(contentUB, 0, size)));
+                                break;
                         }
                     }
                 }
@@ -148,6 +155,10 @@ public class SocketOperate extends Thread {
                 hd_size = SocketUtils.IWRtuMsgType.OPACITY.getHeaderSize() - 4;
                 headerInfo.setMsgType(SocketUtils.IWRtuMsgType.OPACITY);
                 break;
+            case UB:
+                hd_size = SocketUtils.IWRtuMsgType.UB.getHeaderSize()-4;
+                headerInfo.setMsgType(SocketUtils.IWRtuMsgType.UB);
+                break;
 
             case NONE:
                 return -1;
@@ -172,6 +183,11 @@ public class SocketOperate extends Thread {
                 headerInfo.setValue(SocketUtils.getInteger(header, 8));
                 headerInfo.setFilename(new String(Arrays.copyOfRange(header, 12, 36), "UTF-8"));
                 headerInfo.setSize(SocketUtils.getInteger(header, 36));
+                break;
+            case UB:
+                headerInfo.setUbNo(new String(Arrays.copyOfRange(header,4,24)).trim());//最长20位的无人船编号，去除头尾空格
+                headerInfo.setStime(new String(Arrays.copyOfRange(header,24,43)));//20位的日期，去掉末尾空格
+                headerInfo.setSize(SocketUtils.getInteger(header,44));
                 break;
         }
 

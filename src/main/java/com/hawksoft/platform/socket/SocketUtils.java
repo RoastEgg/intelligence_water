@@ -35,7 +35,14 @@ public class SocketUtils {
     }
 
     public enum IWRtuMsgType {
-        WL("水位", 1, 44), FLUX("流速", 2, 44), WQ("水质", 3, 32), OPACITY("透明度", 4, 44), NONE("none", 0, 0);
+        WL("水位", 1, 44),
+        FLUX("流速", 2, 44),
+        WQ("水质", 3, 32),
+        OPACITY("透明度", 4, 44),
+        UB("无人船",5,52),
+        //UB(unmanned boat) header包括消息类型（4位），站点编号（4位），无人船编号（20位），时间（20位，如："2018-01-01 09:58:21"）
+        //共48位
+        NONE("none", 0, 0);
 
         private String name;
         private int index;

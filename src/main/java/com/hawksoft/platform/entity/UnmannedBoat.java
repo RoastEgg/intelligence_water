@@ -1,7 +1,6 @@
 package com.hawksoft.platform.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class UnmannedBoat implements Serializable {
     private int id;//key,自增
@@ -196,4 +195,33 @@ public class UnmannedBoat implements Serializable {
     public void setYawChangeRate(double yawChangeRate) {
         this.yawChangeRate = yawChangeRate;
     }
+
+    @Override
+    public String toString() {
+        return "WaterQuality{" +
+                "id=" + id +
+                ", number=" + number +
+                ", course='" + course + '\'' +
+                ", originalSpeed=" + originalSpeed +
+                ", trailAngle=" + trailAngle +
+                ", manualCourse=" + manualCourse +
+                ", autoCourse=" + autoCourse +
+                ", spacing=" + spacing +
+                ", yawDistance=" + yawDistance +
+                ", leftOutput=" + leftOutput +
+                ", rightOutput='" + rightOutput +
+                ", accelerator='" + accelerator +
+                ", courseChangeRate='" + courseChangeRate +
+                ", yawChangeRate='" + yawChangeRate +
+                ", sailingSpeed='" + sailingSpeed +
+                ", targetSpeed=" + targetSpeed +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
+                ", obstacleDistance=" + obstacleDistance +
+                ", obstacleAngle=" + obstacleAngle +
+                ", time=" + time +
+                '}';
+
+    }
+
 }
