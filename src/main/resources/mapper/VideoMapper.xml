@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hawksoft.platform.dao.VideoDao">
+
+    <!-- 通过站点ID和视频类型查询视频URL -->
+    <select id="queryURL" parameterType="Map" resultType="com.hawksoft.platform.entity.Video">
+        SELECT stnId,url
+        FROM Video
+        WHERE
+          stnId = #{stnId}
+          and `type` = #{type}
+    </select>
+
+
+</mapper>

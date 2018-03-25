@@ -1,5 +1,6 @@
 package com.hawksoft.platform.util;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -13,6 +14,21 @@ import java.util.Map;
 public class DateUtil {
 
     private static SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    /**
+     * 将string转化为date，格式按照定义（注意可能string不能转化，产生异常）
+     * @param s
+     */
+    public static Date parseString(String s){
+        Date date = null;
+        try {
+            date = sdf.parse(s);
+        } catch (ParseException e) {
+            System.out.println("wrong format string!");
+            e.printStackTrace();
+        }
+        return date;
+    }
 
     public static String parseDate(Date date){
         String date1 = sdf.format(date);
