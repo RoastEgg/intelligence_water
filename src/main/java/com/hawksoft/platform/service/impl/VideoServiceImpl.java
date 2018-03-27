@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class VideoServiceImpl implements VideoService {
@@ -15,7 +16,7 @@ public class VideoServiceImpl implements VideoService {
     private VideoDao videoDao;
 
     @Override
-    public List<Video> queryURL(int stnId, String type) {
-        return videoDao.queryURL(stnId,type);
+    public List<Map<String,Object>> queryURL(Map<String ,Object> map) {
+        return videoDao.queryURL(map);
     }
 }

@@ -3,6 +3,7 @@ package com.hawksoft.platform.dao;
 
 import com.hawksoft.platform.entity.Flow;
 import com.hawksoft.platform.entity.WaterQuality;
+import org.omg.CORBA.OBJ_ADAPTER;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -88,4 +89,17 @@ public interface FlowDao {
      */
     public int deleteFlow(Flow flow);
 
+    /**
+     * 获取最近的流量和水位信息（水位、流量、测试时间）
+     * @param stnId
+     * @return
+     */
+    public List<Map<String , Object>> queryLastFlowAndWater(int stnId);
+
+    /**
+     * 获取这个时间点的流量，水位和5个相机的5个视频url
+     * @param map
+     * @return
+     */
+    public List<Map<String , Object>> queryFlowBystnIdAndTime(Map<String ,Object> map);
 }

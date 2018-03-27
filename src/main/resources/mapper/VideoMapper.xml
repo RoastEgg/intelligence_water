@@ -5,9 +5,9 @@
 <mapper namespace="com.hawksoft.platform.dao.VideoDao">
 
     <!-- 通过站点ID和视频类型查询视频URL -->
-    <select id="queryURL" parameterType="Map" resultType="com.hawksoft.platform.entity.Video">
-        SELECT stnId,url
-        FROM Video
+    <select id="queryURL" parameterType="Map" resultType="Map">
+        SELECT stnId,`type`,url
+        FROM video
         WHERE
           stnId = #{stnId}
           and `type` = #{type}

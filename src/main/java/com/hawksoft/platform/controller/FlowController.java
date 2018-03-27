@@ -6,12 +6,15 @@ import com.hawksoft.platform.entity.Flow;
 
 import com.hawksoft.platform.service.FlowService;
 
+import com.hawksoft.platform.service.VideoService;
+import com.hawksoft.platform.service.WaterStationService;
 import com.hawksoft.platform.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +34,12 @@ public class FlowController {
 
     @Autowired
     private FlowService flowService;
+
+    @Autowired
+    private VideoService videoService;
+    @Autowired
+    private WaterStationService waterStationService;
+
     private Map<String, Object> params = new HashMap<>();
 
     /**
@@ -151,6 +160,63 @@ public class FlowController {
     @ResponseBody
     public String deleteFlow(Flow flow){
         return (flowService.deleteFlow(flow)  != 0) ? "success" : "fail";
+    }
+
+    /**
+     * 获取最新的流量信息，包括水位、流量和测试时间
+     * @param stnId
+     */
+    @RequestMapping(value = "/lastFlow/{stnId}",method = RequestMethod.GET)
+    @ResponseBody
+    public String queryLastFlowAndWater(@PathVariable("stnId") int stnId){
+        List<Map<String ,Object>> infos = flowService.queryLastFlowAndWater(stnId);
+        System.out.println("返回记录条数："+infos.size());
+        if (infos.size()>0){
+            return JSON.toJSON(infos).toString();
+        }
+        return "{\"msg\" : \"暂时无法获取最新的流量和水位数据\"}";
+    }
+
+    @RequestMapping(value = "/historyFlowVideo/{stnId}/{time}",method = RequestMethod.GET)
+    @ResponseBody
+    public String queryFlowBystnIdAndTime(@PathVariable("stnId") int stnId,
+                                          @PathVariable("time") String time){
+        params.put("stnId",stnId);
+        params.put("time",time);
+        List<Map<String ,Object>> infos = flowService.queryFlowBystnIdAndTime(params);
+        System.out.println("返回记录条数："+infos.size());
+        if (infos.size()>0){
+            return JSON.toJSON(infos).toString();
+        }
+        return "{\"msg\" : \"暂时无法获取最新的流量和水位数据\"}";
+
+    }
+
+    @RequestMapping(value = "/video/{stnId}/{type}",method = RequestMethod.GET)
+    @ResponseBody
+    public String getVideo(@PathVariable("stnId") int stnId,
+                           @PathVariable("type") String type){
+
+        params.put("stnId",stnId);
+        params.put("type",type);
+        List<Map<String , Object>> videoList = videoService.queryURL(params);
+        System.out.println("视频记录条数："+videoList.size());
+        if (videoList.size()>0){
+            return JSON.toJSON(videoList).toString();
+        }
+        return "{\"msg\" : \"暂时无法获取视频数据\"}";
+    }
+
+
+    @RequestMapping(value = "/sectionMap/{stnId}",method = RequestMethod.GET)
+    @ResponseBody
+    public String getSectionMap(@PathVariable("stnId") int stnId){
+        List<Map<String ,Object>> waterStationList = waterStationService.querySectionMap(stnId);
+        System.out.println("断面图数："+waterStationList.size());
+        if (waterStationList.size()>0){
+            return JSON.toJSON(waterStationList).toString();
+        }
+        return "{\"msg\" : \"暂时无法获取断面图数据\"}";
     }
 
 }

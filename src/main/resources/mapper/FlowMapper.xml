@@ -248,4 +248,33 @@
         limit #{days}
     </select>
 
+    <!--获取最新的流量值和时间，并且根据这个时间到水位表里获取最近的水位
+-->
+    <select id="queryLastFlowAndWater" parameterType="int" resultType="Map">
+        SELECT flow.stnId,flow.avgFlow,water.waterLevel,flow.collectionTime
+        FROM flow,water
+        WHERE
+          flow.collectionTime =
+          (
+          SELECT MAX(collectionTime)
+          FROM flow
+          WHERE stnId = #{stnId}
+          )
+        and flow.stnId = #{stnId}
+        and water.stnId = #{stnId}
+        and flow.collectionTime = water.c_time
+    </select>
+
+    <select id="queryFlowBystnIdAndTime" parameterType="Map" resultType="Map">
+        SELECT flow.avgFlow,water.waterLevel,flow.collectionTime,speedflow.FilePath1,
+        speedflow.FilePath2,speedflow.FilePath3,speedflow.FilePath4,speedflow.FilePath5
+        FROM water,flow,speedflow
+        WHERE
+          flow.collectionTime <![CDATA[ <= ]]> #{time}
+        and flow.stnId = #{stnId}
+        and water.stnId = #{stnId}
+        and speedflow.stnId  = #{stnId}
+        and flow.collectionTime = water.c_time
+        and flow.collectionTime = speedflow.collectionTime
+    </select>
 </mapper>

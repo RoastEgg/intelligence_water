@@ -221,24 +221,25 @@ public class SocketSaveToDB {
 
     public static void saveUB(RtuHeaderInfo headerInfo, String ubData){
         UnmannedBoat unmannedBoat = new UnmannedBoat();
-        unmannedBoat.setLongitude(Double.parseDouble(ubData.substring(0,4)));
-        unmannedBoat.setLatitude(Double.parseDouble(ubData.substring(4,8)));
-        unmannedBoat.setCourse(Double.parseDouble(ubData.substring(8,12)));
-        unmannedBoat.setOriginalSpeed(Double.parseDouble(ubData.substring(12,16)));
-        unmannedBoat.setTrailAngle(Double.parseDouble(ubData.substring(16,20)));
-        unmannedBoat.setManualCourse(Double.parseDouble(ubData.substring(20,24)));
-        unmannedBoat.setAutoCourse(Double.parseDouble(ubData.substring(24,28)));
-        unmannedBoat.setSpacing(Double.parseDouble(ubData.substring(28,32)));
-        unmannedBoat.setYawDistance(Double.parseDouble(ubData.substring(32,36)));
-        unmannedBoat.setLeftOutput(Double.parseDouble(ubData.substring(36,40)));
-        unmannedBoat.setRightOutput(Double.parseDouble(ubData.substring(40,44)));
-        unmannedBoat.setAccelerator(Double.parseDouble(ubData.substring(44,48)));
-        unmannedBoat.setCourseChangeRate(Double.parseDouble(ubData.substring(48,52)));
-        unmannedBoat.setYawChangeRate(Double.parseDouble(ubData.substring(52,56)));
-        unmannedBoat.setSailingSpeed(Double.parseDouble(ubData.substring(56,60)));
-        unmannedBoat.setTargetSpeed(Double.parseDouble(ubData.substring(60,64)));
-        unmannedBoat.setObstacleDistance(Double.parseDouble(ubData.substring(64,68)));
-        unmannedBoat.setObstacleAngle(Double.parseDouble(ubData.substring(68,72)));
+        String [] ubList  = ubData.split(";");//发送的报文用";"隔开
+        unmannedBoat.setLongitude(Double.parseDouble(ubList[0]));
+        unmannedBoat.setLatitude(Double.parseDouble(ubList[1]));
+        unmannedBoat.setCourse(Double.parseDouble(ubList[2]));
+        unmannedBoat.setOriginalSpeed(Double.parseDouble(ubList[3]));
+        unmannedBoat.setTrailAngle(Double.parseDouble(ubList[4]));
+        unmannedBoat.setManualCourse(Double.parseDouble(ubList[5]));
+        unmannedBoat.setAutoCourse(Double.parseDouble(ubList[6]));
+        unmannedBoat.setSpacing(Double.parseDouble(ubList[7]));
+        unmannedBoat.setYawDistance(Double.parseDouble(ubList[8]));
+        unmannedBoat.setLeftOutput(Double.parseDouble(ubList[9]));
+        unmannedBoat.setRightOutput(Double.parseDouble(ubList[10]));
+        unmannedBoat.setAccelerator(Double.parseDouble(ubList[11]));
+        unmannedBoat.setCourseChangeRate(Double.parseDouble(ubList[12]));
+        unmannedBoat.setYawChangeRate(Double.parseDouble(ubList[13]));
+        unmannedBoat.setSailingSpeed(Double.parseDouble(ubList[14]));
+        unmannedBoat.setTargetSpeed(Double.parseDouble(ubList[15]));
+        unmannedBoat.setObstacleDistance(Double.parseDouble(ubList[16]));
+        unmannedBoat.setObstacleAngle(Double.parseDouble(ubList[17]));
 
         unmannedBoat.setNumber(headerInfo.getUbNo());
         unmannedBoat.setTime(headerInfo.getStime());
