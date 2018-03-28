@@ -209,4 +209,14 @@
        limit #{days}
     </select>
 
+    <!--根据站点Id和时间，从无人船中获取水质数据-->
+    <select id = "queryWaterQualityFromUB" parameterType="Map" resultType="Map">
+        SELECT  ub.stnId,ub.longitude,ub.latitude,wq.temperature,wq.ph,wq.dissolvedOxygen,wq.redox
+        FROM unmannedboat ub,waterquality wq
+        WHERE
+          wq.stnId = #{stnId}
+          AND wq.collectionTime = #{time}
+          AND ub.time = #{time}
+
+    </select>
 </mapper>

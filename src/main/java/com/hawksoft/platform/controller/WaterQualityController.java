@@ -258,4 +258,12 @@ public class WaterQualityController {
         return (waterQualityService.deleteWaterQuality(waterquality) != 0) ? "success" : "fail";
 
     }
+
+    @RequestMapping(value = "/UnmannedBoat/{time}/{stnId}",method = RequestMethod.GET)
+    @ResponseBody()
+    public String getWaterQualityFromUB(@PathVariable("stnId") int sthId,
+                                        @PathVariable("time") String time){
+
+        return null;
+    }
 }

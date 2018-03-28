@@ -131,4 +131,13 @@ public class WaterQualityServiceImpl implements WaterQualityService {
         return WaterQualityDao.lastWaterQualityRecordsNum(map);
     }
 
+    /**
+     * 从无人船中获取水质信息
+     * @param map
+     * @return 站点Id，GPS经纬度，水质参数（温度、PH、溶氧、氧化还原）
+     */
+    public List<Map<String ,Object>> queryWaterQualityFromUB(Map<String,Object> map){
+        return WaterQualityDao.queryWaterQualityFromUB(map);
+    }
+
 }
