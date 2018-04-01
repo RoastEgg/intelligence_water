@@ -11,4 +11,11 @@ public interface WaterStationService {
      */
 
     public List<Map<String ,Object>> querySectionMap(int stnId);
+
+    /**
+     * 查询站点是否有水位、水质、流量、漂浮物、无人船信息
+     * @param stnId
+     * @return
+     */
+    public Map<String,Boolean> queryStationInfo(int stnId);
 }

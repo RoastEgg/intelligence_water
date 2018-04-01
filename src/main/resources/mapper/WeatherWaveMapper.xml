@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hawksoft.platform.dao.WeatherWaveDao">
+    <!--通过ID获取该站点最新一条气象、波浪数据-->
+    <select id="findLastWeatherWave" parameterType="int" resultType="com.hawksoft.platform.entity.WeatherWave">
+        SELECT *
+          FROM weatherwave
+            WHERE
+            collectionTime =
+            (
+             SELECT MAX(collectionTime)
+                FROM weatherwave
+                WHERE stnId = #{stnId}
+            )
+          and stnId = #{stnId}
+    </select>
+    <!--通过ID获取该站点最新一条气象数据-->
+    <select id="findLastWeather" parameterType="int" resultType="com.hawksoft.platform.entity.Weather">
+        SELECT id,stnId,temperature,baro,humidity,rainfall,meanWindSpeed10,meanWindDirection10,windSpeedDeviation10,maxWindSpeed10,maxWindSpeedTime10,maxWindSpeedDirection10,maxWindSpeedDay,maxWindSpeedTimeDay,maxWindDirectionDay,collectionTime
+        FROM weatherwave
+        WHERE
+        collectionTime =
+        (
+        SELECT MAX(collectionTime)
+        FROM weatherwave
+        WHERE stnId = #{stnId}
+        )
+        and stnId = #{stnId}
+    </select>
+    <!--通过ID获取该站点最新一条波浪数据-->
+    <select id="findLastWave" parameterType="int" resultType="com.hawksoft.platform.entity.Wave">
+        SELECT id,stnId,waterPressure,waterTemperature,heading,flowSpeedX,flowSpeedY,longitude,latitude,collectionTime
+        FROM weatherwave
+        WHERE
+        collectionTime =
+        (
+        SELECT MAX(collectionTime)
+        FROM weatherwave
+        WHERE stnId = #{stnId}
+        )
+        and stnId = #{stnId}
+    </select>
+    <!--通过ID和时间段获取站点的历史气象、波浪数据-->
+    <select id="historyWeatherWave" parameterType="Map" resultType="com.hawksoft.platform.entity.WeatherWave">
+       SELECT id,${type} as returnDateValue,collectionTime
+        FROM weatherwave
+          WHERE
+            stnId = #{stnId}
+            and collectionTime >= #{startTime}
+            and collectionTime <![CDATA[ <= ]]> #{endTime}
+    </select>
+    <!--通过ID和时间段获取站点的历史气象数据-->
+    <select id="historyWeather" parameterType="Map" resultType="com.hawksoft.platform.entity.Weather">
+        SELECT id,${type} as returnDateValue,collectionTime
+        FROM weatherwave
+        WHERE
+        stnId = #{stnId}
+        and collectionTime >= #{startTime}
+        and collectionTime <![CDATA[ <= ]]> #{endTime}
+    </select>
+    <!--通过ID和时间段获取站点的历史气象、波浪数据-->
+    <select id="historyWave" parameterType="Map" resultType="com.hawksoft.platform.entity.Wave">
+        SELECT id,${type} as returnDateValue,collectionTime
+        FROM weatherwave
+        WHERE
+        stnId = #{stnId}
+        and collectionTime >= #{startTime}
+        and collectionTime <![CDATA[ <= ]]> #{endTime}
+    </select>
+<!-- mybatis的BUG，sql标签格式化排列时，SQL会多出很多多余的空格，SQL语句会超长，所以 -->
+<sql id="key">
+<trim suffixOverrides=",">
+<if test="id!=null">id,</if>
+<if test="stnId!=null">stnId,</if>
+<if test="temperature!=null">temperature,</if>
+<if test="baro!=null">baro,</if>
+<if test="humidity!=null">humidity,</if>
+<if test="rainfall!=null">rainfall,</if>
+<if test="meanWindSpeed10!=null">meanWindSpeed10,</if>
+<if test="meanWindDirection10!=null">meanWindDirection10,</if>
+<if test="windSpeedDeviation10!=null">windSpeedDeviation10,</if>
+<if test="maxWindSpeed10!=null">maxWindSpeed10, </if>
+<if test="maxWindSpeedTime10!=null">maxWindSpeedTime10,</if>
+<if test="maxWindSpeedDirection10!=null">maxWindSpeedDirection10,</if>
+<if test="maxWindSpeedDay!=null">maxWindSpeedDay,</if>
+<if test="maxWindSpeedTimeDay!=null">maxWindSpeedTimeDay,</if>
+<if test="maxWindDirectionDay!=null">maxWindDirectionDay,</if>
+<if test="waterPressure!=null">waterPressure,</if>
+<if test="waterTemperature!=null">waterTemperature,</if>
+<if test="heading!=null">heading,</if>
+<if test="flowSpeedX!=null">flowSpeedX,</if>
+<if test="flowSpeedY!=null">flowSpeedY,</if>
+<if test="Hs!=null">Hs,</if>
+<if test="Ts!=null">Ts,</if>
+<if test="Hmax!=null">Hmax,</if>
+<if test="Tp!=null">Tp,</if>
+<if test="T1!=null">T1,</if>
+<if test="Tz!=null">Tz,</if>
+<if test="Dmean!=null">Dmean,</if>
+<if test="Dpeak!=null">Dpeak,</if>
+<if test="longitude!=null">longitude,</if>
+<if test="latitude!=null">latitude,</if>
+<if test="collectionTime!=null">collectionTime,</if>
+</trim>
+</sql>
+<sql id="value">
+<trim suffixOverrides=",">
+<if test="id!=null">#{id},</if>
+<if test="stnId!=null">#{stnId},</if>
+<if test="temperature!=null">#{temperature},</if>
+<if test="baro!=null">#{baro},</if>
+<if test="humidity!=null">#{humidity},</if>
+<if test="rainfall!=null">#{rainfall},</if>
+<if test="meanWindSpeed10!=null">#{meanWindSpeed10},</if>
+<if test="meanWindDirection10!=null">#{meanWindDirection10},</if>
+<if test="windSpeedDeviation10!=null">#{windSpeedDeviation10},</if>
+<if test="maxWindSpeed10!=null">#{maxWindSpeed10},</if>
+<if test="maxWindSpeedTime10!=null">#{maxWindSpeedTime10},</if>
+<if test="maxWindSpeedDirection10!=null">#{maxWindSpeedDirection10},</if>
+<if test="maxWindSpeedDay!=null">#{maxWindSpeedDay},</if>
+<if test="maxWindSpeedTimeDay!=null">#{maxWindSpeedTimeDay},</if>
+<if test="maxWindDirectionDay!=null">#{maxWindDirectionDay},</if>
+<if test="waterPressure!=null">#{waterPressure},</if>
+<if test="waterTemperature!=null">#{waterTemperature},</if>
+<if test="heading!=null">#{heading},</if>
+<if test="flowSpeedX!=null">#{flowSpeedX},</if>
+<if test="flowSpeedY!=null">#{flowSpeedY},</if>
+<if test="Hs!=null">#{Hs},</if>
+<if test="Ts!=null">#{Ts},</if>
+<if test="Hmax!=null">#{Hmax},</if>
+<if test="Tp!=null">#{Tp},</if>
+<if test="T1!=null">#{T1},</if>
+<if test="Tz!=null">#{Tz},</if>
+<if test="Dmean!=null">#{Dmean},</if>
+<if test="Dpeak!=null">#{Dpeak},</if>
+<if test="longitude!=null">#{longitude},</if>
+<if test="latitude!=null">#{latitude},</if>
+<if test="collectionTime!=null">#{collectionTime},</if>
+</trim>
+</sql>
+
+    <insert id="saveWeatherWave" parameterType="com.hawksoft.platform.entity.WeatherWave" useGeneratedKeys="true" keyProperty="id">
+           insert into weatherwave(<include refid="key"/>) VALUES (<include refid="value"/>)
+    </insert>
+
+    <!-- set 标签会自动判断哪个是最后的一个字段，会自动去掉最后一个，号 -->
+    <update id="updateWeatherWave" parameterType="map">
+        UPDATE weatherwave
+        <set>
+            <if test="stnId!=null">
+                stnId=#{stnId},
+            </if>
+            <if test="temperature!=null">
+                temperature=#{temperature},
+            </if>
+            <if test="ph!=null">
+                ph=#{ph},
+            </if>
+            <if test="dissolvedOxygen!=null">
+                dissolvedOxygen=#{dissolvedOxygen},
+            </if>
+            <if test="redox!=null">
+                redox=#{redox},
+            </if>
+            <if test="transparency!=null">
+                transparency=#{transparency},
+            </if>
+            <if test="conductivity!=null">
+                conductivity=#{conductivity},
+            </if>
+            <if test="turbidity!=null">
+                turbidity=#{turbidity},
+            </if>
+            <if test="NH3!=null">
+                NH3=#{NH3},
+            </if>
+            <if test="collectionTime!=null">
+                collectionTime=#{collectionTime},
+            </if>
+            <if test="instockTime!=null">
+                instockTime=#{instockTime},
+            </if>
+            <if test="state!=null">
+                state=#{state},
+            </if>
+            <if test="picOrVideo!=null">
+                picOrVideo=#{picOrVideo},
+            </if>
+            <if test="FilePath!=null">
+                FilePath=#{FilePath},
+            </if>
+
+            <if test="salinity!=null">
+                salinity=#{salinity},
+            </if>
+            <if test="tds!=null">
+                tds=#{tds},
+            </if>
+            <if test="density!=null">
+                density=#{density},
+            </if>
+            <if test="doSaturation!=null">
+                doSaturation=#{doSaturation},
+            </if>
+            <if test="tss!=null">
+                tss=#{tss},
+            </if>
+            <if test="chlorophylA!=null">
+                chlorophylA=#{chlorophylA},
+            </if>
+            <if test="phycocyanobilin!=null">
+                phycocyanobilin=#{phycocyanobilin},
+            </if>
+            <if test="hatchOpen!=null">
+                hatchOpen=#{hatchOpen},
+            </if>
+            <if test="waterPenetration!=null">
+                waterPenetration=#{waterPenetration},
+            </if>
+            <if test="voltage!=null">
+                voltage=#{voltage},
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <!-- 通过ID删除 WeatherWave表里的气象、波浪记录 -->
+    <delete id="deleteWeatherWave" parameterType="map">
+        DELETE FROM weatherwave WHERE id = #{id}
+    </delete>
+
+    <!--取得某个站点的最新days条实时气象、波浪数据-->
+    <select id="lastWeatherWaveRecordsNum" parameterType="Map" resultType="com.hawksoft.platform.entity.WeatherWave">
+        SELECT id,${type} as returnDateValue,collectionTime
+        FROM weatherwave
+        WHERE
+        stnId = #{stnId}
+       order by collectionTime DESC
+       limit #{days}
+    </select>
+    <!--取得某个站点的最新days条实时气象数据-->
+    <select id="lastWeatherRecordsNum" parameterType="Map" resultType="com.hawksoft.platform.entity.Weather">
+        SELECT id,${type} as returnDateValue,collectionTime
+         FROM weatherwave
+        WHERE
+        stnId = #{stnId}
+        order by collectionTime DESC
+        limit #{days}
+    </select>
+    <!--取得某个站点的最新days条实时波浪数据-->
+    <select id="lastWaveRecordsNum" parameterType="Map" resultType="com.hawksoft.platform.entity.Wave">
+        SELECT id,${type} as returnDateValue,collectionTime
+        FROM weatherwave
+        WHERE
+        stnId = #{stnId}
+        order by collectionTime DESC
+        limit #{days}
+    </select>
+    <!--取得一段时间内某个站点具体指标的气象、波浪信息-->
+    <select id="queryWeatherWaveByType" parameterType="Map" resultType="com.hawksoft.platform.entity.WeatherWave">
+        SELECT id,${type} as returnDateValue,collectionTime
+        FROM weatherwave
+        WHERE
+        stnId = #{stnId}
+        and collectionTime >= #{startTime}
+        and collectionTime <![CDATA[ <= ]]> #{endTime}
+    </select>
+</mapper>

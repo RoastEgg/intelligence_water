@@ -130,4 +130,11 @@ public interface WaterDao {
      * @return 水位预警信息
      */
     public WaterEarlyWarn getWaterWarn(@Param("stnId") int stnId, @Param("type") int type);
+
+    /**
+     * 查询某站点是否有水位信息
+     * @param stnId
+     * @return 记录条数
+     */
+    public int queryStationInfo(int stnId);
 }

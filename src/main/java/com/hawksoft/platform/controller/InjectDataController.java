@@ -30,24 +30,37 @@ public class InjectDataController {
     @Autowired
     private WaterQualityService waterQualityService;
 
-    @RequestMapping(value = "",method = RequestMethod.GET)
+    private int stnId = 1;
+    private double minSpeed = 0.11,maxSpeed = 0.87;
+    private double minFlow = 100,maxFlow =722;
+    private double avgSpeed [] = new double[7];
+    private double avgFlow [] = new double [7];//flow表需要的数据
+
+    private double camSpeed [][] = new double[7][5];//speedflow表需要的数据，5个相机测出来的流速
+
+    //waterQuality表需要的数据：
+    private double temper,minTemper = 2.401,maxTemper = 11.675;        //温度值
+    private double ph,minPh = 3.879,maxPh = 8.551;                 //PH值
+    private double dissolvedOxygen,minDissolvedOxygen = 4.105,maxDissolvedOxygen = 15.489;    //溶解氧值
+
+    // 和DB对比之后，觉得此处需确认
+    private double redox,minRedox = 103.923,maxRedox = 412.66;               //氧化还原值  ***
+
+    private double conductivity,minConductivity = 0.381,maxConductivity = 0.9;
+    private double turbidity,minTurbidity = 4.28,maxTurbidity = 243.035;
+    private double salinity,minSalinity = 0.184,maxSalinity = 0.43;
+    private double tds,minTds = 0.255,maxTds = 0.603;
+    private double density,minDensity = 500.046,maxDensity = 1000.319;
+    private double doSaturation,minDoSaturation = 35.129,maxDoSaturation = 138.515;
+    private double tss,minTss = 0.024,maxTss = 0.972;
+    private double chlorophylA,minChlorophylA = -0.744,maxChlorophylA = 124.168;
+    private double phycocyanobilin,minPhycocyanobilin = 9.295,maxPhycocyanobilin = 113.817;
+    private double voltage,minVoltage = 11.85,maxVoltage = 15.892;
+
+
+    @RequestMapping(value = "/flowAndSpeedFlow",method = RequestMethod.GET)
     @ResponseBody
-    public boolean Inject(){
-        int stnId = 1;
-        double minSpeed = 0.0,maxSpeed = 0.87;
-        double minFlow = 100,maxFlow =722;//此处真是数据的可信度存疑，有大量的100以下数据
-        double avgSpeed [] = new double[7];
-        double avgFlow [] = new double [7];//flow表需要的数据
-
-        double camSpeed [] = new double[5];//speedflow表需要的数据，5个相机测出来的流速
-
-        //waterQuality表需要的数据：
-        double temper,minTemper = 2.401,maxTemper = 11.675;        //温度值
-        double ph,minPh = 3.879,maxPh = 8.551;                 //PH值
-        double dissolvedOxygen,minDissolvedOxygen = 4.105,maxDissolvedOxygen = 15.489;    //溶解氧值,
-        // 和DB对比之后，觉得此处需确认
-        double redox,minRedox = 103.923,maxRedox = 412.66;               //氧化还原值  ***
-
+    public boolean InjectFlowAndSpeedFlow(){
 
         int time [] = {0,3,5,7,9,13,17};
 
@@ -57,7 +70,6 @@ public class InjectDataController {
                     continue;
                 }
                 for (int j=0;j<7;j++) {
-                    //流速这里有一个0的问题，是不该加进来还是像真实数据那样加进来，此处暂时采用后者
                     avgSpeed[j] = getRandom(maxSpeed, minSpeed);
                     avgFlow[j] = getRandom(maxFlow, minFlow);
                 }
@@ -76,48 +88,89 @@ public class InjectDataController {
                 }
 
                 //注入speedflow数据：
-                for (int j=0;j<5;j++) {
-                    camSpeed[j] = getRandom(maxSpeed, minSpeed);
+                for (int j=0;j<7;j++){//每天7个时间段
+                    for (int cam=0;cam<5;cam++) {//每个时间段5个相机的数据
+                        camSpeed[j][cam] = getRandom(maxSpeed, minSpeed);
+                    }
+                    SpeedFlow speedFlow = new SpeedFlow();
+                    speedFlow.setStnId(stnId);
+                    speedFlow.setWaterSpeed1(camSpeed[j][0]);
+                    speedFlow.setWaterSpeed2(camSpeed[j][1]);
+                    speedFlow.setWaterSpeed3(camSpeed[j][2]);
+                    speedFlow.setWaterSpeed4(camSpeed[j][3]);
+                    speedFlow.setWaterSpeed5(camSpeed[j][4]);
+
+                    String sTime = "2018-0"+month+"-"+i+" "+time[j]+":00:00";//如："2018-02-5 3:00:00"
+                    sTime = DateUtil.parseDate(DateUtil.parseString(sTime));//如："2018-02-05 03:00:00"
+                    speedFlow.setCollectionTime(sTime);
+                    speedFlow.setInstockTime(sTime);
+                    speedFlowService.saveSpeedFlow(speedFlow);
+
                 }
-                SpeedFlow speedFlow = new SpeedFlow();
-                speedFlow.setStnId(stnId);
-                speedFlow.setWaterSpeed1(camSpeed[0]);
-                speedFlow.setWaterSpeed2(camSpeed[1]);
-                speedFlow.setWaterSpeed3(camSpeed[2]);
-                speedFlow.setWaterSpeed4(camSpeed[3]);
-                speedFlow.setWaterSpeed5(camSpeed[4]);
 
-                String sTime = "2018-0"+month+"-"+i+" "+"00:00:00";//取当日0点，如："2018-02-5 00:00:00"
-                sTime = DateUtil.parseDate(DateUtil.parseString(sTime));//如："2018-02-05 00:00:00"
-                speedFlow.setCollectionTime(sTime);
-                speedFlow.setInstockTime(sTime);
-                speedFlowService.saveSpeedFlow(speedFlow);
 
-                for (int j=0;j<24;j++){
-                    temper = getRandom(maxTemper, minTemper);
-                    ph = getRandom(maxPh, minPh);
-                    dissolvedOxygen = getRandom(maxDissolvedOxygen, minDissolvedOxygen);
-                    redox = getRandom(maxRedox, minRedox);
-
-                    WaterQuality waterQuality = new WaterQuality();
-                    waterQuality.setStnId(stnId);
-                    waterQuality.setTemperature(temper+"℃");  //此处存疑，是否加℃符号
-                    waterQuality.setPh(ph);
-                    waterQuality.setDissolvedOxygen(dissolvedOxygen);
-                    waterQuality.setRedox(redox);
-                    String wqTime = "2018-0"+month+"-"+i+" "+j+":00:00";//如："2018-02-5 3:00:00"
-                    wqTime = DateUtil.parseDate(DateUtil.parseString(wqTime));//如："2018-02-05 00:00:00"
-                    waterQuality.setCollectionTime(wqTime);
-                    waterQuality.setInstockTime(wqTime);
-                    waterQualityService.saveWaterQuality(waterQuality);
-                }
             }
         }
         return true;
 
     }
 
-    public double getRandom(double min, double max){
+    @RequestMapping(value = "/waterQuality",method = RequestMethod.GET)
+    @ResponseBody
+    public boolean InjectWaterQuality(){
+
+        for (int id=0;id<2;id++){//循环2次，分别生成id=1和id=7的数据
+
+            for (int month=1;month<=3;month++) {  //月
+                for (int i = 1; i <= 31; i++) {        //天
+                    if ((month == 2 && i > 28)) {
+                        continue;
+                    }
+                    for (int j=0;j<24;j++){
+                        temper = getRandom(maxTemper, minTemper);
+                        ph = getRandom(maxPh, minPh);
+                        dissolvedOxygen = getRandom(maxDissolvedOxygen, minDissolvedOxygen);
+                        redox = getRandom(maxRedox, minRedox);
+                        conductivity = getRandom(maxConductivity,minConductivity);
+                        turbidity = getRandom(maxTurbidity,minTurbidity);
+                        salinity = getRandom(maxSalinity,minSalinity);
+                        tds = getRandom(maxTds,minTds);
+                        density =getRandom(maxDensity,minDensity);
+                        doSaturation = getRandom(maxDoSaturation,minDoSaturation);
+                        tss = getRandom(maxTss,minTss);
+                        chlorophylA = getRandom(maxChlorophylA,minChlorophylA);
+                        phycocyanobilin = getRandom(maxPhycocyanobilin,minPhycocyanobilin);
+                        voltage = getRandom(maxVoltage,minVoltage);
+
+                        String wqTime = "2018-0"+month+"-"+i+" "+j+":00:00";//如："2018-02-5 3:00:00"
+                        wqTime = DateUtil.parseDate(DateUtil.parseString(wqTime));//如："2018-02-05 00:00:00"
+
+                        if (id == 0){
+                            WaterQuality waterQuality =
+                                    new WaterQuality(1,temper+"℃",ph,dissolvedOxygen,redox,0.0,conductivity,
+                                            turbidity,0.0,wqTime,wqTime,"1","v","",salinity,tds,
+                                            density,doSaturation,tss,chlorophylA,phycocyanobilin,0.0,0.0,voltage);
+                            waterQualityService.saveWaterQuality(waterQuality);
+
+                        }
+                        else {
+                            WaterQuality waterQuality =
+                                    new WaterQuality(7,temper+"℃",ph,dissolvedOxygen,redox,0.0,conductivity,
+                                            turbidity,0.0,wqTime,wqTime,"1","v","",salinity,tds,
+                                            density,doSaturation,tss,chlorophylA,phycocyanobilin,0.0,0.0,voltage);
+                            waterQualityService.saveWaterQuality(waterQuality);
+
+                        }
+
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public double getRandom(double max, double min){
         double answer = Math.random()*(max - min) + min;
         DecimalFormat df = new DecimalFormat("0.000");
         answer = Double.parseDouble(df.format(answer));

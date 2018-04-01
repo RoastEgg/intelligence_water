@@ -16,4 +16,9 @@ public class UnmannedBoatServiceImpl implements UnmannedBoatService{
     public int saveUnmannedBoat(UnmannedBoat unmannedBoat) {
         return unmannedBoatDao.saveUnmannedBoat(unmannedBoat);
     }
+
+    @Override
+    public int queryStationInfo(int stnId) {
+        return unmannedBoatDao.queryStationInfo(stnId);
+    }
 }

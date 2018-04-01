@@ -250,31 +250,69 @@
 
     <!--获取最新的流量值和时间，并且根据这个时间到水位表里获取最近的水位
 -->
+    <!--<select id="queryLastFlowAndWater" parameterType="int" resultType="Map">-->
+        <!--SELECT flow.stnId,flow.avgFlow,water.waterLevel,flow.collectionTime-->
+        <!--FROM flow,water-->
+        <!--WHERE-->
+          <!--flow.collectionTime =-->
+          <!--(-->
+          <!--SELECT MAX(collectionTime)-->
+          <!--FROM flow-->
+          <!--WHERE stnId = #{stnId}-->
+          <!--)-->
+        <!--and water.c_time = (-->
+        <!--SELECT MAX(c_time)-->
+        <!--FROM water-->
+        <!--WHERE stnId = #{stnId}-->
+        <!--AND c_time <![CDATA[ <= ]]> flow.collectionTime-->
+        <!--)-->
+    <!--</select>-->
+
     <select id="queryLastFlowAndWater" parameterType="int" resultType="Map">
         SELECT flow.stnId,flow.avgFlow,water.waterLevel,flow.collectionTime
         FROM flow,water
         WHERE
-          flow.collectionTime =
-          (
-          SELECT MAX(collectionTime)
-          FROM flow
-          WHERE stnId = #{stnId}
-          )
-        and flow.stnId = #{stnId}
-        and water.stnId = #{stnId}
-        and flow.collectionTime = water.c_time
+        flow.collectionTime =
+        (
+        SELECT MAX(collectionTime)
+        FROM flow
+        WHERE stnId = #{stnId}
+        )
+        and water.c_time = (
+        SELECT MAX(c_time)
+        FROM water
+        WHERE stnId = #{stnId}
+        )
     </select>
 
+    <!--根据站点Id和时间，获取相应的流量和水位信息-->
     <select id="queryFlowBystnIdAndTime" parameterType="Map" resultType="Map">
         SELECT flow.avgFlow,water.waterLevel,flow.collectionTime,speedflow.FilePath1,
         speedflow.FilePath2,speedflow.FilePath3,speedflow.FilePath4,speedflow.FilePath5
         FROM water,flow,speedflow
         WHERE
-          flow.collectionTime <![CDATA[ <= ]]> #{time}
-        and flow.stnId = #{stnId}
-        and water.stnId = #{stnId}
+          flow.collectionTime =
+          (
+          SELECT MAX(collectionTime)
+          FROM flow
+          WHERE flow.collectionTime <![CDATA[ <= ]]> #{time}
+          AND flow.stnId = #{stnId}
+          )
         and speedflow.stnId  = #{stnId}
-        and flow.collectionTime = water.c_time
+        and water.c_time =
+        (
+        SELECT MAX(c_time)
+        FROM water
+        WHERE c_time <![CDATA[ <= ]]> #{time}
+        AND stnId = #{stnId}
+        )
         and flow.collectionTime = speedflow.collectionTime
+    </select>
+
+    <!--查询某站点是否有流量信息-->
+    <select id="queryStationInfo" parameterType="int" resultType="int">
+        SELECT  count(*)
+        FROM flow
+        WHERE stnId = #{stnId}
     </select>
 </mapper>

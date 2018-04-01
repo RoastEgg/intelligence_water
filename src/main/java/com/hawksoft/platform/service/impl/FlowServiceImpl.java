@@ -131,4 +131,11 @@ public class FlowServiceImpl implements FlowService {
     public List<Map<String , Object>> queryFlowBystnIdAndTime(Map<String ,Object> map) {
         return flowDao.queryFlowBystnIdAndTime(map);
     }
+
+    @Override
+    public int queryStationInfo(int stnId) {
+        return flowDao.queryStationInfo(stnId);
+    }
+
+
 }

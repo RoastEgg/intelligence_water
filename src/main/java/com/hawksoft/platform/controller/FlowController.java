@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.Path;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -171,12 +172,22 @@ public class FlowController {
     public String queryLastFlowAndWater(@PathVariable("stnId") int stnId){
         List<Map<String ,Object>> infos = flowService.queryLastFlowAndWater(stnId);
         System.out.println("返回记录条数："+infos.size());
+        for (Map<String , Object> map:infos){
+            Object obj = map.get("collectionTime");
+            map.put("collectionTime",DateUtil.parseDate((Date) obj));
+        }
         if (infos.size()>0){
             return JSON.toJSON(infos).toString();
         }
         return "{\"msg\" : \"暂时无法获取最新的流量和水位数据\"}";
     }
 
+    /**
+     * 根据站点Id和时间，获取这个时间点的流量，水位和5个相机的5个视频url
+     * @param stnId
+     * @param time
+     * @return
+     */
     @RequestMapping(value = "/historyFlowVideo/{stnId}/{time}",method = RequestMethod.GET)
     @ResponseBody
     public String queryFlowBystnIdAndTime(@PathVariable("stnId") int stnId,
@@ -185,13 +196,23 @@ public class FlowController {
         params.put("time",time);
         List<Map<String ,Object>> infos = flowService.queryFlowBystnIdAndTime(params);
         System.out.println("返回记录条数："+infos.size());
+        for (Map<String , Object> map:infos){
+            Object obj = map.get("collectionTime");
+            map.put("collectionTime",DateUtil.parseDate((Date) obj));
+        }
         if (infos.size()>0){
             return JSON.toJSON(infos).toString();
         }
-        return "{\"msg\" : \"暂时无法获取最新的流量和水位数据\"}";
+        return "{\"msg\" : \"暂时无法获取指定时间最新的流量和水位数据\"}";
 
     }
 
+    /**
+     * 根据站点id和视频类型查询视频URL
+     * @param stnId
+     * @param type
+     * @return
+     */
     @RequestMapping(value = "/video/{stnId}/{type}",method = RequestMethod.GET)
     @ResponseBody
     public String getVideo(@PathVariable("stnId") int stnId,
@@ -208,6 +229,11 @@ public class FlowController {
     }
 
 
+    /**
+     * 通过站点ID查询断面图
+     * @param stnId
+     * @return
+     */
     @RequestMapping(value = "/sectionMap/{stnId}",method = RequestMethod.GET)
     @ResponseBody
     public String getSectionMap(@PathVariable("stnId") int stnId){

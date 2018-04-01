@@ -140,4 +140,9 @@ public class WaterQualityServiceImpl implements WaterQualityService {
         return WaterQualityDao.queryWaterQualityFromUB(map);
     }
 
+    @Override
+    public int queryStationInfo(int stnId) {
+        return WaterQualityDao.queryStationInfo(stnId);
+    }
+
 }

@@ -11,12 +11,12 @@ public class WaterQuality implements Serializable {
     private int id;
     private Integer stnId;              //站点编号  ***
     private String temperature;        //温度值     *** random的时候多参照几个区间
-    private Double ph;                  //PH值      ***
+    private Double ph;                  //PH值      *** 3.879~8.551
     private Double dissolvedOxygen;    //溶解氧值    ***
     private Double redox;               //氧化还原值  ***
     private Double transparency;       //透明度值
-    private Double conductivity;       //电导率
-    private Double turbidity;          //浊度值
+    private Double conductivity;       //电导率 0.381~0.9
+    private Double turbidity;          //浊度值 4.28~243.035
     private Double NH3;                 //氨氮值
     private String collectionTime;     //采集时间    ***
     private String instockTime;        //入库时间    ***
@@ -25,16 +25,16 @@ public class WaterQuality implements Serializable {
     private String FilePath;           //文件地址
     //private WaterStation waterStation; //站点对象
     //2018-03-14 增加竺山湾站点，所以增加以下字段
-    private Double salinity;       //盐度
-    private Double tds;       //矿化度
-    private Double density;       //水密度',
-    private Double doSaturation;       //溶解氧饱和度
-    private Double tss;       //总悬浮物
-    private Double chlorophylA;       //叶绿素a
-    private Double phycocyanobilin ;       //藻蓝素
-    private Double hatchOpen;       //舱盖开
-    private Double waterPenetration;       //仓体进水
-    private Double voltage ;       //电压
+    private Double salinity;       //盐度 0.184~0.43
+    private Double tds;       //矿化度 0.255~0.603
+    private Double density;       //水密度', 500.046~1000.319
+    private Double doSaturation;       //溶解氧饱和度 35.129~138.515
+    private Double tss;       //总悬浮物 0.024~0.972
+    private Double chlorophylA;       //叶绿素a -0.744~124.168
+    private Double phycocyanobilin ;       //藻蓝素 9.295~113.817
+    private Double hatchOpen;       //舱盖开 0
+    private Double waterPenetration;       //仓体进水 0
+    private Double voltage ;       //电压 11.85~15.892
 
     private String returnDateValue;//注意，本参数是专门给前端返回固定字段名称使用，方便前端，数据库中不存在此字段
     public String getReturnDateValue() {
@@ -45,9 +45,37 @@ public class WaterQuality implements Serializable {
         this.returnDateValue = returnDateValue;
     }
 
+    public WaterQuality() {
+    }
 
+    public WaterQuality(Integer stnId, String temperature, Double ph, Double dissolvedOxygen, Double redox, Double transparency, Double conductivity, Double turbidity, Double NH3, String collectionTime, String instockTime, String state, String picOrVideo, String filePath, Double salinity, Double tds, Double density, Double doSaturation, Double tss, Double chlorophylA, Double phycocyanobilin, Double hatchOpen, Double waterPenetration, Double voltage) {
+        this.stnId = stnId;
+        this.temperature = temperature;
+        this.ph = ph;
+        this.dissolvedOxygen = dissolvedOxygen;
+        this.redox = redox;
+        this.transparency = transparency;//数据库默认0
+        this.conductivity = conductivity;
+        this.turbidity = turbidity;
+        this.NH3 = NH3;//数据库默认0
+        this.collectionTime = collectionTime;
+        this.instockTime = instockTime;
+        this.state = state;//数据库默认“1”
+        this.picOrVideo = picOrVideo;//数据库默认“v”
+        FilePath = filePath;//数据库未生成该字段
+        this.salinity = salinity;
+        this.tds = tds;
+        this.density = density;
+        this.doSaturation = doSaturation;
+        this.tss = tss;
+        this.chlorophylA = chlorophylA;
+        this.phycocyanobilin = phycocyanobilin;
+        this.hatchOpen = hatchOpen;
+        this.waterPenetration = waterPenetration;
+        this.voltage = voltage;
+    }
 
-/**
+    /**
     public WaterQuality() {
         this.stnId = 0;
         this.temperature = "";

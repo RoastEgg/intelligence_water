@@ -5,8 +5,9 @@
 <mapper namespace="com.hawksoft.platform.dao.WaterQualityDao">
     <!--获取水质站点的最新数据-->
     <select id="queryLastWaterQualityByStnId" parameterType="int" resultType="com.hawksoft.platform.entity.WaterQuality">
-        SELECT id,stnId,temperature,ph,dissolvedOxygen,redox,transparency,conductivity,
-                turbidity,NH3,collectionTime,instockTime,state,picOrVideo,FilePath
+        SELECT id, stnId, temperature, conductivity, salinity, tds, density, ph, dissolvedOxygen, doSaturation, redox,
+         turbidity, tss, chlorophylA, phycocyanobilin, hatchOpen, waterPenetration, voltage, transparency, NH3,
+         collectionTime, instockTime, state, picOrVideo, FilePath
           FROM waterquality
             WHERE
             collectionTime =
@@ -20,8 +21,7 @@
 
     <!--取得某个指标的实时水质-->
     <select id="queryLastWaterQualityByStnIdType" parameterType="Map" resultType="com.hawksoft.platform.entity.WaterQuality">
-        SELECT id,stnId,temperature,ph,dissolvedOxygen,redox,transparency,conductivity,
-                turbidity,NH3,collectionTime
+        SELECT id,${type} as returnDateValue,collectionTime
         FROM waterquality
         WHERE
         stnId = #{stnId}
@@ -32,13 +32,14 @@
 
     <!--获取站点的上周水质数据-->
     <select id="queryLastWeekWaterQuality" parameterType="Map" resultType="com.hawksoft.platform.entity.WaterQuality">
-        SELECT stnId,temperature,ph,dissolvedOxygen,redox,transparency,conductivity,
-                turbidity,NH3,collectionTime,instockTime,state,picOrVideo,FilePath
-          FROM waterquality
-          WHERE
-            stnId = #{stnId}
-            and collectionTime >= #{startTime}
-            and collectionTime <![CDATA[ <= ]]> #{endTime}
+        SELECT id, stnId, temperature, conductivity, salinity, tds, density, ph, dissolvedOxygen, doSaturation, redox,
+        turbidity, tss, chlorophylA, phycocyanobilin, hatchOpen, waterPenetration, voltage, transparency, NH3,
+        collectionTime, instockTime, state, picOrVideo, FilePath
+        FROM waterquality
+        WHERE
+        stnId = #{stnId}
+        and collectionTime >= #{startTime}
+        and collectionTime <![CDATA[ <= ]]> #{endTime}
     </select>
     <sql id="key">
         <!--去掉最后一个,号  -->
@@ -87,6 +88,36 @@
             </if>
             <if test="FilePath!=null">
                 FilePath,
+            </if>
+            <if test="salinity!=null">
+                salinity,
+            </if>
+            <if test="tds!=null">
+                tds,
+            </if>
+            <if test="density!=null">
+                density,
+            </if>
+            <if test="doSaturation!=null">
+                doSaturation,
+            </if>
+            <if test="tss!=null">
+                tss,
+            </if>
+            <if test="chlorophylA!=null">
+                chlorophylA,
+            </if>
+            <if test="phycocyanobilin!=null">
+                phycocyanobilin,
+            </if>
+            <if test="hatchOpen!=null">
+                hatchOpen,
+            </if>
+            <if test="waterPenetration!=null">
+                waterPenetration,
+            </if>
+            <if test="voltage!=null">
+                voltage,
             </if>
         </trim>
     </sql>
@@ -138,10 +169,40 @@
             <if test="FilePath!=null">
                 #{FilePath},
             </if>
+            <if test="salinity!=null">
+                #{salinity},
+            </if>
+            <if test="tds!=null">
+                #{tds},
+            </if>
+            <if test="density!=null">
+                #{density},
+            </if>
+            <if test="doSaturation!=null">
+                #{doSaturation},
+            </if>
+            <if test="tss!=null">
+                #{tss},
+            </if>
+            <if test="chlorophylA!=null">
+                #{chlorophylA},
+            </if>
+            <if test="phycocyanobilin!=null">
+                #{phycocyanobilin},
+            </if>
+            <if test="hatchOpen!=null">
+                #{hatchOpen},
+            </if>
+            <if test="waterPenetration!=null">
+                #{waterPenetration},
+            </if>
+            <if test="voltage!=null">
+                #{voltage},
+            </if>
         </trim>
     </sql>
     <insert id="saveWaterQuality" parameterType="com.hawksoft.platform.entity.WaterQuality" useGeneratedKeys="true" keyProperty="id">
-           insert into waterquality(<include refid="key"/>) VALUES (<include refid="value"/>)
+        insert into waterquality(<include refid="key"/>) VALUES (<include refid="value"/>)
     </insert>
 
     <!-- set 标签会自动判断哪个是最后的一个字段，会自动去掉最后一个，号 -->
@@ -190,6 +251,37 @@
             <if test="FilePath!=null">
                 FilePath=#{FilePath},
             </if>
+
+            <if test="salinity!=null">
+                salinity=#{salinity},
+            </if>
+            <if test="tds!=null">
+                tds=#{tds},
+            </if>
+            <if test="density!=null">
+                density=#{density},
+            </if>
+            <if test="doSaturation!=null">
+                doSaturation=#{doSaturation},
+            </if>
+            <if test="tss!=null">
+                tss=#{tss},
+            </if>
+            <if test="chlorophylA!=null">
+                chlorophylA=#{chlorophylA},
+            </if>
+            <if test="phycocyanobilin!=null">
+                phycocyanobilin=#{phycocyanobilin},
+            </if>
+            <if test="hatchOpen!=null">
+                hatchOpen=#{hatchOpen},
+            </if>
+            <if test="waterPenetration!=null">
+                waterPenetration=#{waterPenetration},
+            </if>
+            <if test="voltage!=null">
+                voltage=#{voltage},
+            </if>
         </set>
         WHERE id=#{id}
     </update>
@@ -201,14 +293,13 @@
 
     <!--取得某个指标的实时水质-->
     <select id="lastWaterQualityRecordsNum" parameterType="Map" resultType="com.hawksoft.platform.entity.WaterQuality">
-        SELECT *
+        SELECT id,${type} as returnDateValue,collectionTime
         FROM waterquality
         WHERE
         stnId = #{stnId}
-       order by collectionTime DESC
-       limit #{days}
+        order by collectionTime DESC
+        limit #{days}
     </select>
-
     <!--根据站点Id和时间，从无人船中获取水质数据-->
     <select id = "queryWaterQualityFromUB" parameterType="Map" resultType="Map">
         SELECT  ub.stnId,ub.longitude,ub.latitude,wq.temperature,wq.ph,wq.dissolvedOxygen,wq.redox
@@ -219,4 +310,12 @@
           AND ub.time = #{time}
 
     </select>
+
+    <!--查询某站点是否有水质信息-->
+    <select id="queryStationInfo" parameterType="int" resultType="int">
+        SELECT  count(*)
+        FROM waterquality
+        WHERE stnId = #{stnId}
+    </select>
+
 </mapper>

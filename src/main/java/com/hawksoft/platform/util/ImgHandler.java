@@ -3,7 +3,6 @@ package com.hawksoft.platform.util;
 import com.hawksoft.platform.constant.WaterConstant;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
-import sun.util.resources.LocaleData;
 
 import java.io.File;
 import java.io.FileInputStream;

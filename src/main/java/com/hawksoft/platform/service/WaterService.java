@@ -32,4 +32,10 @@ public interface WaterService {
      * @return 返回历史水位的数据
      */
     public List<Water> lastWaterRecordsNum(Map<String, Object> map);
+    /**
+     * 查询某站点是否有水位信息
+     * @param stnId
+     * @return 记录条数
+     */
+    public int queryStationInfo(int stnId);
 }

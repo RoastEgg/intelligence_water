@@ -152,4 +152,19 @@ public class FloatingMatterController {
         }
         return "resources/common/images/11.jpg";
     }
+
+    /**
+     * 根据站点Id查询最新的漂浮物图片
+     * @param stnId
+     * @return
+     */
+    @RequestMapping(value = "/queryLastRecord/{stnId}",method = RequestMethod.GET)
+    @ResponseBody
+    public String queryLastRecord(@PathVariable("stnId") int stnId){
+        List<FloatingMatter> records = floatingMatterService.queryLastRecord(stnId);
+        if (records.size()>0){
+            return JSON.toJSON(records).toString();
+        }
+        return "{\"msg\" : \"暂时没有或无法获取漂浮物图片\"}";
+    }
 }

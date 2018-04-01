@@ -109,4 +109,9 @@ public class WaterServiceImpl implements WaterService {
     {
         return waterDao.lastWaterRecordsNum(map);
     }
+
+    @Override
+    public int queryStationInfo(int stnId) {
+        return waterDao.queryStationInfo(stnId);
+    }
 }

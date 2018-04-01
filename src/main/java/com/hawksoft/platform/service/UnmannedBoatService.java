@@ -9,4 +9,11 @@ public interface UnmannedBoatService {
      * @param unmannedBoat
      */
     public int saveUnmannedBoat(UnmannedBoat unmannedBoat);
+
+    /**
+     * 查询某站点是否有无人船信息
+     * @param stnId
+     * @return 记录条数
+     */
+    public int queryStationInfo(int stnId);
 }

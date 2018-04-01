@@ -145,7 +145,12 @@
         insert into UnmannedBoat(<include refid="key"/>) VALUES (<include refid="value"/>)
     </insert>
 
-
+    <!--查询某站点是否有无人船信息-->
+    <select id="queryStationInfo" parameterType="int" resultType="int">
+        SELECT  count(*)
+        FROM unmannedboat
+        WHERE stnId = #{stnId}
+    </select>
 
 
 </mapper>

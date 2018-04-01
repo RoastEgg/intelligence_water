@@ -51,4 +51,18 @@ public interface FloatingMatterDao {
      */
     public int updateFloatingMatter(FloatingMatter floatingMatter);
 
+    /**
+     * 根据站点Id查询最新的漂浮物图片
+     * @param stnId
+     * @return
+     */
+    public List<FloatingMatter> queryLastRecord(int stnId);
+
+    /**
+     * 查询某站点是否有漂浮物信息
+     * @param stnId
+     * @return 记录条数
+     */
+    public int queryStationInfo(int stnId);
+
 }

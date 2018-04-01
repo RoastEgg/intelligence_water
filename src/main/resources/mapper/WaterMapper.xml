@@ -194,5 +194,11 @@
         </if>
     </select>
 
+    <!--查询某站点是否有水位信息-->
+    <select id="queryStationInfo" parameterType="int" resultType="int">
+        SELECT  count(*)
+        FROM water
+        WHERE stnId = #{stnId}
+    </select>
 
 </mapper>

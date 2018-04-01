@@ -41,4 +41,15 @@ public class FloatingMatterServiceImpl implements FloatingMatterService {
     public int saveFloatingMatter(FloatingMatter floatingMatter) {
         return floatingMatterDao.saveFloatingMatter(floatingMatter);
     }
+
+    @Override
+    public List<FloatingMatter> queryLastRecord(int stnId) {
+        return floatingMatterDao.queryLastRecord(stnId);
+    }
+
+    @Override
+    public int queryStationInfo(int stnId) {
+        return floatingMatterDao.queryStationInfo(stnId);
+    }
+
 }

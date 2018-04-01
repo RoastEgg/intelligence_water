@@ -259,11 +259,23 @@ public class WaterQualityController {
 
     }
 
+    /**
+     * 从无人船中获取水质信息
+     * @param stnId
+     * @param time
+     * @return 站点Id，GPS经纬度，水质参数（温度、PH、溶氧、氧化还原）
+     */
     @RequestMapping(value = "/UnmannedBoat/{time}/{stnId}",method = RequestMethod.GET)
     @ResponseBody()
-    public String getWaterQualityFromUB(@PathVariable("stnId") int sthId,
+    public String getWaterQualityFromUB(@PathVariable("stnId") int stnId,
                                         @PathVariable("time") String time){
-
-        return null;
+        params.put("stnId",stnId);
+        params.put("time",time);
+        List<Map<String ,Object>> infos = waterQualityService.queryWaterQualityFromUB(params);
+        System.out.println("返回记录条数："+infos.size());
+        if (infos.size()>0){
+            return JSON.toJSON(infos).toString();
+        }
+        return "{\"msg\" : \"暂时无法获取指定时间最新的流量和水位数据\"}";
     }
 }

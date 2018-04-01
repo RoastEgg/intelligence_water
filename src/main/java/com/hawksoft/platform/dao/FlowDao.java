@@ -102,4 +102,11 @@ public interface FlowDao {
      * @return
      */
     public List<Map<String , Object>> queryFlowBystnIdAndTime(Map<String ,Object> map);
+
+    /**
+     * 查询某站点是否有流量信息
+     * @param stnId
+     * @return 记录条数
+     */
+    public int queryStationInfo(int stnId);
 }
