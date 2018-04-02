@@ -12,5 +12,10 @@
         id = #{stnId}
     </select>
 
+    <!--获取所有站点基本信息-->
+    <select id="queryStationBaseInfo" resultType="com.hawksoft.platform.entity.WaterStation">
+        select id,stnName,x,y
+        from waterstation
+    </select>
 
 </mapper>

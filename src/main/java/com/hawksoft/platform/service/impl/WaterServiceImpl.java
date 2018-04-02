@@ -1,14 +1,18 @@
 package com.hawksoft.platform.service.impl;
 
 import com.hawksoft.platform.dao.WaterDao;
+import com.hawksoft.platform.dao.WaterStationDao;
 import com.hawksoft.platform.entity.CameraArgs;
 import com.hawksoft.platform.entity.Water;
 import com.hawksoft.platform.entity.WaterEarlyWarn;
 import com.hawksoft.platform.entity.WaterStation;
 import com.hawksoft.platform.service.WaterService;
+import com.hawksoft.platform.service.WaterStationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +21,8 @@ public class WaterServiceImpl implements WaterService {
 
     @Autowired
     private WaterDao waterDao;
+    @Autowired
+    private WaterStationDao waterStationDao;
 
     @Override
     public List<Water> findLastWater() {
@@ -113,5 +119,45 @@ public class WaterServiceImpl implements WaterService {
     @Override
     public int queryStationInfo(int stnId) {
         return waterDao.queryStationInfo(stnId);
+    }
+
+    @Override
+    public Map<String, Object> queryLastAndHis(Map<String, Object> map) {
+        Map<String,Object> answerMap = new HashMap<>();
+        Map<String,Object> picMap = new HashMap<>();
+
+        int stnId = (Integer) map.get("stnId");
+//        String startTime = (String) map.get("startTime");
+//        String endTime = (String) map.get("endTime");
+        BigDecimal maxLevel ,minLevel;
+
+        Water water = queryLastWaterByStnId(stnId);//当前水位信息
+        List<Water> waterList = hisWater(map);//历史水位信息
+        maxLevel = waterList.get(0).getWaterLevel();
+        minLevel = waterList.get(0).getWaterLevel();
+        for (Water w:waterList){
+            if (w.getWaterLevel().compareTo(maxLevel) == 1) {maxLevel = w.getWaterLevel();}
+            if (w.getWaterLevel().compareTo(minLevel) == -1){minLevel = w.getWaterLevel();}
+
+            Map<String,Object> hisPicMap = new HashMap<>();
+            hisPicMap.put("hisUrl",w.getPicPath());
+            hisPicMap.put("hisDate",w.getC_time());
+            answerMap.put("hisPic",hisPicMap);//历史图片，包括url和date
+        }
+
+        List<WaterStation> waterStationList = waterStationDao.queryStationBaseInfo();
+        for (WaterStation ws:waterStationList){
+            if (ws.getId() == stnId){
+                answerMap.put("name",ws.getStnName());//站点名称
+            }
+        }
+        answerMap.put("lastWaterLevel",water.getWaterLevel());//当前水位
+        picMap.put("lastUrl",water.getPicPath());
+        picMap.put("lastDate",water.getC_time());
+        answerMap.put("lastPic",picMap);//当前图片，包括URL和date
+        answerMap.put("maxLevel",maxLevel);//历史水位最大值
+        answerMap.put("minLevel",minLevel);//历史水位最小值
+
+        return answerMap;
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @Controller
 @RequestMapping("/waterStation")
@@ -24,5 +25,15 @@ public class WaterStationController {
     public String queryStationInfo(@PathVariable ("stnId") int stnId) {
 
         return JSON.toJSON(waterStationService.queryStationInfo(stnId)).toString();
+    }
+
+    /**
+     * 查询所有站点信息,比上面的方法多出了站点Id、name、x、y
+     * @return
+     */
+    @RequestMapping(value = "/allStationInfo",method = RequestMethod.GET)
+    @ResponseBody
+    public String queryAllStationInfo(){
+        return JSON.toJSON(waterStationService.queryAllStationInfo()).toString();
     }
 }

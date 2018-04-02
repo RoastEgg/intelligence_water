@@ -30,6 +30,20 @@ public class DateUtil {
         return date;
     }
 
+    /**
+     * 判断date是否和今天是同一天
+     * @param date
+     * @return
+     */
+    public static boolean judgeDate(Date date){
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        if (sdf.format(date).equals(sdf.format(new Date()))){
+
+            return true;
+        }
+        return false;
+    }
+
     public static String parseDate(Date date){
         String date1 = sdf.format(date);
         return date1;

@@ -143,6 +143,29 @@ public class WaterController {
     }
 
     /**
+     * 获取当前和历史的水位、图片信息
+     * @param stnId
+     * @param startTime
+     * @param endTime
+     * @return 站点名称、当前水位、历史水位最小值、历史水位最大值、当前图片，历史图片List
+     * @throws Exception
+     */
+    @RequestMapping(value = "/historicalWaterLevel/{stnId}/{startTime}/{endTime}",method = RequestMethod.GET)
+    public String historicalWaterLevel(@PathVariable("stnId") int stnId,
+                                       @PathVariable("startTime") String startTime,
+                                       @PathVariable("endTime") String endTime) throws  Exception{
+        params.put("startTime", getCorrectTime(startTime));
+        params.put("endTime", getCorrectTime(endTime));
+        params.put("stnId", stnId);
+
+        Map<String,Object> map = waterService.queryLastAndHis(params);
+        if (map.size() == 0){
+            return "{\"msg\": \"对不起,需要的数据不存在\"}";
+        }
+        return JSON.toJSON(map).toString();
+    }
+
+    /**
      * 根据某一时刻，获取这个时刻的水位图片
      * @param currTime
      * @param stnId

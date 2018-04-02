@@ -38,4 +38,11 @@ public interface WaterService {
      * @return 记录条数
      */
     public int queryStationInfo(int stnId);
+
+    /**
+     * 查询当前和历史的水位相关信息
+     * @param map
+     * @return
+     */
+    public Map<String ,Object> queryLastAndHis(Map<String ,Object> map);
 }

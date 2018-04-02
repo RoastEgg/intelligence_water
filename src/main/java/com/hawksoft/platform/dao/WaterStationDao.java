@@ -16,4 +16,9 @@ public interface WaterStationDao {
      */
     public List<Map<String ,Object>> querySectionMap(int stnId);
 
+    /**
+     * 获取所有站点基本信息
+     * @return
+     */
+    public List<WaterStation> queryStationBaseInfo();
 }

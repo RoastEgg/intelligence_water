@@ -6,6 +6,7 @@ import com.hawksoft.platform.entity.WaterQuality;
 import com.hawksoft.platform.service.FlowService;
 import com.hawksoft.platform.service.SpeedFlowService;
 import com.hawksoft.platform.service.WaterQualityService;
+import com.hawksoft.platform.util.DataUtil;
 import com.hawksoft.platform.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -70,8 +71,8 @@ public class InjectDataController {
                     continue;
                 }
                 for (int j=0;j<7;j++) {
-                    avgSpeed[j] = getRandom(maxSpeed, minSpeed);
-                    avgFlow[j] = getRandom(maxFlow, minFlow);
+                    avgSpeed[j] = DataUtil.getRandom(maxSpeed, minSpeed);
+                    avgFlow[j] = DataUtil.getRandom(maxFlow, minFlow);
                 }
                 Arrays.sort(avgSpeed);//升序排序(内置)
                 Arrays.sort(avgFlow);
@@ -90,7 +91,7 @@ public class InjectDataController {
                 //注入speedflow数据：
                 for (int j=0;j<7;j++){//每天7个时间段
                     for (int cam=0;cam<5;cam++) {//每个时间段5个相机的数据
-                        camSpeed[j][cam] = getRandom(maxSpeed, minSpeed);
+                        camSpeed[j][cam] = DataUtil.getRandom(maxSpeed, minSpeed);
                     }
                     SpeedFlow speedFlow = new SpeedFlow();
                     speedFlow.setStnId(stnId);
@@ -99,6 +100,11 @@ public class InjectDataController {
                     speedFlow.setWaterSpeed3(camSpeed[j][2]);
                     speedFlow.setWaterSpeed4(camSpeed[j][3]);
                     speedFlow.setWaterSpeed5(camSpeed[j][4]);
+                    speedFlow.setFilePath1("");
+                    speedFlow.setFilePath2("");
+                    speedFlow.setFilePath3("");
+                    speedFlow.setFilePath4("");
+                    speedFlow.setFilePath5("");
 
                     String sTime = "2018-0"+month+"-"+i+" "+time[j]+":00:00";//如："2018-02-5 3:00:00"
                     sTime = DateUtil.parseDate(DateUtil.parseString(sTime));//如："2018-02-05 03:00:00"
@@ -127,24 +133,22 @@ public class InjectDataController {
                         continue;
                     }
                     for (int j=0;j<24;j++){
-                        temper = getRandom(maxTemper, minTemper);
-                        ph = getRandom(maxPh, minPh);
-                        dissolvedOxygen = getRandom(maxDissolvedOxygen, minDissolvedOxygen);
-                        redox = getRandom(maxRedox, minRedox);
-                        conductivity = getRandom(maxConductivity,minConductivity);
-                        turbidity = getRandom(maxTurbidity,minTurbidity);
-                        salinity = getRandom(maxSalinity,minSalinity);
-                        tds = getRandom(maxTds,minTds);
-                        density =getRandom(maxDensity,minDensity);
-                        doSaturation = getRandom(maxDoSaturation,minDoSaturation);
-                        tss = getRandom(maxTss,minTss);
-                        chlorophylA = getRandom(maxChlorophylA,minChlorophylA);
-                        phycocyanobilin = getRandom(maxPhycocyanobilin,minPhycocyanobilin);
-                        voltage = getRandom(maxVoltage,minVoltage);
+                        temper = DataUtil.getRandom(maxTemper, minTemper);
+                        ph = DataUtil.getRandom(maxPh, minPh);
+                        dissolvedOxygen = DataUtil.getRandom(maxDissolvedOxygen, minDissolvedOxygen);
+                        redox = DataUtil.getRandom(maxRedox, minRedox);
+                        conductivity = DataUtil.getRandom(maxConductivity,minConductivity);
+                        turbidity = DataUtil.getRandom(maxTurbidity,minTurbidity);
+                        salinity = DataUtil.getRandom(maxSalinity,minSalinity);
+                        tds = DataUtil.getRandom(maxTds,minTds);
+                        density =DataUtil.getRandom(maxDensity,minDensity);
+                        doSaturation = DataUtil.getRandom(maxDoSaturation,minDoSaturation);
+                        tss = DataUtil.getRandom(maxTss,minTss);
+                        chlorophylA = DataUtil.getRandom(maxChlorophylA,minChlorophylA);
+                        phycocyanobilin = DataUtil.getRandom(maxPhycocyanobilin,minPhycocyanobilin);
+                        voltage = DataUtil.getRandom(maxVoltage,minVoltage);
 
-                        String wqTime = "2018-0"+month+"-"+i+" "+j+":00:00";//如："2018-02-5 3:00:00"
-                        wqTime = DateUtil.parseDate(DateUtil.parseString(wqTime));//如："2018-02-05 00:00:00"
-
+                        String wqTime = getWqTime(month,i,j);
                         if (id == 0){
                             WaterQuality waterQuality =
                                     new WaterQuality(1,temper+"℃",ph,dissolvedOxygen,redox,0.0,conductivity,
@@ -170,10 +174,9 @@ public class InjectDataController {
         return true;
     }
 
-    public double getRandom(double max, double min){
-        double answer = Math.random()*(max - min) + min;
-        DecimalFormat df = new DecimalFormat("0.000");
-        answer = Double.parseDouble(df.format(answer));
-        return answer;
+    public String getWqTime(int month,int day,int hour){
+        String time = "2018-0"+month+"-"+day+" "+hour+":00:00";//如："2018-02-5 3:00:00"
+        time = DateUtil.parseDate(DateUtil.parseString(time));//如："2018-02-05 00:00:00"
+        return time;
     }
 }

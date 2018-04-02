@@ -5,6 +5,8 @@ import com.hawksoft.platform.entity.Flow;
 import com.hawksoft.platform.entity.SpeedFlow;
 import com.hawksoft.platform.service.FlowService;
 import com.hawksoft.platform.service.SpeedFlowService;
+import com.hawksoft.platform.util.DataUtil;
+import com.hawksoft.platform.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -158,5 +160,61 @@ public class SpeedFlowServiceImpl implements SpeedFlowService {
     {
         return speedFlowDao.getRecentRecords(map);
     }
+
+    @Override
+    public boolean generateData() {
+        int stnId = 1;
+        double rangeSpeed = 0.1;
+        double minSpeed = 0.11,maxSpeed = 0.87;//speedflow表需要的数据
+        double waterSpeed1,waterSpeed2,waterSpeed3,waterSpeed4,waterSpeed5;
+        SpeedFlow todaySpeedFlow = new SpeedFlow();
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("days", stnId);
+        map.put("stnId",stnId);
+        List<SpeedFlow> speedFlowList = getRecentRecords(map);//利用已有的实现，取最新一条记录
+        if (speedFlowList.size()>0){
+            todaySpeedFlow = speedFlowList.get(0);
+        }
+        waterSpeed1 = todaySpeedFlow.getWaterSpeed1();
+        waterSpeed2 = todaySpeedFlow.getWaterSpeed2();
+        waterSpeed3 = todaySpeedFlow.getWaterSpeed3();
+        waterSpeed4 = todaySpeedFlow.getWaterSpeed4();
+        waterSpeed5 = todaySpeedFlow.getWaterSpeed5();
+        //如果已有当天的数据，那么就做扩大型随机，否则就重新随机
+        if (DateUtil.judgeDate(DateUtil.parseString(todaySpeedFlow.getCollectionTime()))){
+            waterSpeed1 = DataUtil.expendData(waterSpeed1,maxSpeed,minSpeed,rangeSpeed);
+            waterSpeed2 = DataUtil.expendData(waterSpeed2,maxSpeed,minSpeed,rangeSpeed);
+            waterSpeed3 = DataUtil.expendData(waterSpeed3,maxSpeed,minSpeed,rangeSpeed);
+            waterSpeed4 = DataUtil.expendData(waterSpeed4,maxSpeed,minSpeed,rangeSpeed);
+            waterSpeed5 = DataUtil.expendData(waterSpeed5,maxSpeed,minSpeed,rangeSpeed);
+        }
+        else {
+            waterSpeed1 = DataUtil.getRandom(maxSpeed,minSpeed);
+            waterSpeed2 = DataUtil.getRandom(maxSpeed,minSpeed);
+            waterSpeed3 = DataUtil.getRandom(maxSpeed,minSpeed);
+            waterSpeed4 = DataUtil.getRandom(maxSpeed,minSpeed);
+            waterSpeed5 = DataUtil.getRandom(maxSpeed,minSpeed);
+        }
+
+        SpeedFlow speedFlow = new SpeedFlow();
+        speedFlow.setStnId(stnId);
+        speedFlow.setWaterSpeed1(waterSpeed1);
+        speedFlow.setWaterSpeed2(waterSpeed2);
+        speedFlow.setWaterSpeed3(waterSpeed3);
+        speedFlow.setWaterSpeed4(waterSpeed4);
+        speedFlow.setWaterSpeed5(waterSpeed5);
+        speedFlow.setFilePath1("");
+        speedFlow.setFilePath2("");
+        speedFlow.setFilePath3("");
+        speedFlow.setFilePath4("");
+        speedFlow.setFilePath5("");
+
+        String sTime = DateUtil.parseDate(new Date());//获取当前时间
+        speedFlow.setCollectionTime(sTime);
+        speedFlow.setInstockTime(sTime);
+        return true;
+    }
+
 
 }

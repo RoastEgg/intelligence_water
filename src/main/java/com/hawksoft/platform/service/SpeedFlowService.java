@@ -74,5 +74,10 @@ public interface SpeedFlowService {
      */
     public List<SpeedFlow> getRecentRecords(Map<String, Object> map);
 
+    /**
+     * schedule定时生成数据
+     * @return
+     */
+    public boolean generateData();
 
 }

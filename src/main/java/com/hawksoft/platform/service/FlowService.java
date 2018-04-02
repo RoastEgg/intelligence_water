@@ -104,4 +104,6 @@ public interface FlowService {
      */
     public int queryStationInfo(int stnId);
 
+    public boolean generateData();
+
 }

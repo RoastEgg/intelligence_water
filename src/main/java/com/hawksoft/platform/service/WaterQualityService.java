@@ -123,4 +123,10 @@ public interface WaterQualityService {
      * @return 记录条数
      */
     public int queryStationInfo(int stnId);
+
+    /**
+     * schedule生成数据
+     * @return
+     */
+    public boolean generateData();
 }

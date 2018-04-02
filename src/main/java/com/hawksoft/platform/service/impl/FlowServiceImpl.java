@@ -3,9 +3,14 @@ package com.hawksoft.platform.service.impl;
 import com.hawksoft.platform.dao.FlowDao;
 import com.hawksoft.platform.entity.*;
 import com.hawksoft.platform.service.FlowService;
+import com.hawksoft.platform.util.DataUtil;
+import com.hawksoft.platform.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.xml.crypto.Data;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -135,6 +140,38 @@ public class FlowServiceImpl implements FlowService {
     @Override
     public int queryStationInfo(int stnId) {
         return flowDao.queryStationInfo(stnId);
+    }
+
+    @Override
+    public boolean generateData() {
+        int stnId = 1;
+        double minSpeed = 0.11,maxSpeed = 0.87;
+        double minFlow = 100,maxFlow =722;
+        double rangeSpeed = 0.1,rangeFlow = 100;
+        double avgSpeed ,avgFlow;//flow表需要的数据
+        Flow flow = new Flow();
+        Map<String,Object> map = new HashMap<>();
+        map.put("date",DateUtil.parseDate(new Date()));
+        Flow todayFlow = queryFlowByDate(map);//去数据库里查询今天的最新一条的流量数据
+        avgSpeed = todayFlow.getAvgSpeed();
+        avgFlow = todayFlow.getAvgFlow();
+        if (avgSpeed>0 || avgFlow>0){//若查到数据，则在这条记录中的字段基础上做扩大型随机
+            avgSpeed = DataUtil.expendData(avgSpeed,maxSpeed,minSpeed,rangeSpeed);
+            avgFlow = DataUtil.expendData(avgFlow,maxFlow,minFlow,rangeFlow);
+        }
+        else {
+            avgSpeed = DataUtil.getRandom(maxSpeed,minSpeed);//若没查到数据，则重新做随机
+            avgFlow = DataUtil.getRandom(maxFlow,minFlow);
+        }
+
+        flow.setStnId(stnId);
+        flow.setAvgSpeed(avgSpeed);
+        flow.setAvgFlow(avgFlow);
+        String cTime = DateUtil.parseDate(new Date());//当前时间
+        flow.setCollectionTime(cTime);
+        saveFlow(flow);
+
+        return true;
     }
 
 

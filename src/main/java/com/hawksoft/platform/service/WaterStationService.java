@@ -1,5 +1,7 @@
 package com.hawksoft.platform.service;
 
+import com.hawksoft.platform.entity.WaterStation;
+
 import java.util.List;
 import java.util.Map;
 
@@ -17,5 +19,11 @@ public interface WaterStationService {
      * @param stnId
      * @return
      */
-    public Map<String,Boolean> queryStationInfo(int stnId);
+    public Map<String,Object> queryStationInfo(int stnId);
+
+    /**
+     * 查询所有站点信息
+     * @return
+     */
+    public List<Map<String,Object>> queryAllStationInfo();
 }
