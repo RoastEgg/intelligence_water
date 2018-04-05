@@ -19,4 +19,6 @@ public interface UnmannedBoatDao {
      * @return 记录条数
      */
     public int queryStationInfo(int stnId);
+
+
 }

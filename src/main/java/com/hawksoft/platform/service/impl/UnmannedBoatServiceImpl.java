@@ -21,4 +21,5 @@ public class UnmannedBoatServiceImpl implements UnmannedBoatService{
     public int queryStationInfo(int stnId) {
         return unmannedBoatDao.queryStationInfo(stnId);
     }
+
 }

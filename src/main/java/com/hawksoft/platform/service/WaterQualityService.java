@@ -129,4 +129,11 @@ public interface WaterQualityService {
      * @return
      */
     public boolean generateData();
+
+    /**
+     * 为了给生成历史数据和schedule复用，将生成数据方法独立出来
+     * @param stnId
+     * @return
+     */
+    public WaterQuality generateWQ(int stnId);
 }

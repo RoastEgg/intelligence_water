@@ -31,14 +31,14 @@ public class DateUtil {
     }
 
     /**
-     * 判断date是否和今天是同一天
-     * @param date
+     * 判断date1是否和date2是同一天
+     * @param date1
+     * @param date2
      * @return
      */
-    public static boolean judgeDate(Date date){
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-        if (sdf.format(date).equals(sdf.format(new Date()))){
-
+    public static boolean judgeDate(Date date1,Date date2){
+        SimpleDateFormat sdfD=new SimpleDateFormat("yyyy-MM-dd");
+        if (sdfD.format(date1).equals(sdfD.format(date2))){
             return true;
         }
         return false;

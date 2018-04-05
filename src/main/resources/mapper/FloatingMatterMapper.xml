@@ -56,11 +56,13 @@
         (#{stnId},#{collectionTime},#{camIndex})
     </insert>
 
-    <!--根据站点Id查询最新的漂浮物图片-->
+    <!--根据站点Id查询最新3张漂浮物图片-->
     <select id="queryLastRecord" parameterType="int" resultType="com.hawksoft.platform.entity.FloatingMatter">
         SELECT  stnId,filePathResult
         FROM floatingmatter
         WHERE stnId = #{stnId}
+        order by collectionTime DESC
+        LIMIT 3
     </select>
 
     <!--查询某站点是否有漂浮物信息-->

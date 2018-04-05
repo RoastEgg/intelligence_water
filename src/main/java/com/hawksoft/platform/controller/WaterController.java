@@ -1,6 +1,7 @@
 package com.hawksoft.platform.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.hawksoft.platform.VO.Water_queryLastAndHisVO;
 import com.hawksoft.platform.entity.CameraArgs;
 import com.hawksoft.platform.entity.Water;
 import com.hawksoft.platform.entity.WaterEarlyWarn;
@@ -151,18 +152,17 @@ public class WaterController {
      * @throws Exception
      */
     @RequestMapping(value = "/historicalWaterLevel/{stnId}/{startTime}/{endTime}",method = RequestMethod.GET)
-    public String historicalWaterLevel(@PathVariable("stnId") int stnId,
+    @ResponseBody
+    public Water_queryLastAndHisVO historicalWaterLevel(@PathVariable("stnId") int stnId,
                                        @PathVariable("startTime") String startTime,
                                        @PathVariable("endTime") String endTime) throws  Exception{
         params.put("startTime", getCorrectTime(startTime));
         params.put("endTime", getCorrectTime(endTime));
         params.put("stnId", stnId);
 
-        Map<String,Object> map = waterService.queryLastAndHis(params);
-        if (map.size() == 0){
-            return "{\"msg\": \"对不起,需要的数据不存在\"}";
-        }
-        return JSON.toJSON(map).toString();
+        Water_queryLastAndHisVO w_qVO = waterService.queryLastAndHis(params);
+        //System.out.println("pic info list:"+JSON.toJSON(w_qVO.getPicList()).toString());
+        return  w_qVO;
     }
 
     /**

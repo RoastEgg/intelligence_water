@@ -20,9 +20,9 @@ public class GenerateDataSchedule {
     @Autowired
     public WaterQualityService waterQualityService;
 
-    @Scheduled(cron = "0 0 0,3,5,7,9,13,17 ** ?")//每天的0点、3点、5点、7点、9点、13点、17点生成流量数据
+    @Scheduled(cron = "0 0 0,3,5,7,9,13,17 * * ?")//每天的0点、3点、5点、7点、9点、13点、17点生成流量数据
     void generateFlowAndSpeedFlow(){
-        if (DateUtil.parseDate(new Date()).compareTo("2018-04-03 00:00:00")>0){
+        if (DateUtil.parseDate(new Date()).compareTo("2018-04-05 00:00:00") == 1){
             flowService.generateData();
             speedFlowService.generateData();
         }
@@ -30,7 +30,7 @@ public class GenerateDataSchedule {
 
     @Scheduled(fixedRate = 300000)//每隔5分钟生成水质数据
     void generateWaterQuality(){
-        if (DateUtil.parseDate(new Date()).compareTo("2018-04-03 00:00:00")>0) {
+        if (DateUtil.parseDate(new Date()).compareTo("2018-04-05 00:00:00") == 1) {
             waterQualityService.generateData();
         }
     }

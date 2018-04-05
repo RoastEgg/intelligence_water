@@ -1,5 +1,6 @@
 package com.hawksoft.platform.service;
 
+import com.hawksoft.platform.VO.Water_queryLastAndHisVO;
 import com.hawksoft.platform.entity.CameraArgs;
 import com.hawksoft.platform.entity.Water;
 import com.hawksoft.platform.entity.WaterEarlyWarn;
@@ -44,5 +45,5 @@ public interface WaterService {
      * @param map
      * @return
      */
-    public Map<String ,Object> queryLastAndHis(Map<String ,Object> map);
+    public Water_queryLastAndHisVO queryLastAndHis(Map<String ,Object> map);
 }

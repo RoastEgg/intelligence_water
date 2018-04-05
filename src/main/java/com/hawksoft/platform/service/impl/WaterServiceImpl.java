@@ -1,5 +1,7 @@
 package com.hawksoft.platform.service.impl;
 
+import com.hawksoft.platform.VO.Water_PictureVO;
+import com.hawksoft.platform.VO.Water_queryLastAndHisVO;
 import com.hawksoft.platform.dao.WaterDao;
 import com.hawksoft.platform.dao.WaterStationDao;
 import com.hawksoft.platform.entity.CameraArgs;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -122,42 +125,57 @@ public class WaterServiceImpl implements WaterService {
     }
 
     @Override
-    public Map<String, Object> queryLastAndHis(Map<String, Object> map) {
-        Map<String,Object> answerMap = new HashMap<>();
-        Map<String,Object> picMap = new HashMap<>();
+    public Water_queryLastAndHisVO queryLastAndHis(Map<String, Object> map) {
+        Water_queryLastAndHisVO w_qVO = new Water_queryLastAndHisVO();
+        Water_PictureVO lastPic = new Water_PictureVO();
+        List<Water_PictureVO> picList = new ArrayList<>();
 
         int stnId = (Integer) map.get("stnId");
-//        String startTime = (String) map.get("startTime");
-//        String endTime = (String) map.get("endTime");
-        BigDecimal maxLevel ,minLevel;
+        double maxLevel = -1 ,minLevel = 9999;
 
         Water water = queryLastWaterByStnId(stnId);//当前水位信息
-        List<Water> waterList = hisWater(map);//历史水位信息
-        maxLevel = waterList.get(0).getWaterLevel();
-        minLevel = waterList.get(0).getWaterLevel();
-        for (Water w:waterList){
-            if (w.getWaterLevel().compareTo(maxLevel) == 1) {maxLevel = w.getWaterLevel();}
-            if (w.getWaterLevel().compareTo(minLevel) == -1){minLevel = w.getWaterLevel();}
+        lastPic.setUrl(water.getPicPath());
+        lastPic.setDate(water.getC_time());
+        picList.add(lastPic);//当前图片URL和日期
 
-            Map<String,Object> hisPicMap = new HashMap<>();
-            hisPicMap.put("hisUrl",w.getPicPath());
-            hisPicMap.put("hisDate",w.getC_time());
-            answerMap.put("hisPic",hisPicMap);//历史图片，包括url和date
+        //System.out.println("last info:"+lastPic.getUrl()+"  "+lastPic.getDate());
+
+
+        List<Water> waterList = hisWater(map);//历史水位信息
+        if (waterList.size()>0){
+            maxLevel = waterList.get(0).getWaterLevel().doubleValue();
+            minLevel = waterList.get(0).getWaterLevel().doubleValue();
         }
+        int count =0;
+        for (Water w:waterList){
+            double temp  = w.getWaterLevel().doubleValue();
+            if (temp>maxLevel) {maxLevel = temp;}
+            if (temp<minLevel) {minLevel = temp;}
+            Water_PictureVO hisPic =  new Water_PictureVO();
+            if (count<3){
+                count++;
+                hisPic.setUrl(w.getPicPath());
+                hisPic.setDate(w.getC_time());
+                picList.add(hisPic);//历史图片，包括url和date，最多放3条历史图片
+            }
+        }
+        if (count<3){
+            for (int i=1;i<=3-count;i++){
+                picList.add(lastPic);//如果历史记录不够3条，则用最新记录补全到3条
+            }
+        }
+        w_qVO.setPicList(picList);
 
         List<WaterStation> waterStationList = waterStationDao.queryStationBaseInfo();
         for (WaterStation ws:waterStationList){
             if (ws.getId() == stnId){
-                answerMap.put("name",ws.getStnName());//站点名称
+                w_qVO.setStnName(ws.getStnName());//站点名称
             }
         }
-        answerMap.put("lastWaterLevel",water.getWaterLevel());//当前水位
-        picMap.put("lastUrl",water.getPicPath());
-        picMap.put("lastDate",water.getC_time());
-        answerMap.put("lastPic",picMap);//当前图片，包括URL和date
-        answerMap.put("maxLevel",maxLevel);//历史水位最大值
-        answerMap.put("minLevel",minLevel);//历史水位最小值
+        w_qVO.setLastWaterLevel(water.getWaterLevel().doubleValue());//当前水位
+        w_qVO.setMaxLevel(maxLevel);//历史水位最大值
+        w_qVO.setMaxLevel(minLevel);//历史水位最小值
 
-        return answerMap;
+        return w_qVO;
     }
 }

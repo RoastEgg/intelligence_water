@@ -26,53 +26,54 @@ public class SpeedFlowServiceImpl implements SpeedFlowService {
 
     /**
      * 通过站点ID查询实时流速流量数据（最新即最近一个时间的数据）
+     *
      * @return
      */
     @Override
-    public List<SpeedFlow> queryLastSpeedFlowByStdId(int stnId)
-    {
+    public List<SpeedFlow> queryLastSpeedFlowByStdId(int stnId) {
         return speedFlowDao.queryLastSpeedFlowByStdId(stnId);
     }
 
     /**
      * 通过站点ID和时间查询该站点这段时间内流速流量数据
+     *
      * @param map(stnId 站点编号,startTime 开始时间,endTime 结束时间)
      * @return 返回该站点这段时间内流速流量数据
      */
     @Override
-    public List<SpeedFlow> querySpeedFlowByStdIdTime(Map<String, Object> map)
-    {
+    public List<SpeedFlow> querySpeedFlowByStdIdTime(Map<String, Object> map) {
         return speedFlowDao.querySpeedFlowByStdIdTime(map);
     }
 
     /**
      * 通过站点ID和时间查询该站点这段时间内流速流量数据
+     *
      * @param map(stnId 站点编号,startTime 开始时间,endTime 结束时间,cameraNo 摄像机序号为1至5号)
      * @return 返回该站点这段时间内流速流量数据
      */
     @Override
-    public List<SpeedFlow> querySpeedFlowByStdIdTimeCamera(Map<String, Object> map)
-    {
+    public List<SpeedFlow> querySpeedFlowByStdIdTimeCamera(Map<String, Object> map) {
         return speedFlowDao.querySpeedFlowByStdIdTimeCamera(map);
     }
 
     /**
      * 查询这段时间内流速流量数据
+     *
      * @param map ，如果map有时间参数:startTime 开始时间， endTime 结束时间
      * @return
      */
     @Override
-    public List<SpeedFlow> queryAllSpeedFlowByTime(Map<String, Object> map){
+    public List<SpeedFlow> queryAllSpeedFlowByTime(Map<String, Object> map) {
         return speedFlowDao.queryAllSpeedFlowByTime(map);
     }
 
     /**
      * 保存流速流量信息
+     *
      * @param speedFlow
      */
     @Override
-    public int saveSpeedFlowAndFlow(SpeedFlow speedFlow)
-    {
+    public int saveSpeedFlowAndFlow(SpeedFlow speedFlow) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date instockTime = new Date();
         speedFlow.setInstockTime(sdf.format(instockTime));
@@ -87,8 +88,8 @@ public class SpeedFlowServiceImpl implements SpeedFlowService {
                 + speedFlow.getWaterFlow4() + speedFlow.getWaterFlow5();
         Double avgFlow = timeFlow / 5;
         flow.setAvgFlow(avgFlow);
-        Map<String,Object> map = new HashMap<>();
-        map.put("date",speedFlow.getInstockTime());
+        Map<String, Object> map = new HashMap<>();
+        map.put("date", speedFlow.getInstockTime());
         Flow thisDay = flowService.queryFlowByDate(map);
         Double dayFlow = thisDay.getDayFlow();
         Flow thisWeek = flowService.queryFlowByWeek(map);
@@ -105,7 +106,7 @@ public class SpeedFlowServiceImpl implements SpeedFlowService {
         flow.setYearFlow(yearFlow + timeFlow);
         flow.setTotalFlow(totalFlow + timeFlow);
         Integer state = (new Integer(speedFlow.getState1()) + new Integer(speedFlow.getState2()) + new Integer(speedFlow.getState3())
-                + new Integer(speedFlow.getState4()) +  new Integer(speedFlow.getState5()) );
+                + new Integer(speedFlow.getState4()) + new Integer(speedFlow.getState5()));
         flow.setState(state == 5 ? "1" : "0");
         flowService.saveFlow(flow);
         return speedFlowDao.saveSpeedFlow(speedFlow);
@@ -113,89 +114,102 @@ public class SpeedFlowServiceImpl implements SpeedFlowService {
 
     /**
      * 保存流速信息
+     *
      * @param speedFlow
      */
     @Override
-    public int saveSpeedFlow(SpeedFlow speedFlow){
+    public int saveSpeedFlow(SpeedFlow speedFlow) {
         return speedFlowDao.saveSpeedFlow(speedFlow);
     }
 
     /**
      * 更新流速流量信息
+     *
      * @param speedFlow
      */
     @Override
-    public int updateSpeedFlow(SpeedFlow speedFlow)
-    {
+    public int updateSpeedFlow(SpeedFlow speedFlow) {
         return speedFlowDao.updateSpeedFlow(speedFlow);
     }
 
     /**
      * 删除流速流量信息
+     *
      * @param speedFlow
      */
     @Override
-    public int deleteSpeedFlow(SpeedFlow speedFlow)
-    {
+    public int deleteSpeedFlow(SpeedFlow speedFlow) {
         return speedFlowDao.deleteSpeedFlow(speedFlow);
     }
 
 
     /**
      * 通过站点ID和采集时间取得唯一一条获取站点的流速流量记录
+     *
      * @param map
      */
     @Override
-    public SpeedFlow findSpeedFlowByStdIdTime(Map<String, Object> map)
-    {
+    public SpeedFlow findSpeedFlowByStdIdTime(Map<String, Object> map) {
         return speedFlowDao.findSpeedFlowByStdIdTime(map);
     }
 
     /**
      * 取最新的DAYS条流速流量数据
+     *
      * @param map
      */
     @Override
-    public List<SpeedFlow> getRecentRecords(Map<String, Object> map)
-    {
+    public List<SpeedFlow> getRecentRecords(Map<String, Object> map) {
         return speedFlowDao.getRecentRecords(map);
     }
 
     @Override
     public boolean generateData() {
-        int stnId = 1;
-        double rangeSpeed = 0.1;
-        double minSpeed = 0.11,maxSpeed = 0.87;//speedflow表需要的数据
-        double waterSpeed1,waterSpeed2,waterSpeed3,waterSpeed4,waterSpeed5;
-        SpeedFlow todaySpeedFlow = new SpeedFlow();
+        SpeedFlow speedFlow = generateSpeedFlow(new Date());
+        saveSpeedFlow(speedFlow);
+        return true;
+    }
 
-        Map<String,Object> map = new HashMap<>();
+    @Override
+    public SpeedFlow generateSpeedFlow(Date date) {
+        int stnId = 1;
+        double minSpeed = 0.11, maxSpeed = 0.87;//speedflow表需要的数据
+        double waterSpeed1, waterSpeed2, waterSpeed3, waterSpeed4, waterSpeed5;
+        SpeedFlow lastSpeedFlow = new SpeedFlow();
+
+        Map<String, Object> map = new HashMap<>();
         map.put("days", stnId);
-        map.put("stnId",stnId);
+        map.put("stnId", stnId);
         List<SpeedFlow> speedFlowList = getRecentRecords(map);//利用已有的实现，取最新一条记录
-        if (speedFlowList.size()>0){
-            todaySpeedFlow = speedFlowList.get(0);
+        if (speedFlowList.size() > 0) {//有数据的情况下，利用已有数据调整,否则就直接做随机
+            lastSpeedFlow = speedFlowList.get(0);
+            waterSpeed1 = lastSpeedFlow.getWaterSpeed1();
+            waterSpeed2 = lastSpeedFlow.getWaterSpeed2();
+            waterSpeed3 = lastSpeedFlow.getWaterSpeed3();
+            waterSpeed4 = lastSpeedFlow.getWaterSpeed4();
+            waterSpeed5 = lastSpeedFlow.getWaterSpeed5();
+            //如果最新记录是当天的，那么就做扩大型随机，否则就做调整型随机
+            if (DateUtil.judgeDate(DateUtil.parseString(lastSpeedFlow.getCollectionTime()),date)) {
+                waterSpeed1 = DataUtil.expendData(waterSpeed1, maxSpeed, minSpeed);
+                waterSpeed2 = DataUtil.expendData(waterSpeed2, maxSpeed, minSpeed);
+                waterSpeed3 = DataUtil.expendData(waterSpeed3, maxSpeed, minSpeed);
+                waterSpeed4 = DataUtil.expendData(waterSpeed4, maxSpeed, minSpeed);
+                waterSpeed5 = DataUtil.expendData(waterSpeed5, maxSpeed, minSpeed);
+            } else {
+                waterSpeed1 = DataUtil.adjustData(waterSpeed1, maxSpeed, minSpeed);
+                waterSpeed2 = DataUtil.adjustData(waterSpeed2, maxSpeed, minSpeed);
+                waterSpeed3 = DataUtil.adjustData(waterSpeed3, maxSpeed, minSpeed);
+                waterSpeed4 = DataUtil.adjustData(waterSpeed4, maxSpeed, minSpeed);
+                waterSpeed5 = DataUtil.adjustData(waterSpeed5, maxSpeed, minSpeed);
+            }
+        } else {
+            waterSpeed1 = DataUtil.getRandom(maxSpeed, minSpeed);
+            waterSpeed2 = DataUtil.getRandom(maxSpeed, minSpeed);
+            waterSpeed3 = DataUtil.getRandom(maxSpeed, minSpeed);
+            waterSpeed4 = DataUtil.getRandom(maxSpeed, minSpeed);
+            waterSpeed5 = DataUtil.getRandom(maxSpeed, minSpeed);
         }
-        waterSpeed1 = todaySpeedFlow.getWaterSpeed1();
-        waterSpeed2 = todaySpeedFlow.getWaterSpeed2();
-        waterSpeed3 = todaySpeedFlow.getWaterSpeed3();
-        waterSpeed4 = todaySpeedFlow.getWaterSpeed4();
-        waterSpeed5 = todaySpeedFlow.getWaterSpeed5();
-        //如果已有当天的数据，那么就做扩大型随机，否则就重新随机
-        if (DateUtil.judgeDate(DateUtil.parseString(todaySpeedFlow.getCollectionTime()))){
-            waterSpeed1 = DataUtil.expendData(waterSpeed1,maxSpeed,minSpeed,rangeSpeed);
-            waterSpeed2 = DataUtil.expendData(waterSpeed2,maxSpeed,minSpeed,rangeSpeed);
-            waterSpeed3 = DataUtil.expendData(waterSpeed3,maxSpeed,minSpeed,rangeSpeed);
-            waterSpeed4 = DataUtil.expendData(waterSpeed4,maxSpeed,minSpeed,rangeSpeed);
-            waterSpeed5 = DataUtil.expendData(waterSpeed5,maxSpeed,minSpeed,rangeSpeed);
-        }
-        else {
-            waterSpeed1 = DataUtil.getRandom(maxSpeed,minSpeed);
-            waterSpeed2 = DataUtil.getRandom(maxSpeed,minSpeed);
-            waterSpeed3 = DataUtil.getRandom(maxSpeed,minSpeed);
-            waterSpeed4 = DataUtil.getRandom(maxSpeed,minSpeed);
-            waterSpeed5 = DataUtil.getRandom(maxSpeed,minSpeed);
-        }
+
 
         SpeedFlow speedFlow = new SpeedFlow();
         speedFlow.setStnId(stnId);
@@ -213,8 +227,7 @@ public class SpeedFlowServiceImpl implements SpeedFlowService {
         String sTime = DateUtil.parseDate(new Date());//获取当前时间
         speedFlow.setCollectionTime(sTime);
         speedFlow.setInstockTime(sTime);
-        return true;
+        return speedFlow;
     }
-
 
 }

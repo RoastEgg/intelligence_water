@@ -2,6 +2,7 @@ package com.hawksoft.platform.service;
 
 import com.hawksoft.platform.entity.SpeedFlow;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -79,5 +80,13 @@ public interface SpeedFlowService {
      * @return
      */
     public boolean generateData();
+
+    /**
+     * 为了给生成历史数据和schedule复用，将生成数据方法独立出来
+      * @param date
+     * @return
+     */
+    public SpeedFlow generateSpeedFlow(Date date);
+
 
 }

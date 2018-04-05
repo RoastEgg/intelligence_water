@@ -39,8 +39,8 @@ public class WaterStationServiceImpl implements WaterStationService {
         Boolean hasWaterQuality = waterQualityDao.queryStationInfo(stnId)>0?true:false;
         Boolean hasWaterFlow = flowDao.queryStationInfo(stnId)>0?true:false;
         Boolean hasFloatingMaterial = floatingMatterDao.queryStationInfo(stnId)>0?true:false;
-        //Boolean hasUnmannedShip = unmannedBoatDao.queryStationInfo(stnId)>0?true:false;
-        Boolean hasUnmannedShip = stnId==1?true:false;
+        Boolean hasUnmannedShip = unmannedBoatDao.queryStationInfo(stnId)>0?true:false;
+        //Boolean hasUnmannedShip = stnId==1?true:false;
 
         Map<String ,Object> map = new HashMap<>();
         map.put("hasWaterLevel",hasWaterLevel);
