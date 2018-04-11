@@ -14,7 +14,7 @@ public class WaterQuality implements Serializable {
     private Double ph;                  //PH值      *** 3.879~8.551
     private Double dissolvedOxygen;    //溶解氧值    ***
     private Double redox;               //氧化还原值  ***
-    private Double transparency;       //透明度值
+    private Double transparency;       //透明度值  ***
     private Double conductivity;       //电导率 0.381~0.9
     private Double turbidity;          //浊度值 4.28~243.035
     private Double NH3;                 //氨氮值

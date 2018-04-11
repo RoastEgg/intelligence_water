@@ -86,7 +86,7 @@ public class WaterQualityController {
         List<WaterQuality>  waterqualitys = waterQualityService.queryLastWeekWaterQuality(params);
         System.out.println("返回记录条数："+waterqualitys.size());
         if (waterqualitys.size()>0){
-            return JSON.toJSON(waterqualitys).toString();
+            return JSON.toJSONString(waterqualitys,SerializerFeature.WriteMapNullValue);
         }
         return "{\"msg\" : \"暂时无法获取该参数的水质数据\"}";
     }
@@ -262,20 +262,28 @@ public class WaterQualityController {
     /**
      * 从无人船中获取水质信息
      * @param stnId
-     * @param time
      * @return 站点Id，GPS经纬度，水质参数（温度、PH、溶氧、氧化还原）
      */
-    @RequestMapping(value = "/UnmannedBoat/{time}/{stnId}",method = RequestMethod.GET)
+    @RequestMapping(value = "/UnmannedBoat/{stnId}",method = RequestMethod.GET)
     @ResponseBody()
-    public String getWaterQualityFromUB(@PathVariable("stnId") int stnId,
-                                        @PathVariable("time") String time){
+    public String getWaterQualityFromUB(@PathVariable("stnId") int stnId){
         params.put("stnId",stnId);
-        params.put("time",time);
         List<Map<String ,Object>> infos = waterQualityService.queryWaterQualityFromUB(params);
         System.out.println("返回记录条数："+infos.size());
         if (infos.size()>0){
             return JSON.toJSON(infos).toString();
         }
         return "{\"msg\" : \"暂时无法获取指定时间最新的流量和水位数据\"}";
+    }
+
+    /**
+     * 采集数据
+     * @return
+     */
+    @RequestMapping(value = "/collectData",method = RequestMethod.GET)
+    @ResponseBody
+    public boolean collectData(){
+        boolean res = waterQualityService.generateData();
+        return res;
     }
 }

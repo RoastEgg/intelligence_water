@@ -1,5 +1,6 @@
 package com.hawksoft.platform.service;
 
+import com.hawksoft.platform.VO.SpeedFlowVO;
 import com.hawksoft.platform.entity.SpeedFlow;
 
 import java.util.Date;
@@ -12,7 +13,7 @@ public interface SpeedFlowService {
      * 通过站点ID查询实时流速流量数据（最新即最近一个时间的数据）
      * @return
      */
-    public List<SpeedFlow> queryLastSpeedFlowByStdId(int stnId);
+    public SpeedFlowVO queryLastSpeedFlowByStdId(int stnId);
 
     /**
      * 通过站点ID和时间查询该站点这段时间内流速流量数据
@@ -79,7 +80,7 @@ public interface SpeedFlowService {
      * schedule定时生成数据
      * @return
      */
-    public boolean generateData();
+    public int generateData();
 
     /**
      * 为了给生成历史数据和schedule复用，将生成数据方法独立出来

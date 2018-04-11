@@ -90,6 +90,7 @@ public class SocketOperate extends Thread {
 
                             case FLUX:
                             case WL:
+                            case FOR:
                             case OPACITY:
                                 LocalDateTime now = LocalDateTime.now();
                                 String filename = FilenameUtils.getBaseName(headerInfo.getFilename());
@@ -115,6 +116,7 @@ public class SocketOperate extends Thread {
                             case UB:
                                 byte[] contentUB = new byte[size];
                                 readData(din, contentUB, size);
+
                                 SocketSaveToDB.saveUB(headerInfo,
                                         new String(Arrays.copyOfRange(contentUB, 0, size)));
                                 break;
@@ -136,7 +138,7 @@ public class SocketOperate extends Thread {
 
     private int decodeHeader(DataInputStream din, int type) throws Exception {
         headerInfo.setType(type);
-
+        System.out.println("type: "+ type);
         int hd_size = 0;
         switch (SocketUtils.IWRtuMsgType.getName(type)) {
             case WQ:
@@ -151,12 +153,17 @@ public class SocketOperate extends Thread {
                 hd_size = SocketUtils.IWRtuMsgType.FLUX.getHeaderSize() - 4;
                 headerInfo.setMsgType(SocketUtils.IWRtuMsgType.FLUX);
                 break;
+            case FOR:
+                hd_size = SocketUtils.IWRtuMsgType.FOR.getHeaderSize() - 4;
+                headerInfo.setMsgType(SocketUtils.IWRtuMsgType.FOR);
+                break;
             case OPACITY:
                 hd_size = SocketUtils.IWRtuMsgType.OPACITY.getHeaderSize() - 4;
                 headerInfo.setMsgType(SocketUtils.IWRtuMsgType.OPACITY);
                 break;
             case UB:
                 hd_size = SocketUtils.IWRtuMsgType.UB.getHeaderSize()-4;
+                System.out.println("ub  head size:  "+hd_size);
                 headerInfo.setMsgType(SocketUtils.IWRtuMsgType.UB);
                 break;
 
@@ -179,6 +186,7 @@ public class SocketOperate extends Thread {
             case WL:
             case FLUX:
             case OPACITY:
+            case FOR://此处存疑
                 headerInfo.setCameraId(SocketUtils.getInteger(header, 4));
                 headerInfo.setValue(SocketUtils.getInteger(header, 8));
                 headerInfo.setFilename(new String(Arrays.copyOfRange(header, 12, 36), "UTF-8"));

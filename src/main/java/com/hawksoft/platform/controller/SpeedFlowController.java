@@ -1,6 +1,8 @@
 package com.hawksoft.platform.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.hawksoft.platform.VO.SpeedFlowVO;
 import com.hawksoft.platform.entity.SpeedFlow;
 import com.hawksoft.platform.service.SpeedFlowService;
 import com.hawksoft.platform.util.DateUtil;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.plaf.synth.SynthEditorPaneUI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,15 +40,17 @@ public class SpeedFlowController {
      */
     @RequestMapping(value = "/queryLastSpeedFlowByStdId/{stnId}", method = RequestMethod.GET)
     @ResponseBody
-    public String queryLastSpeedFlowByStdId(@PathVariable("stnId") int stnId)
+    public SpeedFlowVO queryLastSpeedFlowByStdId(@PathVariable("stnId") int stnId)
     {
-        List<SpeedFlow> SpeedFlowList = speedFlowService.queryLastSpeedFlowByStdId(stnId);
-        List<SpeedFlow>  SpeedFlows = speedFlowService.queryLastSpeedFlowByStdId(stnId);
-        System.out.println("返回记录条数："+SpeedFlows.size());
-        if (SpeedFlows.size()>0){
-            return JSON.toJSON(SpeedFlows).toString();
+        SpeedFlowVO speedFlowVO = speedFlowService.queryLastSpeedFlowByStdId(stnId);
+        //System.out.println("返回记录条数："+SpeedFlows.size());
+        if (speedFlowVO!=null){
+            System.out.println("获取到最新数据");
+            System.out.println("p or v: "+speedFlowVO.getPicOrVideo());
+            return speedFlowVO;
         }
-        return "{\"msg\" : \"暂时无法获取流速流量数据\"}";
+        System.out.println("{\"msg\" : \"暂时无法获取流速流量数据\"}");
+        return null;
     }
 
     /**
@@ -192,5 +197,16 @@ public class SpeedFlowController {
     @ResponseBody
     public String deleteSpeedFlow(SpeedFlow speedFlow){
         return (speedFlowService.deleteSpeedFlow(speedFlow) != 0) ? "success" : "fail";
+    }
+
+    /**
+     * 采集数据
+     * @return
+     */
+    @RequestMapping(value = "/collectData",method = RequestMethod.GET)
+    @ResponseBody
+    public int collectData(){
+        int res =  speedFlowService.generateData();
+        return res;
     }
 }

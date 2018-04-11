@@ -33,6 +33,23 @@ public class DataUtil {
     }
 
     /**
+     * 调整型随机，调整范围是5%，但是先把base降低5%，
+     * 因为流量有早小晚大的规律，降低5%是为了每一天的第一条记录的值贴近前一天的第一条记录的值
+     * （专为生成流量信息写的方法）
+     * @param base
+     * @param max
+     * @param min
+     * @return
+     */
+    public static double adjustDataForFlow(double base,double max,double min){
+        double range = 0.05*base,answer = 0.0;
+        answer  = getRandom(Math.min(base + range,max),
+                Math.max(base - 2*range,min));
+        answer = Double.parseDouble(df.format(answer));
+        return answer;
+    }
+
+    /**
      * 扩大型随机，扩大范围是0.7%(这样才能保证前后两天的数据浮动范围是5%)
      * @param base
      * @param max

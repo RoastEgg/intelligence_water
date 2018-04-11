@@ -106,7 +106,7 @@ public interface FlowService {
      */
     public int queryStationInfo(int stnId);
 
-    public boolean generateData();
+    public int generateData();
 
     /**
      * 为了给生成历史数据和schedule复用，将生成数据方法独立出来

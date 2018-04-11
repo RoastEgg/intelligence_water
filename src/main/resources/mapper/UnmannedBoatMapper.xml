@@ -142,7 +142,7 @@
 
     <!--插入无人船数据-->
     <insert id="saveUnmannedBoat" parameterType="com.hawksoft.platform.entity.WaterQuality" useGeneratedKeys="true" keyProperty="id">
-        insert into UnmannedBoat(<include refid="key"/>) VALUES (<include refid="value"/>)
+        insert into unmannedboat(<include refid="key"/>) VALUES (<include refid="value"/>)
     </insert>
 
     <!--查询某站点是否有无人船信息-->

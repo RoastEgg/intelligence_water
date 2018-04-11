@@ -2,14 +2,8 @@ package com.hawksoft.platform.socket;
 
 
 import com.hawksoft.platform.constant.WaterConstant;
-import com.hawksoft.platform.entity.UnmannedBoat;
-import com.hawksoft.platform.entity.Water;
-import com.hawksoft.platform.entity.WaterQuality;
-import com.hawksoft.platform.entity.SpeedFlow;
-import com.hawksoft.platform.service.SpeedFlowService;
-import com.hawksoft.platform.service.UnmannedBoatService;
-import com.hawksoft.platform.service.WaterQualityService;
-import com.hawksoft.platform.service.WaterService;
+import com.hawksoft.platform.entity.*;
+import com.hawksoft.platform.service.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -25,6 +19,7 @@ public class SocketSaveToDB {
     private static WaterQualityService waterQualityService;
     private static UnmannedBoatService unmannedBoatService;
     private static SpeedFlowService speedFlowService;
+    private static FloatingMatterService floatingMatterService;
     private static double RiverArea1=15.23;//摄像头1的断面面积
     private static double RiverArea2=14.31;//摄像头2的断面面积
     private static double RiverArea3=16.43;//摄像头3的断面面积
@@ -48,6 +43,12 @@ public class SocketSaveToDB {
 
             if (speedFlowService == null) {
                 speedFlowService = applicationContext.getBean(SpeedFlowService.class);
+            }
+            if (unmannedBoatService == null) {
+                unmannedBoatService =applicationContext.getBean(UnmannedBoatService.class);
+            }
+            if (floatingMatterService == null) {
+                floatingMatterService = applicationContext.getBean(FloatingMatterService.class);
             }
         }
     }
@@ -153,6 +154,31 @@ public class SocketSaveToDB {
         }
     }
 
+    /**
+     *
+     *保存采集的漂浮物数据
+     * @param stnId
+     * @param picPath
+     * @param cameraValue
+     * @param collectionTime
+     */
+    public static void doReceiveFOR(int stnId, String picPath,int cameraValue,String collectionTime){
+        FloatingMatter floatingMatter = new FloatingMatter();
+        floatingMatter.setStnId(stnId);
+        floatingMatter.setCamIndex(cameraValue);
+        floatingMatter.setFilePathResult(picPath);
+        floatingMatter.setCollectionTime(collectionTime);
+        if (floatingMatterService==null){
+            initEnv();
+        }
+        if (floatingMatterService!=null){
+            floatingMatterService.saveFloatingMatter(floatingMatter);
+        } else {
+            System.out.println("Init floatingMatter Service Failed!");
+        }
+    }
+
+
     //取得河流的断面面积
     public static double getRiverArea() {
         return RiverArea1 + RiverArea2 + RiverArea3 + RiverArea4 + RiverArea5;
@@ -221,25 +247,25 @@ public class SocketSaveToDB {
 
     public static void saveUB(RtuHeaderInfo headerInfo, String ubData){
         UnmannedBoat unmannedBoat = new UnmannedBoat();
-        String [] ubList  = ubData.split(";");//发送的报文用";"隔开
-        unmannedBoat.setLongitude(Double.parseDouble(ubList[0]));
-        unmannedBoat.setLatitude(Double.parseDouble(ubList[1]));
-        unmannedBoat.setCourse(Double.parseDouble(ubList[2]));
-        unmannedBoat.setOriginalSpeed(Double.parseDouble(ubList[3]));
-        unmannedBoat.setTrailAngle(Double.parseDouble(ubList[4]));
-        unmannedBoat.setManualCourse(Double.parseDouble(ubList[5]));
-        unmannedBoat.setAutoCourse(Double.parseDouble(ubList[6]));
-        unmannedBoat.setSpacing(Double.parseDouble(ubList[7]));
-        unmannedBoat.setYawDistance(Double.parseDouble(ubList[8]));
-        unmannedBoat.setLeftOutput(Double.parseDouble(ubList[9]));
-        unmannedBoat.setRightOutput(Double.parseDouble(ubList[10]));
-        unmannedBoat.setAccelerator(Double.parseDouble(ubList[11]));
-        unmannedBoat.setCourseChangeRate(Double.parseDouble(ubList[12]));
-        unmannedBoat.setYawChangeRate(Double.parseDouble(ubList[13]));
-        unmannedBoat.setSailingSpeed(Double.parseDouble(ubList[14]));
-        unmannedBoat.setTargetSpeed(Double.parseDouble(ubList[15]));
-        unmannedBoat.setObstacleDistance(Double.parseDouble(ubList[16]));
-        unmannedBoat.setObstacleAngle(Double.parseDouble(ubList[17]));
+        String [] ubList  = ubData.split(",");//发送的报文用","隔开
+        unmannedBoat.setCourse(Double.parseDouble(ubList[0]));
+        unmannedBoat.setOriginalSpeed(Double.parseDouble(ubList[1]));
+        unmannedBoat.setTrailAngle(Double.parseDouble(ubList[2]));
+        unmannedBoat.setManualCourse(Double.parseDouble(ubList[3]));
+        unmannedBoat.setAutoCourse(Double.parseDouble(ubList[4]));
+        unmannedBoat.setSpacing(Double.parseDouble(ubList[5]));
+        unmannedBoat.setYawDistance(Double.parseDouble(ubList[6]));
+        unmannedBoat.setLeftOutput(Double.parseDouble(ubList[7]));
+        unmannedBoat.setRightOutput(Double.parseDouble(ubList[8]));
+        unmannedBoat.setAccelerator(Double.parseDouble(ubList[9]));
+//        unmannedBoat.setCourseChangeRate(Double.parseDouble(ubList[12]));
+//        unmannedBoat.setYawChangeRate(Double.parseDouble(ubList[13]));
+        unmannedBoat.setSailingSpeed(Double.parseDouble(ubList[10]));
+        unmannedBoat.setTargetSpeed(Double.parseDouble(ubList[11]));
+        unmannedBoat.setLongitude(Double.parseDouble(ubList[12]));
+        unmannedBoat.setLatitude(Double.parseDouble(ubList[13]));
+        unmannedBoat.setObstacleDistance(Double.parseDouble(ubList[14]));
+        unmannedBoat.setObstacleAngle(Double.parseDouble(ubList[15]));
 
         unmannedBoat.setNumber(headerInfo.getUbNo());
         unmannedBoat.setTime(headerInfo.getStime());
@@ -266,6 +292,8 @@ public class SocketSaveToDB {
             case 2: // Flux
                 doReceiveLL(headerInfo.getSiteNo(), path, headerInfo.getCameraId(), headerInfo.getValue(), colTime);
                 break;
+            case 5://floating matter
+                doReceiveFOR(headerInfo.getSiteNo(),path,headerInfo.getCameraId(),colTime);
         }
     }
 }

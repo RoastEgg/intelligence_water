@@ -1,0 +1,1476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hawksoft.platform.generatorMapper.FlowMapper">
+  <resultMap id="BaseResultMap" type="com.hawksoft.platform.generatorPojo.Flow">
+    <id column="flowId" jdbcType="BIGINT" property="flowid" />
+    <result column="stnId" jdbcType="INTEGER" property="stnid" />
+    <result column="avgSpeed" jdbcType="DECIMAL" property="avgspeed" />
+    <result column="riverArea" jdbcType="DECIMAL" property="riverarea" />
+    <result column="avgFlow" jdbcType="DECIMAL" property="avgflow" />
+    <result column="collectionTime" jdbcType="TIMESTAMP" property="collectiontime" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="dayFlow" jdbcType="DECIMAL" property="dayflow" />
+    <result column="weekFlow" jdbcType="DECIMAL" property="weekflow" />
+    <result column="monthFlow" jdbcType="DECIMAL" property="monthflow" />
+    <result column="yearFlow" jdbcType="DECIMAL" property="yearflow" />
+    <result column="totalFlow" jdbcType="DECIMAL" property="totalflow" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    flowId, stnId, avgSpeed, riverArea, avgFlow, collectionTime, state, dayFlow, weekFlow, 
+    monthFlow, yearFlow, totalFlow, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from flow
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from flow
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    insert into flow (flowId, stnId, avgSpeed, 
+      riverArea, avgFlow, collectionTime, 
+      state, dayFlow, weekFlow, 
+      monthFlow, yearFlow, totalFlow, 
+      remark)
+    values (#{flowid,jdbcType=BIGINT}, #{stnid,jdbcType=INTEGER}, #{avgspeed,jdbcType=DECIMAL}, 
+      #{riverarea,jdbcType=DECIMAL}, #{avgflow,jdbcType=DECIMAL}, #{collectiontime,jdbcType=TIMESTAMP}, 
+      #{state,jdbcType=VARCHAR}, #{dayflow,jdbcType=DECIMAL}, #{weekflow,jdbcType=DECIMAL}, 
+      #{monthflow,jdbcType=DECIMAL}, #{yearflow,jdbcType=DECIMAL}, #{totalflow,jdbcType=DECIMAL}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    insert into flow
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="flowid != null">
+        flowId,
+      </if>
+      <if test="stnid != null">
+        stnId,
+      </if>
+      <if test="avgspeed != null">
+        avgSpeed,
+      </if>
+      <if test="riverarea != null">
+        riverArea,
+      </if>
+      <if test="avgflow != null">
+        avgFlow,
+      </if>
+      <if test="collectiontime != null">
+        collectionTime,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="dayflow != null">
+        dayFlow,
+      </if>
+      <if test="weekflow != null">
+        weekFlow,
+      </if>
+      <if test="monthflow != null">
+        monthFlow,
+      </if>
+      <if test="yearflow != null">
+        yearFlow,
+      </if>
+      <if test="totalflow != null">
+        totalFlow,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="flowid != null">
+        #{flowid,jdbcType=BIGINT},
+      </if>
+      <if test="stnid != null">
+        #{stnid,jdbcType=INTEGER},
+      </if>
+      <if test="avgspeed != null">
+        #{avgspeed,jdbcType=DECIMAL},
+      </if>
+      <if test="riverarea != null">
+        #{riverarea,jdbcType=DECIMAL},
+      </if>
+      <if test="avgflow != null">
+        #{avgflow,jdbcType=DECIMAL},
+      </if>
+      <if test="collectiontime != null">
+        #{collectiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="dayflow != null">
+        #{dayflow,jdbcType=DECIMAL},
+      </if>
+      <if test="weekflow != null">
+        #{weekflow,jdbcType=DECIMAL},
+      </if>
+      <if test="monthflow != null">
+        #{monthflow,jdbcType=DECIMAL},
+      </if>
+      <if test="yearflow != null">
+        #{yearflow,jdbcType=DECIMAL},
+      </if>
+      <if test="totalflow != null">
+        #{totalflow,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    update flow
+    <set>
+      <if test="stnid != null">
+        stnId = #{stnid,jdbcType=INTEGER},
+      </if>
+      <if test="avgspeed != null">
+        avgSpeed = #{avgspeed,jdbcType=DECIMAL},
+      </if>
+      <if test="riverarea != null">
+        riverArea = #{riverarea,jdbcType=DECIMAL},
+      </if>
+      <if test="avgflow != null">
+        avgFlow = #{avgflow,jdbcType=DECIMAL},
+      </if>
+      <if test="collectiontime != null">
+        collectionTime = #{collectiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="dayflow != null">
+        dayFlow = #{dayflow,jdbcType=DECIMAL},
+      </if>
+      <if test="weekflow != null">
+        weekFlow = #{weekflow,jdbcType=DECIMAL},
+      </if>
+      <if test="monthflow != null">
+        monthFlow = #{monthflow,jdbcType=DECIMAL},
+      </if>
+      <if test="yearflow != null">
+        yearFlow = #{yearflow,jdbcType=DECIMAL},
+      </if>
+      <if test="totalflow != null">
+        totalFlow = #{totalflow,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    update flow
+    set stnId = #{stnid,jdbcType=INTEGER},
+      avgSpeed = #{avgspeed,jdbcType=DECIMAL},
+      riverArea = #{riverarea,jdbcType=DECIMAL},
+      avgFlow = #{avgflow,jdbcType=DECIMAL},
+      collectionTime = #{collectiontime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=VARCHAR},
+      dayFlow = #{dayflow,jdbcType=DECIMAL},
+      weekFlow = #{weekflow,jdbcType=DECIMAL},
+      monthFlow = #{monthflow,jdbcType=DECIMAL},
+      yearFlow = #{yearflow,jdbcType=DECIMAL},
+      totalFlow = #{totalflow,jdbcType=DECIMAL},
+      remark = #{remark,jdbcType=VARCHAR}
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </update>
+  <resultMap id="BaseResultMap" type="com.hawksoft.platform.generatorPojo.Flow">
+    <id column="flowId" jdbcType="BIGINT" property="flowid" />
+    <result column="stnId" jdbcType="INTEGER" property="stnid" />
+    <result column="avgSpeed" jdbcType="DECIMAL" property="avgspeed" />
+    <result column="riverArea" jdbcType="DECIMAL" property="riverarea" />
+    <result column="avgFlow" jdbcType="DECIMAL" property="avgflow" />
+    <result column="collectionTime" jdbcType="TIMESTAMP" property="collectiontime" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="dayFlow" jdbcType="DECIMAL" property="dayflow" />
+    <result column="weekFlow" jdbcType="DECIMAL" property="weekflow" />
+    <result column="monthFlow" jdbcType="DECIMAL" property="monthflow" />
+    <result column="yearFlow" jdbcType="DECIMAL" property="yearflow" />
+    <result column="totalFlow" jdbcType="DECIMAL" property="totalflow" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    flowId, stnId, avgSpeed, riverArea, avgFlow, collectionTime, state, dayFlow, weekFlow, 
+    monthFlow, yearFlow, totalFlow, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from flow
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from flow
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    insert into flow (flowId, stnId, avgSpeed, 
+      riverArea, avgFlow, collectionTime, 
+      state, dayFlow, weekFlow, 
+      monthFlow, yearFlow, totalFlow, 
+      remark)
+    values (#{flowid,jdbcType=BIGINT}, #{stnid,jdbcType=INTEGER}, #{avgspeed,jdbcType=DECIMAL}, 
+      #{riverarea,jdbcType=DECIMAL}, #{avgflow,jdbcType=DECIMAL}, #{collectiontime,jdbcType=TIMESTAMP}, 
+      #{state,jdbcType=VARCHAR}, #{dayflow,jdbcType=DECIMAL}, #{weekflow,jdbcType=DECIMAL}, 
+      #{monthflow,jdbcType=DECIMAL}, #{yearflow,jdbcType=DECIMAL}, #{totalflow,jdbcType=DECIMAL}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    insert into flow
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="flowid != null">
+        flowId,
+      </if>
+      <if test="stnid != null">
+        stnId,
+      </if>
+      <if test="avgspeed != null">
+        avgSpeed,
+      </if>
+      <if test="riverarea != null">
+        riverArea,
+      </if>
+      <if test="avgflow != null">
+        avgFlow,
+      </if>
+      <if test="collectiontime != null">
+        collectionTime,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="dayflow != null">
+        dayFlow,
+      </if>
+      <if test="weekflow != null">
+        weekFlow,
+      </if>
+      <if test="monthflow != null">
+        monthFlow,
+      </if>
+      <if test="yearflow != null">
+        yearFlow,
+      </if>
+      <if test="totalflow != null">
+        totalFlow,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="flowid != null">
+        #{flowid,jdbcType=BIGINT},
+      </if>
+      <if test="stnid != null">
+        #{stnid,jdbcType=INTEGER},
+      </if>
+      <if test="avgspeed != null">
+        #{avgspeed,jdbcType=DECIMAL},
+      </if>
+      <if test="riverarea != null">
+        #{riverarea,jdbcType=DECIMAL},
+      </if>
+      <if test="avgflow != null">
+        #{avgflow,jdbcType=DECIMAL},
+      </if>
+      <if test="collectiontime != null">
+        #{collectiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="dayflow != null">
+        #{dayflow,jdbcType=DECIMAL},
+      </if>
+      <if test="weekflow != null">
+        #{weekflow,jdbcType=DECIMAL},
+      </if>
+      <if test="monthflow != null">
+        #{monthflow,jdbcType=DECIMAL},
+      </if>
+      <if test="yearflow != null">
+        #{yearflow,jdbcType=DECIMAL},
+      </if>
+      <if test="totalflow != null">
+        #{totalflow,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    update flow
+    <set>
+      <if test="stnid != null">
+        stnId = #{stnid,jdbcType=INTEGER},
+      </if>
+      <if test="avgspeed != null">
+        avgSpeed = #{avgspeed,jdbcType=DECIMAL},
+      </if>
+      <if test="riverarea != null">
+        riverArea = #{riverarea,jdbcType=DECIMAL},
+      </if>
+      <if test="avgflow != null">
+        avgFlow = #{avgflow,jdbcType=DECIMAL},
+      </if>
+      <if test="collectiontime != null">
+        collectionTime = #{collectiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="dayflow != null">
+        dayFlow = #{dayflow,jdbcType=DECIMAL},
+      </if>
+      <if test="weekflow != null">
+        weekFlow = #{weekflow,jdbcType=DECIMAL},
+      </if>
+      <if test="monthflow != null">
+        monthFlow = #{monthflow,jdbcType=DECIMAL},
+      </if>
+      <if test="yearflow != null">
+        yearFlow = #{yearflow,jdbcType=DECIMAL},
+      </if>
+      <if test="totalflow != null">
+        totalFlow = #{totalflow,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    update flow
+    set stnId = #{stnid,jdbcType=INTEGER},
+      avgSpeed = #{avgspeed,jdbcType=DECIMAL},
+      riverArea = #{riverarea,jdbcType=DECIMAL},
+      avgFlow = #{avgflow,jdbcType=DECIMAL},
+      collectionTime = #{collectiontime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=VARCHAR},
+      dayFlow = #{dayflow,jdbcType=DECIMAL},
+      weekFlow = #{weekflow,jdbcType=DECIMAL},
+      monthFlow = #{monthflow,jdbcType=DECIMAL},
+      yearFlow = #{yearflow,jdbcType=DECIMAL},
+      totalFlow = #{totalflow,jdbcType=DECIMAL},
+      remark = #{remark,jdbcType=VARCHAR}
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </update>
+  <resultMap id="BaseResultMap" type="com.hawksoft.platform.generatorPojo.Flow">
+    <id column="flowId" jdbcType="BIGINT" property="flowid" />
+    <result column="stnId" jdbcType="INTEGER" property="stnid" />
+    <result column="avgSpeed" jdbcType="DECIMAL" property="avgspeed" />
+    <result column="riverArea" jdbcType="DECIMAL" property="riverarea" />
+    <result column="avgFlow" jdbcType="DECIMAL" property="avgflow" />
+    <result column="collectionTime" jdbcType="TIMESTAMP" property="collectiontime" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="dayFlow" jdbcType="DECIMAL" property="dayflow" />
+    <result column="weekFlow" jdbcType="DECIMAL" property="weekflow" />
+    <result column="monthFlow" jdbcType="DECIMAL" property="monthflow" />
+    <result column="yearFlow" jdbcType="DECIMAL" property="yearflow" />
+    <result column="totalFlow" jdbcType="DECIMAL" property="totalflow" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    flowId, stnId, avgSpeed, riverArea, avgFlow, collectionTime, state, dayFlow, weekFlow, 
+    monthFlow, yearFlow, totalFlow, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from flow
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from flow
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    insert into flow (flowId, stnId, avgSpeed, 
+      riverArea, avgFlow, collectionTime, 
+      state, dayFlow, weekFlow, 
+      monthFlow, yearFlow, totalFlow, 
+      remark)
+    values (#{flowid,jdbcType=BIGINT}, #{stnid,jdbcType=INTEGER}, #{avgspeed,jdbcType=DECIMAL}, 
+      #{riverarea,jdbcType=DECIMAL}, #{avgflow,jdbcType=DECIMAL}, #{collectiontime,jdbcType=TIMESTAMP}, 
+      #{state,jdbcType=VARCHAR}, #{dayflow,jdbcType=DECIMAL}, #{weekflow,jdbcType=DECIMAL}, 
+      #{monthflow,jdbcType=DECIMAL}, #{yearflow,jdbcType=DECIMAL}, #{totalflow,jdbcType=DECIMAL}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    insert into flow
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="flowid != null">
+        flowId,
+      </if>
+      <if test="stnid != null">
+        stnId,
+      </if>
+      <if test="avgspeed != null">
+        avgSpeed,
+      </if>
+      <if test="riverarea != null">
+        riverArea,
+      </if>
+      <if test="avgflow != null">
+        avgFlow,
+      </if>
+      <if test="collectiontime != null">
+        collectionTime,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="dayflow != null">
+        dayFlow,
+      </if>
+      <if test="weekflow != null">
+        weekFlow,
+      </if>
+      <if test="monthflow != null">
+        monthFlow,
+      </if>
+      <if test="yearflow != null">
+        yearFlow,
+      </if>
+      <if test="totalflow != null">
+        totalFlow,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="flowid != null">
+        #{flowid,jdbcType=BIGINT},
+      </if>
+      <if test="stnid != null">
+        #{stnid,jdbcType=INTEGER},
+      </if>
+      <if test="avgspeed != null">
+        #{avgspeed,jdbcType=DECIMAL},
+      </if>
+      <if test="riverarea != null">
+        #{riverarea,jdbcType=DECIMAL},
+      </if>
+      <if test="avgflow != null">
+        #{avgflow,jdbcType=DECIMAL},
+      </if>
+      <if test="collectiontime != null">
+        #{collectiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="dayflow != null">
+        #{dayflow,jdbcType=DECIMAL},
+      </if>
+      <if test="weekflow != null">
+        #{weekflow,jdbcType=DECIMAL},
+      </if>
+      <if test="monthflow != null">
+        #{monthflow,jdbcType=DECIMAL},
+      </if>
+      <if test="yearflow != null">
+        #{yearflow,jdbcType=DECIMAL},
+      </if>
+      <if test="totalflow != null">
+        #{totalflow,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    update flow
+    <set>
+      <if test="stnid != null">
+        stnId = #{stnid,jdbcType=INTEGER},
+      </if>
+      <if test="avgspeed != null">
+        avgSpeed = #{avgspeed,jdbcType=DECIMAL},
+      </if>
+      <if test="riverarea != null">
+        riverArea = #{riverarea,jdbcType=DECIMAL},
+      </if>
+      <if test="avgflow != null">
+        avgFlow = #{avgflow,jdbcType=DECIMAL},
+      </if>
+      <if test="collectiontime != null">
+        collectionTime = #{collectiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="dayflow != null">
+        dayFlow = #{dayflow,jdbcType=DECIMAL},
+      </if>
+      <if test="weekflow != null">
+        weekFlow = #{weekflow,jdbcType=DECIMAL},
+      </if>
+      <if test="monthflow != null">
+        monthFlow = #{monthflow,jdbcType=DECIMAL},
+      </if>
+      <if test="yearflow != null">
+        yearFlow = #{yearflow,jdbcType=DECIMAL},
+      </if>
+      <if test="totalflow != null">
+        totalFlow = #{totalflow,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    update flow
+    set stnId = #{stnid,jdbcType=INTEGER},
+      avgSpeed = #{avgspeed,jdbcType=DECIMAL},
+      riverArea = #{riverarea,jdbcType=DECIMAL},
+      avgFlow = #{avgflow,jdbcType=DECIMAL},
+      collectionTime = #{collectiontime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=VARCHAR},
+      dayFlow = #{dayflow,jdbcType=DECIMAL},
+      weekFlow = #{weekflow,jdbcType=DECIMAL},
+      monthFlow = #{monthflow,jdbcType=DECIMAL},
+      yearFlow = #{yearflow,jdbcType=DECIMAL},
+      totalFlow = #{totalflow,jdbcType=DECIMAL},
+      remark = #{remark,jdbcType=VARCHAR}
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </update>
+  <resultMap id="BaseResultMap" type="com.hawksoft.platform.generatorPojo.Flow">
+    <id column="flowId" jdbcType="BIGINT" property="flowid" />
+    <result column="stnId" jdbcType="INTEGER" property="stnid" />
+    <result column="avgSpeed" jdbcType="DECIMAL" property="avgspeed" />
+    <result column="riverArea" jdbcType="DECIMAL" property="riverarea" />
+    <result column="avgFlow" jdbcType="DECIMAL" property="avgflow" />
+    <result column="collectionTime" jdbcType="TIMESTAMP" property="collectiontime" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="dayFlow" jdbcType="DECIMAL" property="dayflow" />
+    <result column="weekFlow" jdbcType="DECIMAL" property="weekflow" />
+    <result column="monthFlow" jdbcType="DECIMAL" property="monthflow" />
+    <result column="yearFlow" jdbcType="DECIMAL" property="yearflow" />
+    <result column="totalFlow" jdbcType="DECIMAL" property="totalflow" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    flowId, stnId, avgSpeed, riverArea, avgFlow, collectionTime, state, dayFlow, weekFlow, 
+    monthFlow, yearFlow, totalFlow, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from flow
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from flow
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    insert into flow (flowId, stnId, avgSpeed, 
+      riverArea, avgFlow, collectionTime, 
+      state, dayFlow, weekFlow, 
+      monthFlow, yearFlow, totalFlow, 
+      remark)
+    values (#{flowid,jdbcType=BIGINT}, #{stnid,jdbcType=INTEGER}, #{avgspeed,jdbcType=DECIMAL}, 
+      #{riverarea,jdbcType=DECIMAL}, #{avgflow,jdbcType=DECIMAL}, #{collectiontime,jdbcType=TIMESTAMP}, 
+      #{state,jdbcType=VARCHAR}, #{dayflow,jdbcType=DECIMAL}, #{weekflow,jdbcType=DECIMAL}, 
+      #{monthflow,jdbcType=DECIMAL}, #{yearflow,jdbcType=DECIMAL}, #{totalflow,jdbcType=DECIMAL}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    insert into flow
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="flowid != null">
+        flowId,
+      </if>
+      <if test="stnid != null">
+        stnId,
+      </if>
+      <if test="avgspeed != null">
+        avgSpeed,
+      </if>
+      <if test="riverarea != null">
+        riverArea,
+      </if>
+      <if test="avgflow != null">
+        avgFlow,
+      </if>
+      <if test="collectiontime != null">
+        collectionTime,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="dayflow != null">
+        dayFlow,
+      </if>
+      <if test="weekflow != null">
+        weekFlow,
+      </if>
+      <if test="monthflow != null">
+        monthFlow,
+      </if>
+      <if test="yearflow != null">
+        yearFlow,
+      </if>
+      <if test="totalflow != null">
+        totalFlow,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="flowid != null">
+        #{flowid,jdbcType=BIGINT},
+      </if>
+      <if test="stnid != null">
+        #{stnid,jdbcType=INTEGER},
+      </if>
+      <if test="avgspeed != null">
+        #{avgspeed,jdbcType=DECIMAL},
+      </if>
+      <if test="riverarea != null">
+        #{riverarea,jdbcType=DECIMAL},
+      </if>
+      <if test="avgflow != null">
+        #{avgflow,jdbcType=DECIMAL},
+      </if>
+      <if test="collectiontime != null">
+        #{collectiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="dayflow != null">
+        #{dayflow,jdbcType=DECIMAL},
+      </if>
+      <if test="weekflow != null">
+        #{weekflow,jdbcType=DECIMAL},
+      </if>
+      <if test="monthflow != null">
+        #{monthflow,jdbcType=DECIMAL},
+      </if>
+      <if test="yearflow != null">
+        #{yearflow,jdbcType=DECIMAL},
+      </if>
+      <if test="totalflow != null">
+        #{totalflow,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    update flow
+    <set>
+      <if test="stnid != null">
+        stnId = #{stnid,jdbcType=INTEGER},
+      </if>
+      <if test="avgspeed != null">
+        avgSpeed = #{avgspeed,jdbcType=DECIMAL},
+      </if>
+      <if test="riverarea != null">
+        riverArea = #{riverarea,jdbcType=DECIMAL},
+      </if>
+      <if test="avgflow != null">
+        avgFlow = #{avgflow,jdbcType=DECIMAL},
+      </if>
+      <if test="collectiontime != null">
+        collectionTime = #{collectiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="dayflow != null">
+        dayFlow = #{dayflow,jdbcType=DECIMAL},
+      </if>
+      <if test="weekflow != null">
+        weekFlow = #{weekflow,jdbcType=DECIMAL},
+      </if>
+      <if test="monthflow != null">
+        monthFlow = #{monthflow,jdbcType=DECIMAL},
+      </if>
+      <if test="yearflow != null">
+        yearFlow = #{yearflow,jdbcType=DECIMAL},
+      </if>
+      <if test="totalflow != null">
+        totalFlow = #{totalflow,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    update flow
+    set stnId = #{stnid,jdbcType=INTEGER},
+      avgSpeed = #{avgspeed,jdbcType=DECIMAL},
+      riverArea = #{riverarea,jdbcType=DECIMAL},
+      avgFlow = #{avgflow,jdbcType=DECIMAL},
+      collectionTime = #{collectiontime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=VARCHAR},
+      dayFlow = #{dayflow,jdbcType=DECIMAL},
+      weekFlow = #{weekflow,jdbcType=DECIMAL},
+      monthFlow = #{monthflow,jdbcType=DECIMAL},
+      yearFlow = #{yearflow,jdbcType=DECIMAL},
+      totalFlow = #{totalflow,jdbcType=DECIMAL},
+      remark = #{remark,jdbcType=VARCHAR}
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </update>
+  <resultMap id="BaseResultMap" type="com.hawksoft.platform.generatorPojo.Flow">
+    <id column="flowId" jdbcType="BIGINT" property="flowid" />
+    <result column="stnId" jdbcType="INTEGER" property="stnid" />
+    <result column="avgSpeed" jdbcType="DECIMAL" property="avgspeed" />
+    <result column="riverArea" jdbcType="DECIMAL" property="riverarea" />
+    <result column="avgFlow" jdbcType="DECIMAL" property="avgflow" />
+    <result column="collectionTime" jdbcType="TIMESTAMP" property="collectiontime" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="dayFlow" jdbcType="DECIMAL" property="dayflow" />
+    <result column="weekFlow" jdbcType="DECIMAL" property="weekflow" />
+    <result column="monthFlow" jdbcType="DECIMAL" property="monthflow" />
+    <result column="yearFlow" jdbcType="DECIMAL" property="yearflow" />
+    <result column="totalFlow" jdbcType="DECIMAL" property="totalflow" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    flowId, stnId, avgSpeed, riverArea, avgFlow, collectionTime, state, dayFlow, weekFlow, 
+    monthFlow, yearFlow, totalFlow, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from flow
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from flow
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    insert into flow (flowId, stnId, avgSpeed, 
+      riverArea, avgFlow, collectionTime, 
+      state, dayFlow, weekFlow, 
+      monthFlow, yearFlow, totalFlow, 
+      remark)
+    values (#{flowid,jdbcType=BIGINT}, #{stnid,jdbcType=INTEGER}, #{avgspeed,jdbcType=DECIMAL}, 
+      #{riverarea,jdbcType=DECIMAL}, #{avgflow,jdbcType=DECIMAL}, #{collectiontime,jdbcType=TIMESTAMP}, 
+      #{state,jdbcType=VARCHAR}, #{dayflow,jdbcType=DECIMAL}, #{weekflow,jdbcType=DECIMAL}, 
+      #{monthflow,jdbcType=DECIMAL}, #{yearflow,jdbcType=DECIMAL}, #{totalflow,jdbcType=DECIMAL}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    insert into flow
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="flowid != null">
+        flowId,
+      </if>
+      <if test="stnid != null">
+        stnId,
+      </if>
+      <if test="avgspeed != null">
+        avgSpeed,
+      </if>
+      <if test="riverarea != null">
+        riverArea,
+      </if>
+      <if test="avgflow != null">
+        avgFlow,
+      </if>
+      <if test="collectiontime != null">
+        collectionTime,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="dayflow != null">
+        dayFlow,
+      </if>
+      <if test="weekflow != null">
+        weekFlow,
+      </if>
+      <if test="monthflow != null">
+        monthFlow,
+      </if>
+      <if test="yearflow != null">
+        yearFlow,
+      </if>
+      <if test="totalflow != null">
+        totalFlow,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="flowid != null">
+        #{flowid,jdbcType=BIGINT},
+      </if>
+      <if test="stnid != null">
+        #{stnid,jdbcType=INTEGER},
+      </if>
+      <if test="avgspeed != null">
+        #{avgspeed,jdbcType=DECIMAL},
+      </if>
+      <if test="riverarea != null">
+        #{riverarea,jdbcType=DECIMAL},
+      </if>
+      <if test="avgflow != null">
+        #{avgflow,jdbcType=DECIMAL},
+      </if>
+      <if test="collectiontime != null">
+        #{collectiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="dayflow != null">
+        #{dayflow,jdbcType=DECIMAL},
+      </if>
+      <if test="weekflow != null">
+        #{weekflow,jdbcType=DECIMAL},
+      </if>
+      <if test="monthflow != null">
+        #{monthflow,jdbcType=DECIMAL},
+      </if>
+      <if test="yearflow != null">
+        #{yearflow,jdbcType=DECIMAL},
+      </if>
+      <if test="totalflow != null">
+        #{totalflow,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    update flow
+    <set>
+      <if test="stnid != null">
+        stnId = #{stnid,jdbcType=INTEGER},
+      </if>
+      <if test="avgspeed != null">
+        avgSpeed = #{avgspeed,jdbcType=DECIMAL},
+      </if>
+      <if test="riverarea != null">
+        riverArea = #{riverarea,jdbcType=DECIMAL},
+      </if>
+      <if test="avgflow != null">
+        avgFlow = #{avgflow,jdbcType=DECIMAL},
+      </if>
+      <if test="collectiontime != null">
+        collectionTime = #{collectiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="dayflow != null">
+        dayFlow = #{dayflow,jdbcType=DECIMAL},
+      </if>
+      <if test="weekflow != null">
+        weekFlow = #{weekflow,jdbcType=DECIMAL},
+      </if>
+      <if test="monthflow != null">
+        monthFlow = #{monthflow,jdbcType=DECIMAL},
+      </if>
+      <if test="yearflow != null">
+        yearFlow = #{yearflow,jdbcType=DECIMAL},
+      </if>
+      <if test="totalflow != null">
+        totalFlow = #{totalflow,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    update flow
+    set stnId = #{stnid,jdbcType=INTEGER},
+      avgSpeed = #{avgspeed,jdbcType=DECIMAL},
+      riverArea = #{riverarea,jdbcType=DECIMAL},
+      avgFlow = #{avgflow,jdbcType=DECIMAL},
+      collectionTime = #{collectiontime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=VARCHAR},
+      dayFlow = #{dayflow,jdbcType=DECIMAL},
+      weekFlow = #{weekflow,jdbcType=DECIMAL},
+      monthFlow = #{monthflow,jdbcType=DECIMAL},
+      yearFlow = #{yearflow,jdbcType=DECIMAL},
+      totalFlow = #{totalflow,jdbcType=DECIMAL},
+      remark = #{remark,jdbcType=VARCHAR}
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </update>
+  <resultMap id="BaseResultMap" type="com.hawksoft.platform.generatorPojo.Flow">
+    <id column="flowId" jdbcType="BIGINT" property="flowid" />
+    <result column="stnId" jdbcType="INTEGER" property="stnid" />
+    <result column="avgSpeed" jdbcType="DECIMAL" property="avgspeed" />
+    <result column="riverArea" jdbcType="DECIMAL" property="riverarea" />
+    <result column="avgFlow" jdbcType="DECIMAL" property="avgflow" />
+    <result column="collectionTime" jdbcType="TIMESTAMP" property="collectiontime" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="dayFlow" jdbcType="DECIMAL" property="dayflow" />
+    <result column="weekFlow" jdbcType="DECIMAL" property="weekflow" />
+    <result column="monthFlow" jdbcType="DECIMAL" property="monthflow" />
+    <result column="yearFlow" jdbcType="DECIMAL" property="yearflow" />
+    <result column="totalFlow" jdbcType="DECIMAL" property="totalflow" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    flowId, stnId, avgSpeed, riverArea, avgFlow, collectionTime, state, dayFlow, weekFlow, 
+    monthFlow, yearFlow, totalFlow, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from flow
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from flow
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    insert into flow (flowId, stnId, avgSpeed, 
+      riverArea, avgFlow, collectionTime, 
+      state, dayFlow, weekFlow, 
+      monthFlow, yearFlow, totalFlow, 
+      remark)
+    values (#{flowid,jdbcType=BIGINT}, #{stnid,jdbcType=INTEGER}, #{avgspeed,jdbcType=DECIMAL}, 
+      #{riverarea,jdbcType=DECIMAL}, #{avgflow,jdbcType=DECIMAL}, #{collectiontime,jdbcType=TIMESTAMP}, 
+      #{state,jdbcType=VARCHAR}, #{dayflow,jdbcType=DECIMAL}, #{weekflow,jdbcType=DECIMAL}, 
+      #{monthflow,jdbcType=DECIMAL}, #{yearflow,jdbcType=DECIMAL}, #{totalflow,jdbcType=DECIMAL}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    insert into flow
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="flowid != null">
+        flowId,
+      </if>
+      <if test="stnid != null">
+        stnId,
+      </if>
+      <if test="avgspeed != null">
+        avgSpeed,
+      </if>
+      <if test="riverarea != null">
+        riverArea,
+      </if>
+      <if test="avgflow != null">
+        avgFlow,
+      </if>
+      <if test="collectiontime != null">
+        collectionTime,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="dayflow != null">
+        dayFlow,
+      </if>
+      <if test="weekflow != null">
+        weekFlow,
+      </if>
+      <if test="monthflow != null">
+        monthFlow,
+      </if>
+      <if test="yearflow != null">
+        yearFlow,
+      </if>
+      <if test="totalflow != null">
+        totalFlow,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="flowid != null">
+        #{flowid,jdbcType=BIGINT},
+      </if>
+      <if test="stnid != null">
+        #{stnid,jdbcType=INTEGER},
+      </if>
+      <if test="avgspeed != null">
+        #{avgspeed,jdbcType=DECIMAL},
+      </if>
+      <if test="riverarea != null">
+        #{riverarea,jdbcType=DECIMAL},
+      </if>
+      <if test="avgflow != null">
+        #{avgflow,jdbcType=DECIMAL},
+      </if>
+      <if test="collectiontime != null">
+        #{collectiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="dayflow != null">
+        #{dayflow,jdbcType=DECIMAL},
+      </if>
+      <if test="weekflow != null">
+        #{weekflow,jdbcType=DECIMAL},
+      </if>
+      <if test="monthflow != null">
+        #{monthflow,jdbcType=DECIMAL},
+      </if>
+      <if test="yearflow != null">
+        #{yearflow,jdbcType=DECIMAL},
+      </if>
+      <if test="totalflow != null">
+        #{totalflow,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    update flow
+    <set>
+      <if test="stnid != null">
+        stnId = #{stnid,jdbcType=INTEGER},
+      </if>
+      <if test="avgspeed != null">
+        avgSpeed = #{avgspeed,jdbcType=DECIMAL},
+      </if>
+      <if test="riverarea != null">
+        riverArea = #{riverarea,jdbcType=DECIMAL},
+      </if>
+      <if test="avgflow != null">
+        avgFlow = #{avgflow,jdbcType=DECIMAL},
+      </if>
+      <if test="collectiontime != null">
+        collectionTime = #{collectiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="dayflow != null">
+        dayFlow = #{dayflow,jdbcType=DECIMAL},
+      </if>
+      <if test="weekflow != null">
+        weekFlow = #{weekflow,jdbcType=DECIMAL},
+      </if>
+      <if test="monthflow != null">
+        monthFlow = #{monthflow,jdbcType=DECIMAL},
+      </if>
+      <if test="yearflow != null">
+        yearFlow = #{yearflow,jdbcType=DECIMAL},
+      </if>
+      <if test="totalflow != null">
+        totalFlow = #{totalflow,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    update flow
+    set stnId = #{stnid,jdbcType=INTEGER},
+      avgSpeed = #{avgspeed,jdbcType=DECIMAL},
+      riverArea = #{riverarea,jdbcType=DECIMAL},
+      avgFlow = #{avgflow,jdbcType=DECIMAL},
+      collectionTime = #{collectiontime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=VARCHAR},
+      dayFlow = #{dayflow,jdbcType=DECIMAL},
+      weekFlow = #{weekflow,jdbcType=DECIMAL},
+      monthFlow = #{monthflow,jdbcType=DECIMAL},
+      yearFlow = #{yearflow,jdbcType=DECIMAL},
+      totalFlow = #{totalflow,jdbcType=DECIMAL},
+      remark = #{remark,jdbcType=VARCHAR}
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </update>
+  <resultMap id="BaseResultMap" type="com.hawksoft.platform.generatorPojo.Flow">
+    <id column="flowId" jdbcType="BIGINT" property="flowid" />
+    <result column="stnId" jdbcType="INTEGER" property="stnid" />
+    <result column="avgSpeed" jdbcType="DECIMAL" property="avgspeed" />
+    <result column="riverArea" jdbcType="DECIMAL" property="riverarea" />
+    <result column="avgFlow" jdbcType="DECIMAL" property="avgflow" />
+    <result column="collectionTime" jdbcType="TIMESTAMP" property="collectiontime" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="dayFlow" jdbcType="DECIMAL" property="dayflow" />
+    <result column="weekFlow" jdbcType="DECIMAL" property="weekflow" />
+    <result column="monthFlow" jdbcType="DECIMAL" property="monthflow" />
+    <result column="yearFlow" jdbcType="DECIMAL" property="yearflow" />
+    <result column="totalFlow" jdbcType="DECIMAL" property="totalflow" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    flowId, stnId, avgSpeed, riverArea, avgFlow, collectionTime, state, dayFlow, weekFlow, 
+    monthFlow, yearFlow, totalFlow, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from flow
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from flow
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    insert into flow (flowId, stnId, avgSpeed, 
+      riverArea, avgFlow, collectionTime, 
+      state, dayFlow, weekFlow, 
+      monthFlow, yearFlow, totalFlow, 
+      remark)
+    values (#{flowid,jdbcType=BIGINT}, #{stnid,jdbcType=INTEGER}, #{avgspeed,jdbcType=DECIMAL}, 
+      #{riverarea,jdbcType=DECIMAL}, #{avgflow,jdbcType=DECIMAL}, #{collectiontime,jdbcType=TIMESTAMP}, 
+      #{state,jdbcType=VARCHAR}, #{dayflow,jdbcType=DECIMAL}, #{weekflow,jdbcType=DECIMAL}, 
+      #{monthflow,jdbcType=DECIMAL}, #{yearflow,jdbcType=DECIMAL}, #{totalflow,jdbcType=DECIMAL}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    insert into flow
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="flowid != null">
+        flowId,
+      </if>
+      <if test="stnid != null">
+        stnId,
+      </if>
+      <if test="avgspeed != null">
+        avgSpeed,
+      </if>
+      <if test="riverarea != null">
+        riverArea,
+      </if>
+      <if test="avgflow != null">
+        avgFlow,
+      </if>
+      <if test="collectiontime != null">
+        collectionTime,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="dayflow != null">
+        dayFlow,
+      </if>
+      <if test="weekflow != null">
+        weekFlow,
+      </if>
+      <if test="monthflow != null">
+        monthFlow,
+      </if>
+      <if test="yearflow != null">
+        yearFlow,
+      </if>
+      <if test="totalflow != null">
+        totalFlow,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="flowid != null">
+        #{flowid,jdbcType=BIGINT},
+      </if>
+      <if test="stnid != null">
+        #{stnid,jdbcType=INTEGER},
+      </if>
+      <if test="avgspeed != null">
+        #{avgspeed,jdbcType=DECIMAL},
+      </if>
+      <if test="riverarea != null">
+        #{riverarea,jdbcType=DECIMAL},
+      </if>
+      <if test="avgflow != null">
+        #{avgflow,jdbcType=DECIMAL},
+      </if>
+      <if test="collectiontime != null">
+        #{collectiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="dayflow != null">
+        #{dayflow,jdbcType=DECIMAL},
+      </if>
+      <if test="weekflow != null">
+        #{weekflow,jdbcType=DECIMAL},
+      </if>
+      <if test="monthflow != null">
+        #{monthflow,jdbcType=DECIMAL},
+      </if>
+      <if test="yearflow != null">
+        #{yearflow,jdbcType=DECIMAL},
+      </if>
+      <if test="totalflow != null">
+        #{totalflow,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    update flow
+    <set>
+      <if test="stnid != null">
+        stnId = #{stnid,jdbcType=INTEGER},
+      </if>
+      <if test="avgspeed != null">
+        avgSpeed = #{avgspeed,jdbcType=DECIMAL},
+      </if>
+      <if test="riverarea != null">
+        riverArea = #{riverarea,jdbcType=DECIMAL},
+      </if>
+      <if test="avgflow != null">
+        avgFlow = #{avgflow,jdbcType=DECIMAL},
+      </if>
+      <if test="collectiontime != null">
+        collectionTime = #{collectiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="dayflow != null">
+        dayFlow = #{dayflow,jdbcType=DECIMAL},
+      </if>
+      <if test="weekflow != null">
+        weekFlow = #{weekflow,jdbcType=DECIMAL},
+      </if>
+      <if test="monthflow != null">
+        monthFlow = #{monthflow,jdbcType=DECIMAL},
+      </if>
+      <if test="yearflow != null">
+        yearFlow = #{yearflow,jdbcType=DECIMAL},
+      </if>
+      <if test="totalflow != null">
+        totalFlow = #{totalflow,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    update flow
+    set stnId = #{stnid,jdbcType=INTEGER},
+      avgSpeed = #{avgspeed,jdbcType=DECIMAL},
+      riverArea = #{riverarea,jdbcType=DECIMAL},
+      avgFlow = #{avgflow,jdbcType=DECIMAL},
+      collectionTime = #{collectiontime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=VARCHAR},
+      dayFlow = #{dayflow,jdbcType=DECIMAL},
+      weekFlow = #{weekflow,jdbcType=DECIMAL},
+      monthFlow = #{monthflow,jdbcType=DECIMAL},
+      yearFlow = #{yearflow,jdbcType=DECIMAL},
+      totalFlow = #{totalflow,jdbcType=DECIMAL},
+      remark = #{remark,jdbcType=VARCHAR}
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </update>
+  <resultMap id="BaseResultMap" type="com.hawksoft.platform.generatorPojo.Flow">
+    <id column="flowId" jdbcType="BIGINT" property="flowid" />
+    <result column="stnId" jdbcType="INTEGER" property="stnid" />
+    <result column="avgSpeed" jdbcType="DECIMAL" property="avgspeed" />
+    <result column="riverArea" jdbcType="DECIMAL" property="riverarea" />
+    <result column="avgFlow" jdbcType="DECIMAL" property="avgflow" />
+    <result column="collectionTime" jdbcType="TIMESTAMP" property="collectiontime" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="dayFlow" jdbcType="DECIMAL" property="dayflow" />
+    <result column="weekFlow" jdbcType="DECIMAL" property="weekflow" />
+    <result column="monthFlow" jdbcType="DECIMAL" property="monthflow" />
+    <result column="yearFlow" jdbcType="DECIMAL" property="yearflow" />
+    <result column="totalFlow" jdbcType="DECIMAL" property="totalflow" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    flowId, stnId, avgSpeed, riverArea, avgFlow, collectionTime, state, dayFlow, weekFlow, 
+    monthFlow, yearFlow, totalFlow, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from flow
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from flow
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    insert into flow (flowId, stnId, avgSpeed, 
+      riverArea, avgFlow, collectionTime, 
+      state, dayFlow, weekFlow, 
+      monthFlow, yearFlow, totalFlow, 
+      remark)
+    values (#{flowid,jdbcType=BIGINT}, #{stnid,jdbcType=INTEGER}, #{avgspeed,jdbcType=DECIMAL}, 
+      #{riverarea,jdbcType=DECIMAL}, #{avgflow,jdbcType=DECIMAL}, #{collectiontime,jdbcType=TIMESTAMP}, 
+      #{state,jdbcType=VARCHAR}, #{dayflow,jdbcType=DECIMAL}, #{weekflow,jdbcType=DECIMAL}, 
+      #{monthflow,jdbcType=DECIMAL}, #{yearflow,jdbcType=DECIMAL}, #{totalflow,jdbcType=DECIMAL}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    insert into flow
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="flowid != null">
+        flowId,
+      </if>
+      <if test="stnid != null">
+        stnId,
+      </if>
+      <if test="avgspeed != null">
+        avgSpeed,
+      </if>
+      <if test="riverarea != null">
+        riverArea,
+      </if>
+      <if test="avgflow != null">
+        avgFlow,
+      </if>
+      <if test="collectiontime != null">
+        collectionTime,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="dayflow != null">
+        dayFlow,
+      </if>
+      <if test="weekflow != null">
+        weekFlow,
+      </if>
+      <if test="monthflow != null">
+        monthFlow,
+      </if>
+      <if test="yearflow != null">
+        yearFlow,
+      </if>
+      <if test="totalflow != null">
+        totalFlow,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="flowid != null">
+        #{flowid,jdbcType=BIGINT},
+      </if>
+      <if test="stnid != null">
+        #{stnid,jdbcType=INTEGER},
+      </if>
+      <if test="avgspeed != null">
+        #{avgspeed,jdbcType=DECIMAL},
+      </if>
+      <if test="riverarea != null">
+        #{riverarea,jdbcType=DECIMAL},
+      </if>
+      <if test="avgflow != null">
+        #{avgflow,jdbcType=DECIMAL},
+      </if>
+      <if test="collectiontime != null">
+        #{collectiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="dayflow != null">
+        #{dayflow,jdbcType=DECIMAL},
+      </if>
+      <if test="weekflow != null">
+        #{weekflow,jdbcType=DECIMAL},
+      </if>
+      <if test="monthflow != null">
+        #{monthflow,jdbcType=DECIMAL},
+      </if>
+      <if test="yearflow != null">
+        #{yearflow,jdbcType=DECIMAL},
+      </if>
+      <if test="totalflow != null">
+        #{totalflow,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    update flow
+    <set>
+      <if test="stnid != null">
+        stnId = #{stnid,jdbcType=INTEGER},
+      </if>
+      <if test="avgspeed != null">
+        avgSpeed = #{avgspeed,jdbcType=DECIMAL},
+      </if>
+      <if test="riverarea != null">
+        riverArea = #{riverarea,jdbcType=DECIMAL},
+      </if>
+      <if test="avgflow != null">
+        avgFlow = #{avgflow,jdbcType=DECIMAL},
+      </if>
+      <if test="collectiontime != null">
+        collectionTime = #{collectiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="dayflow != null">
+        dayFlow = #{dayflow,jdbcType=DECIMAL},
+      </if>
+      <if test="weekflow != null">
+        weekFlow = #{weekflow,jdbcType=DECIMAL},
+      </if>
+      <if test="monthflow != null">
+        monthFlow = #{monthflow,jdbcType=DECIMAL},
+      </if>
+      <if test="yearflow != null">
+        yearFlow = #{yearflow,jdbcType=DECIMAL},
+      </if>
+      <if test="totalflow != null">
+        totalFlow = #{totalflow,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hawksoft.platform.generatorPojo.Flow">
+    update flow
+    set stnId = #{stnid,jdbcType=INTEGER},
+      avgSpeed = #{avgspeed,jdbcType=DECIMAL},
+      riverArea = #{riverarea,jdbcType=DECIMAL},
+      avgFlow = #{avgflow,jdbcType=DECIMAL},
+      collectionTime = #{collectiontime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=VARCHAR},
+      dayFlow = #{dayflow,jdbcType=DECIMAL},
+      weekFlow = #{weekflow,jdbcType=DECIMAL},
+      monthFlow = #{monthflow,jdbcType=DECIMAL},
+      yearFlow = #{yearflow,jdbcType=DECIMAL},
+      totalFlow = #{totalflow,jdbcType=DECIMAL},
+      remark = #{remark,jdbcType=VARCHAR}
+    where flowId = #{flowid,jdbcType=BIGINT}
+  </update>
+</mapper>

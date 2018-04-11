@@ -164,7 +164,7 @@ public class WaterQualityServiceImpl implements WaterQualityService {
             } else {
                 stnId = 7;
             }
-            WaterQuality waterQuality  = generateWQ(stnId);
+            WaterQuality waterQuality = generateWQ(stnId);
             saveWaterQuality(waterQuality);
         }
         return true;
@@ -179,16 +179,16 @@ public class WaterQualityServiceImpl implements WaterQualityService {
         double dissolvedOxygen, minDissolvedOxygen = 2.00, maxDissolvedOxygen = 3.00;//溶解氧值
         double redox, minRedox = 100.0, maxRedox = 300.0;//氧化还原值
         double transparency, maxTransparency = 10.0, minTransparency = 100.0;
-        double conductivity, minConductivity = 0.381, maxConductivity = 0.900;
-        double turbidity, minTurbidity = 4.28, maxTurbidity = 243.035;
-        double salinity, minSalinity = 0.184, maxSalinity = 0.43;
-        double tds, minTds = 0.255, maxTds = 0.603;
-        double density, minDensity = 500.046, maxDensity = 1000.319;
-        double doSaturation, minDoSaturation = 35.129, maxDoSaturation = 138.515;
-        double tss, minTss = 0.024, maxTss = 0.972;
-        double chlorophylA, minChlorophylA = -0.744, maxChlorophylA = 124.168;
-        double phycocyanobilin, minPhycocyanobilin = 9.295, maxPhycocyanobilin = 113.817;
-        double voltage, minVoltage = 11.850, maxVoltage = 15.892;
+        double conductivity =0.0, minConductivity = 0.381, maxConductivity = 0.900;
+        double turbidity=0.0, minTurbidity = 4.28, maxTurbidity = 243.035;
+        double salinity=0.0, minSalinity = 0.184, maxSalinity = 0.43;
+        double tds=0.0, minTds = 0.255, maxTds = 0.603;
+        double density=0.0, minDensity = 500.046, maxDensity = 1000.319;
+        double doSaturation=0.0, minDoSaturation = 35.129, maxDoSaturation = 138.515;
+        double tss=0.0, minTss = 0.024, maxTss = 0.972;
+        double chlorophylA=0.0, minChlorophylA = -0.744, maxChlorophylA = 124.168;
+        double phycocyanobilin=0.0, minPhycocyanobilin = 9.295, maxPhycocyanobilin = 113.817;
+        double voltage=0.0, minVoltage = 11.850, maxVoltage = 15.892;
         WaterQuality lastWQ = queryLastWaterQualityByStnId(stnId);
         //数据库里如果已有数据，就在此基础上随机，否则就新随机
         if (lastWQ != null) {
@@ -198,26 +198,29 @@ public class WaterQualityServiceImpl implements WaterQualityService {
             dissolvedOxygen = DataUtil.adjustData(lastWQ.getDissolvedOxygen(), maxDissolvedOxygen,
                     minDissolvedOxygen);
             redox = DataUtil.adjustData(lastWQ.getRedox(), maxRedox, minRedox);
-            transparency = DataUtil.adjustData(lastWQ.getTransparency(),maxTransparency,minTransparency);
-            conductivity = DataUtil.adjustData(lastWQ.getConductivity(), maxConductivity, minConductivity);
-            turbidity = DataUtil.adjustData(lastWQ.getTurbidity(), maxTurbidity, minTurbidity);
-            salinity = DataUtil.adjustData(lastWQ.getSalinity(), maxSalinity, minSalinity);
-            tds = DataUtil.adjustData(lastWQ.getTds(), maxTds, minTds);
-            density = DataUtil.adjustData(lastWQ.getDensity(), maxDensity, minDensity);
-            doSaturation = DataUtil.adjustData(lastWQ.getDoSaturation(), maxDoSaturation,
-                    minDoSaturation);
-            tss = DataUtil.adjustData(lastWQ.getTss(), maxTss, minTss);
-            chlorophylA = DataUtil.adjustData(lastWQ.getChlorophylA(), maxChlorophylA,
-                    minChlorophylA);
-            phycocyanobilin = DataUtil.adjustData(lastWQ.getPhycocyanobilin(), maxPhycocyanobilin,
-                    minPhycocyanobilin);
-            voltage = DataUtil.adjustData(lastWQ.getVoltage(), maxVoltage, minVoltage);
+            transparency = DataUtil.adjustData(lastWQ.getTransparency(), maxTransparency, minTransparency);
+
+            if (stnId ==7){
+                conductivity = DataUtil.adjustData(lastWQ.getConductivity(), maxConductivity, minConductivity);
+                turbidity = DataUtil.adjustData(lastWQ.getTurbidity(), maxTurbidity, minTurbidity);
+                salinity = DataUtil.adjustData(lastWQ.getSalinity(), maxSalinity, minSalinity);
+                tds = DataUtil.adjustData(lastWQ.getTds(), maxTds, minTds);
+                density = DataUtil.adjustData(lastWQ.getDensity(), maxDensity, minDensity);
+                doSaturation = DataUtil.adjustData(lastWQ.getDoSaturation(), maxDoSaturation,
+                        minDoSaturation);
+                tss = DataUtil.adjustData(lastWQ.getTss(), maxTss, minTss);
+                chlorophylA = DataUtil.adjustData(lastWQ.getChlorophylA(), maxChlorophylA,
+                        minChlorophylA);
+                phycocyanobilin = DataUtil.adjustData(lastWQ.getPhycocyanobilin(), maxPhycocyanobilin,
+                        minPhycocyanobilin);
+                voltage = DataUtil.adjustData(lastWQ.getVoltage(), maxVoltage, minVoltage);
+            }
         } else {
             temper = Double.toString(DataUtil.getRandom(maxTemper, minTemper));
             ph = DataUtil.getRandom(maxPh, minPh);
             dissolvedOxygen = DataUtil.getRandom(maxDissolvedOxygen, minDissolvedOxygen);
             redox = DataUtil.getRandom(maxRedox, minRedox);
-            transparency = DataUtil.getRandom(maxTransparency,minTransparency);
+            transparency = DataUtil.getRandom(maxTransparency, minTransparency);
             conductivity = DataUtil.getRandom(maxConductivity, minConductivity);
             turbidity = DataUtil.getRandom(maxTurbidity, minTurbidity);
             salinity = DataUtil.getRandom(maxSalinity, minSalinity);
@@ -231,11 +234,21 @@ public class WaterQualityServiceImpl implements WaterQualityService {
         }
 
         String wqTime = DateUtil.parseDate(new Date());//获取当前时间
+        WaterQuality waterQuality = new WaterQuality();
+        if (stnId == 1) {//1号站点只生成而温度、ph、溶氧、氧化还原、时间这几个参数
+            waterQuality =
+                    new WaterQuality(stnId, temper, ph, dissolvedOxygen, redox, transparency, null,
+                            null, null, wqTime, wqTime, null, null, null, null, null,
+                            null, null, null, null, null, null, null, null);
 
-        WaterQuality waterQuality =
-                new WaterQuality(stnId, temper, ph, dissolvedOxygen, redox, transparency, conductivity,
-                        turbidity, 0.0, wqTime, wqTime, "1", "v", "", salinity, tds,
-                        density, doSaturation, tss, chlorophylA, phycocyanobilin, 0.0, 0.0, voltage);
+
+        } else {
+            waterQuality =
+                    new WaterQuality(stnId, temper, ph, dissolvedOxygen, redox, transparency, conductivity,
+                            turbidity, 0.0, wqTime, wqTime, "1", "v", "", salinity, tds,
+                            density, doSaturation, tss, chlorophylA, phycocyanobilin, 0.0, 0.0, voltage);
+
+        }
         return waterQuality;
     }
 

@@ -245,4 +245,15 @@ public class FlowController {
         return "{\"msg\" : \"暂时无法获取断面图数据\"}";
     }
 
+    /**
+     * 采集数据
+     * @return
+     */
+    @RequestMapping(value = "/collectData",method = RequestMethod.GET)
+    @ResponseBody
+    public int collectData(){
+        int res = flowService.generateData();
+        return res;
+    }
+
 }

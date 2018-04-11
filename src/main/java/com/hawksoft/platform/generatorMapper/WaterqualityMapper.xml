@@ -1,0 +1,1636 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hawksoft.platform.generatorMapper.WaterqualityMapper">
+  <resultMap id="BaseResultMap" type="com.hawksoft.platform.generatorPojo.Waterquality">
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="stnId" jdbcType="INTEGER" property="stnid" />
+    <result column="temperature" jdbcType="VARCHAR" property="temperature" />
+    <result column="conductivity" jdbcType="DECIMAL" property="conductivity" />
+    <result column="salinity" jdbcType="DECIMAL" property="salinity" />
+    <result column="tds" jdbcType="DECIMAL" property="tds" />
+    <result column="density" jdbcType="DECIMAL" property="density" />
+    <result column="ph" jdbcType="DECIMAL" property="ph" />
+    <result column="dissolvedOxygen" jdbcType="DECIMAL" property="dissolvedoxygen" />
+    <result column="doSaturation" jdbcType="DECIMAL" property="dosaturation" />
+    <result column="redox" jdbcType="DECIMAL" property="redox" />
+    <result column="turbidity" jdbcType="DECIMAL" property="turbidity" />
+    <result column="tss" jdbcType="DECIMAL" property="tss" />
+    <result column="chlorophylA" jdbcType="DECIMAL" property="chlorophyla" />
+    <result column="phycocyanobilin" jdbcType="DECIMAL" property="phycocyanobilin" />
+    <result column="hatchOpen" jdbcType="DECIMAL" property="hatchopen" />
+    <result column="waterPenetration" jdbcType="DECIMAL" property="waterpenetration" />
+    <result column="voltage" jdbcType="DECIMAL" property="voltage" />
+    <result column="transparency" jdbcType="DECIMAL" property="transparency" />
+    <result column="NH3" jdbcType="DECIMAL" property="nh3" />
+    <result column="collectionTime" jdbcType="TIMESTAMP" property="collectiontime" />
+    <result column="instockTime" jdbcType="TIMESTAMP" property="instocktime" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="picOrVideo" jdbcType="CHAR" property="picorvideo" />
+    <result column="FilePath" jdbcType="VARCHAR" property="filepath" />
+  </resultMap>
+  <insert id="insert" parameterType="com.hawksoft.platform.generatorPojo.Waterquality">
+    insert into waterquality (id, stnId, temperature, 
+      conductivity, salinity, tds, 
+      density, ph, dissolvedOxygen, 
+      doSaturation, redox, turbidity, 
+      tss, chlorophylA, phycocyanobilin, 
+      hatchOpen, waterPenetration, voltage, 
+      transparency, NH3, collectionTime, 
+      instockTime, state, picOrVideo, 
+      FilePath)
+    values (#{id,jdbcType=BIGINT}, #{stnid,jdbcType=INTEGER}, #{temperature,jdbcType=VARCHAR}, 
+      #{conductivity,jdbcType=DECIMAL}, #{salinity,jdbcType=DECIMAL}, #{tds,jdbcType=DECIMAL}, 
+      #{density,jdbcType=DECIMAL}, #{ph,jdbcType=DECIMAL}, #{dissolvedoxygen,jdbcType=DECIMAL}, 
+      #{dosaturation,jdbcType=DECIMAL}, #{redox,jdbcType=DECIMAL}, #{turbidity,jdbcType=DECIMAL}, 
+      #{tss,jdbcType=DECIMAL}, #{chlorophyla,jdbcType=DECIMAL}, #{phycocyanobilin,jdbcType=DECIMAL}, 
+      #{hatchopen,jdbcType=DECIMAL}, #{waterpenetration,jdbcType=DECIMAL}, #{voltage,jdbcType=DECIMAL}, 
+      #{transparency,jdbcType=DECIMAL}, #{nh3,jdbcType=DECIMAL}, #{collectiontime,jdbcType=TIMESTAMP}, 
+      #{instocktime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER}, #{picorvideo,jdbcType=CHAR}, 
+      #{filepath,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hawksoft.platform.generatorPojo.Waterquality">
+    insert into waterquality
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="stnid != null">
+        stnId,
+      </if>
+      <if test="temperature != null">
+        temperature,
+      </if>
+      <if test="conductivity != null">
+        conductivity,
+      </if>
+      <if test="salinity != null">
+        salinity,
+      </if>
+      <if test="tds != null">
+        tds,
+      </if>
+      <if test="density != null">
+        density,
+      </if>
+      <if test="ph != null">
+        ph,
+      </if>
+      <if test="dissolvedoxygen != null">
+        dissolvedOxygen,
+      </if>
+      <if test="dosaturation != null">
+        doSaturation,
+      </if>
+      <if test="redox != null">
+        redox,
+      </if>
+      <if test="turbidity != null">
+        turbidity,
+      </if>
+      <if test="tss != null">
+        tss,
+      </if>
+      <if test="chlorophyla != null">
+        chlorophylA,
+      </if>
+      <if test="phycocyanobilin != null">
+        phycocyanobilin,
+      </if>
+      <if test="hatchopen != null">
+        hatchOpen,
+      </if>
+      <if test="waterpenetration != null">
+        waterPenetration,
+      </if>
+      <if test="voltage != null">
+        voltage,
+      </if>
+      <if test="transparency != null">
+        transparency,
+      </if>
+      <if test="nh3 != null">
+        NH3,
+      </if>
+      <if test="collectiontime != null">
+        collectionTime,
+      </if>
+      <if test="instocktime != null">
+        instockTime,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="picorvideo != null">
+        picOrVideo,
+      </if>
+      <if test="filepath != null">
+        FilePath,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="stnid != null">
+        #{stnid,jdbcType=INTEGER},
+      </if>
+      <if test="temperature != null">
+        #{temperature,jdbcType=VARCHAR},
+      </if>
+      <if test="conductivity != null">
+        #{conductivity,jdbcType=DECIMAL},
+      </if>
+      <if test="salinity != null">
+        #{salinity,jdbcType=DECIMAL},
+      </if>
+      <if test="tds != null">
+        #{tds,jdbcType=DECIMAL},
+      </if>
+      <if test="density != null">
+        #{density,jdbcType=DECIMAL},
+      </if>
+      <if test="ph != null">
+        #{ph,jdbcType=DECIMAL},
+      </if>
+      <if test="dissolvedoxygen != null">
+        #{dissolvedoxygen,jdbcType=DECIMAL},
+      </if>
+      <if test="dosaturation != null">
+        #{dosaturation,jdbcType=DECIMAL},
+      </if>
+      <if test="redox != null">
+        #{redox,jdbcType=DECIMAL},
+      </if>
+      <if test="turbidity != null">
+        #{turbidity,jdbcType=DECIMAL},
+      </if>
+      <if test="tss != null">
+        #{tss,jdbcType=DECIMAL},
+      </if>
+      <if test="chlorophyla != null">
+        #{chlorophyla,jdbcType=DECIMAL},
+      </if>
+      <if test="phycocyanobilin != null">
+        #{phycocyanobilin,jdbcType=DECIMAL},
+      </if>
+      <if test="hatchopen != null">
+        #{hatchopen,jdbcType=DECIMAL},
+      </if>
+      <if test="waterpenetration != null">
+        #{waterpenetration,jdbcType=DECIMAL},
+      </if>
+      <if test="voltage != null">
+        #{voltage,jdbcType=DECIMAL},
+      </if>
+      <if test="transparency != null">
+        #{transparency,jdbcType=DECIMAL},
+      </if>
+      <if test="nh3 != null">
+        #{nh3,jdbcType=DECIMAL},
+      </if>
+      <if test="collectiontime != null">
+        #{collectiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="instocktime != null">
+        #{instocktime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="picorvideo != null">
+        #{picorvideo,jdbcType=CHAR},
+      </if>
+      <if test="filepath != null">
+        #{filepath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <resultMap id="BaseResultMap" type="com.hawksoft.platform.generatorPojo.Waterquality">
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="stnId" jdbcType="INTEGER" property="stnid" />
+    <result column="temperature" jdbcType="VARCHAR" property="temperature" />
+    <result column="conductivity" jdbcType="DECIMAL" property="conductivity" />
+    <result column="salinity" jdbcType="DECIMAL" property="salinity" />
+    <result column="tds" jdbcType="DECIMAL" property="tds" />
+    <result column="density" jdbcType="DECIMAL" property="density" />
+    <result column="ph" jdbcType="DECIMAL" property="ph" />
+    <result column="dissolvedOxygen" jdbcType="DECIMAL" property="dissolvedoxygen" />
+    <result column="doSaturation" jdbcType="DECIMAL" property="dosaturation" />
+    <result column="redox" jdbcType="DECIMAL" property="redox" />
+    <result column="turbidity" jdbcType="DECIMAL" property="turbidity" />
+    <result column="tss" jdbcType="DECIMAL" property="tss" />
+    <result column="chlorophylA" jdbcType="DECIMAL" property="chlorophyla" />
+    <result column="phycocyanobilin" jdbcType="DECIMAL" property="phycocyanobilin" />
+    <result column="hatchOpen" jdbcType="DECIMAL" property="hatchopen" />
+    <result column="waterPenetration" jdbcType="DECIMAL" property="waterpenetration" />
+    <result column="voltage" jdbcType="DECIMAL" property="voltage" />
+    <result column="transparency" jdbcType="DECIMAL" property="transparency" />
+    <result column="NH3" jdbcType="DECIMAL" property="nh3" />
+    <result column="collectionTime" jdbcType="TIMESTAMP" property="collectiontime" />
+    <result column="instockTime" jdbcType="TIMESTAMP" property="instocktime" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="picOrVideo" jdbcType="CHAR" property="picorvideo" />
+    <result column="FilePath" jdbcType="VARCHAR" property="filepath" />
+  </resultMap>
+  <insert id="insert" parameterType="com.hawksoft.platform.generatorPojo.Waterquality">
+    insert into waterquality (id, stnId, temperature, 
+      conductivity, salinity, tds, 
+      density, ph, dissolvedOxygen, 
+      doSaturation, redox, turbidity, 
+      tss, chlorophylA, phycocyanobilin, 
+      hatchOpen, waterPenetration, voltage, 
+      transparency, NH3, collectionTime, 
+      instockTime, state, picOrVideo, 
+      FilePath)
+    values (#{id,jdbcType=BIGINT}, #{stnid,jdbcType=INTEGER}, #{temperature,jdbcType=VARCHAR}, 
+      #{conductivity,jdbcType=DECIMAL}, #{salinity,jdbcType=DECIMAL}, #{tds,jdbcType=DECIMAL}, 
+      #{density,jdbcType=DECIMAL}, #{ph,jdbcType=DECIMAL}, #{dissolvedoxygen,jdbcType=DECIMAL}, 
+      #{dosaturation,jdbcType=DECIMAL}, #{redox,jdbcType=DECIMAL}, #{turbidity,jdbcType=DECIMAL}, 
+      #{tss,jdbcType=DECIMAL}, #{chlorophyla,jdbcType=DECIMAL}, #{phycocyanobilin,jdbcType=DECIMAL}, 
+      #{hatchopen,jdbcType=DECIMAL}, #{waterpenetration,jdbcType=DECIMAL}, #{voltage,jdbcType=DECIMAL}, 
+      #{transparency,jdbcType=DECIMAL}, #{nh3,jdbcType=DECIMAL}, #{collectiontime,jdbcType=TIMESTAMP}, 
+      #{instocktime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER}, #{picorvideo,jdbcType=CHAR}, 
+      #{filepath,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hawksoft.platform.generatorPojo.Waterquality">
+    insert into waterquality
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="stnid != null">
+        stnId,
+      </if>
+      <if test="temperature != null">
+        temperature,
+      </if>
+      <if test="conductivity != null">
+        conductivity,
+      </if>
+      <if test="salinity != null">
+        salinity,
+      </if>
+      <if test="tds != null">
+        tds,
+      </if>
+      <if test="density != null">
+        density,
+      </if>
+      <if test="ph != null">
+        ph,
+      </if>
+      <if test="dissolvedoxygen != null">
+        dissolvedOxygen,
+      </if>
+      <if test="dosaturation != null">
+        doSaturation,
+      </if>
+      <if test="redox != null">
+        redox,
+      </if>
+      <if test="turbidity != null">
+        turbidity,
+      </if>
+      <if test="tss != null">
+        tss,
+      </if>
+      <if test="chlorophyla != null">
+        chlorophylA,
+      </if>
+      <if test="phycocyanobilin != null">
+        phycocyanobilin,
+      </if>
+      <if test="hatchopen != null">
+        hatchOpen,
+      </if>
+      <if test="waterpenetration != null">
+        waterPenetration,
+      </if>
+      <if test="voltage != null">
+        voltage,
+      </if>
+      <if test="transparency != null">
+        transparency,
+      </if>
+      <if test="nh3 != null">
+        NH3,
+      </if>
+      <if test="collectiontime != null">
+        collectionTime,
+      </if>
+      <if test="instocktime != null">
+        instockTime,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="picorvideo != null">
+        picOrVideo,
+      </if>
+      <if test="filepath != null">
+        FilePath,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="stnid != null">
+        #{stnid,jdbcType=INTEGER},
+      </if>
+      <if test="temperature != null">
+        #{temperature,jdbcType=VARCHAR},
+      </if>
+      <if test="conductivity != null">
+        #{conductivity,jdbcType=DECIMAL},
+      </if>
+      <if test="salinity != null">
+        #{salinity,jdbcType=DECIMAL},
+      </if>
+      <if test="tds != null">
+        #{tds,jdbcType=DECIMAL},
+      </if>
+      <if test="density != null">
+        #{density,jdbcType=DECIMAL},
+      </if>
+      <if test="ph != null">
+        #{ph,jdbcType=DECIMAL},
+      </if>
+      <if test="dissolvedoxygen != null">
+        #{dissolvedoxygen,jdbcType=DECIMAL},
+      </if>
+      <if test="dosaturation != null">
+        #{dosaturation,jdbcType=DECIMAL},
+      </if>
+      <if test="redox != null">
+        #{redox,jdbcType=DECIMAL},
+      </if>
+      <if test="turbidity != null">
+        #{turbidity,jdbcType=DECIMAL},
+      </if>
+      <if test="tss != null">
+        #{tss,jdbcType=DECIMAL},
+      </if>
+      <if test="chlorophyla != null">
+        #{chlorophyla,jdbcType=DECIMAL},
+      </if>
+      <if test="phycocyanobilin != null">
+        #{phycocyanobilin,jdbcType=DECIMAL},
+      </if>
+      <if test="hatchopen != null">
+        #{hatchopen,jdbcType=DECIMAL},
+      </if>
+      <if test="waterpenetration != null">
+        #{waterpenetration,jdbcType=DECIMAL},
+      </if>
+      <if test="voltage != null">
+        #{voltage,jdbcType=DECIMAL},
+      </if>
+      <if test="transparency != null">
+        #{transparency,jdbcType=DECIMAL},
+      </if>
+      <if test="nh3 != null">
+        #{nh3,jdbcType=DECIMAL},
+      </if>
+      <if test="collectiontime != null">
+        #{collectiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="instocktime != null">
+        #{instocktime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="picorvideo != null">
+        #{picorvideo,jdbcType=CHAR},
+      </if>
+      <if test="filepath != null">
+        #{filepath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <resultMap id="BaseResultMap" type="com.hawksoft.platform.generatorPojo.Waterquality">
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="stnId" jdbcType="INTEGER" property="stnid" />
+    <result column="temperature" jdbcType="VARCHAR" property="temperature" />
+    <result column="conductivity" jdbcType="DECIMAL" property="conductivity" />
+    <result column="salinity" jdbcType="DECIMAL" property="salinity" />
+    <result column="tds" jdbcType="DECIMAL" property="tds" />
+    <result column="density" jdbcType="DECIMAL" property="density" />
+    <result column="ph" jdbcType="DECIMAL" property="ph" />
+    <result column="dissolvedOxygen" jdbcType="DECIMAL" property="dissolvedoxygen" />
+    <result column="doSaturation" jdbcType="DECIMAL" property="dosaturation" />
+    <result column="redox" jdbcType="DECIMAL" property="redox" />
+    <result column="turbidity" jdbcType="DECIMAL" property="turbidity" />
+    <result column="tss" jdbcType="DECIMAL" property="tss" />
+    <result column="chlorophylA" jdbcType="DECIMAL" property="chlorophyla" />
+    <result column="phycocyanobilin" jdbcType="DECIMAL" property="phycocyanobilin" />
+    <result column="hatchOpen" jdbcType="DECIMAL" property="hatchopen" />
+    <result column="waterPenetration" jdbcType="DECIMAL" property="waterpenetration" />
+    <result column="voltage" jdbcType="DECIMAL" property="voltage" />
+    <result column="transparency" jdbcType="DECIMAL" property="transparency" />
+    <result column="NH3" jdbcType="DECIMAL" property="nh3" />
+    <result column="collectionTime" jdbcType="TIMESTAMP" property="collectiontime" />
+    <result column="instockTime" jdbcType="TIMESTAMP" property="instocktime" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="picOrVideo" jdbcType="CHAR" property="picorvideo" />
+    <result column="FilePath" jdbcType="VARCHAR" property="filepath" />
+  </resultMap>
+  <insert id="insert" parameterType="com.hawksoft.platform.generatorPojo.Waterquality">
+    insert into waterquality (id, stnId, temperature, 
+      conductivity, salinity, tds, 
+      density, ph, dissolvedOxygen, 
+      doSaturation, redox, turbidity, 
+      tss, chlorophylA, phycocyanobilin, 
+      hatchOpen, waterPenetration, voltage, 
+      transparency, NH3, collectionTime, 
+      instockTime, state, picOrVideo, 
+      FilePath)
+    values (#{id,jdbcType=BIGINT}, #{stnid,jdbcType=INTEGER}, #{temperature,jdbcType=VARCHAR}, 
+      #{conductivity,jdbcType=DECIMAL}, #{salinity,jdbcType=DECIMAL}, #{tds,jdbcType=DECIMAL}, 
+      #{density,jdbcType=DECIMAL}, #{ph,jdbcType=DECIMAL}, #{dissolvedoxygen,jdbcType=DECIMAL}, 
+      #{dosaturation,jdbcType=DECIMAL}, #{redox,jdbcType=DECIMAL}, #{turbidity,jdbcType=DECIMAL}, 
+      #{tss,jdbcType=DECIMAL}, #{chlorophyla,jdbcType=DECIMAL}, #{phycocyanobilin,jdbcType=DECIMAL}, 
+      #{hatchopen,jdbcType=DECIMAL}, #{waterpenetration,jdbcType=DECIMAL}, #{voltage,jdbcType=DECIMAL}, 
+      #{transparency,jdbcType=DECIMAL}, #{nh3,jdbcType=DECIMAL}, #{collectiontime,jdbcType=TIMESTAMP}, 
+      #{instocktime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER}, #{picorvideo,jdbcType=CHAR}, 
+      #{filepath,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hawksoft.platform.generatorPojo.Waterquality">
+    insert into waterquality
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="stnid != null">
+        stnId,
+      </if>
+      <if test="temperature != null">
+        temperature,
+      </if>
+      <if test="conductivity != null">
+        conductivity,
+      </if>
+      <if test="salinity != null">
+        salinity,
+      </if>
+      <if test="tds != null">
+        tds,
+      </if>
+      <if test="density != null">
+        density,
+      </if>
+      <if test="ph != null">
+        ph,
+      </if>
+      <if test="dissolvedoxygen != null">
+        dissolvedOxygen,
+      </if>
+      <if test="dosaturation != null">
+        doSaturation,
+      </if>
+      <if test="redox != null">
+        redox,
+      </if>
+      <if test="turbidity != null">
+        turbidity,
+      </if>
+      <if test="tss != null">
+        tss,
+      </if>
+      <if test="chlorophyla != null">
+        chlorophylA,
+      </if>
+      <if test="phycocyanobilin != null">
+        phycocyanobilin,
+      </if>
+      <if test="hatchopen != null">
+        hatchOpen,
+      </if>
+      <if test="waterpenetration != null">
+        waterPenetration,
+      </if>
+      <if test="voltage != null">
+        voltage,
+      </if>
+      <if test="transparency != null">
+        transparency,
+      </if>
+      <if test="nh3 != null">
+        NH3,
+      </if>
+      <if test="collectiontime != null">
+        collectionTime,
+      </if>
+      <if test="instocktime != null">
+        instockTime,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="picorvideo != null">
+        picOrVideo,
+      </if>
+      <if test="filepath != null">
+        FilePath,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="stnid != null">
+        #{stnid,jdbcType=INTEGER},
+      </if>
+      <if test="temperature != null">
+        #{temperature,jdbcType=VARCHAR},
+      </if>
+      <if test="conductivity != null">
+        #{conductivity,jdbcType=DECIMAL},
+      </if>
+      <if test="salinity != null">
+        #{salinity,jdbcType=DECIMAL},
+      </if>
+      <if test="tds != null">
+        #{tds,jdbcType=DECIMAL},
+      </if>
+      <if test="density != null">
+        #{density,jdbcType=DECIMAL},
+      </if>
+      <if test="ph != null">
+        #{ph,jdbcType=DECIMAL},
+      </if>
+      <if test="dissolvedoxygen != null">
+        #{dissolvedoxygen,jdbcType=DECIMAL},
+      </if>
+      <if test="dosaturation != null">
+        #{dosaturation,jdbcType=DECIMAL},
+      </if>
+      <if test="redox != null">
+        #{redox,jdbcType=DECIMAL},
+      </if>
+      <if test="turbidity != null">
+        #{turbidity,jdbcType=DECIMAL},
+      </if>
+      <if test="tss != null">
+        #{tss,jdbcType=DECIMAL},
+      </if>
+      <if test="chlorophyla != null">
+        #{chlorophyla,jdbcType=DECIMAL},
+      </if>
+      <if test="phycocyanobilin != null">
+        #{phycocyanobilin,jdbcType=DECIMAL},
+      </if>
+      <if test="hatchopen != null">
+        #{hatchopen,jdbcType=DECIMAL},
+      </if>
+      <if test="waterpenetration != null">
+        #{waterpenetration,jdbcType=DECIMAL},
+      </if>
+      <if test="voltage != null">
+        #{voltage,jdbcType=DECIMAL},
+      </if>
+      <if test="transparency != null">
+        #{transparency,jdbcType=DECIMAL},
+      </if>
+      <if test="nh3 != null">
+        #{nh3,jdbcType=DECIMAL},
+      </if>
+      <if test="collectiontime != null">
+        #{collectiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="instocktime != null">
+        #{instocktime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="picorvideo != null">
+        #{picorvideo,jdbcType=CHAR},
+      </if>
+      <if test="filepath != null">
+        #{filepath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <resultMap id="BaseResultMap" type="com.hawksoft.platform.generatorPojo.Waterquality">
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="stnId" jdbcType="INTEGER" property="stnid" />
+    <result column="temperature" jdbcType="VARCHAR" property="temperature" />
+    <result column="conductivity" jdbcType="DECIMAL" property="conductivity" />
+    <result column="salinity" jdbcType="DECIMAL" property="salinity" />
+    <result column="tds" jdbcType="DECIMAL" property="tds" />
+    <result column="density" jdbcType="DECIMAL" property="density" />
+    <result column="ph" jdbcType="DECIMAL" property="ph" />
+    <result column="dissolvedOxygen" jdbcType="DECIMAL" property="dissolvedoxygen" />
+    <result column="doSaturation" jdbcType="DECIMAL" property="dosaturation" />
+    <result column="redox" jdbcType="DECIMAL" property="redox" />
+    <result column="turbidity" jdbcType="DECIMAL" property="turbidity" />
+    <result column="tss" jdbcType="DECIMAL" property="tss" />
+    <result column="chlorophylA" jdbcType="DECIMAL" property="chlorophyla" />
+    <result column="phycocyanobilin" jdbcType="DECIMAL" property="phycocyanobilin" />
+    <result column="hatchOpen" jdbcType="DECIMAL" property="hatchopen" />
+    <result column="waterPenetration" jdbcType="DECIMAL" property="waterpenetration" />
+    <result column="voltage" jdbcType="DECIMAL" property="voltage" />
+    <result column="transparency" jdbcType="DECIMAL" property="transparency" />
+    <result column="NH3" jdbcType="DECIMAL" property="nh3" />
+    <result column="collectionTime" jdbcType="TIMESTAMP" property="collectiontime" />
+    <result column="instockTime" jdbcType="TIMESTAMP" property="instocktime" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="picOrVideo" jdbcType="CHAR" property="picorvideo" />
+    <result column="FilePath" jdbcType="VARCHAR" property="filepath" />
+  </resultMap>
+  <insert id="insert" parameterType="com.hawksoft.platform.generatorPojo.Waterquality">
+    insert into waterquality (id, stnId, temperature, 
+      conductivity, salinity, tds, 
+      density, ph, dissolvedOxygen, 
+      doSaturation, redox, turbidity, 
+      tss, chlorophylA, phycocyanobilin, 
+      hatchOpen, waterPenetration, voltage, 
+      transparency, NH3, collectionTime, 
+      instockTime, state, picOrVideo, 
+      FilePath)
+    values (#{id,jdbcType=BIGINT}, #{stnid,jdbcType=INTEGER}, #{temperature,jdbcType=VARCHAR}, 
+      #{conductivity,jdbcType=DECIMAL}, #{salinity,jdbcType=DECIMAL}, #{tds,jdbcType=DECIMAL}, 
+      #{density,jdbcType=DECIMAL}, #{ph,jdbcType=DECIMAL}, #{dissolvedoxygen,jdbcType=DECIMAL}, 
+      #{dosaturation,jdbcType=DECIMAL}, #{redox,jdbcType=DECIMAL}, #{turbidity,jdbcType=DECIMAL}, 
+      #{tss,jdbcType=DECIMAL}, #{chlorophyla,jdbcType=DECIMAL}, #{phycocyanobilin,jdbcType=DECIMAL}, 
+      #{hatchopen,jdbcType=DECIMAL}, #{waterpenetration,jdbcType=DECIMAL}, #{voltage,jdbcType=DECIMAL}, 
+      #{transparency,jdbcType=DECIMAL}, #{nh3,jdbcType=DECIMAL}, #{collectiontime,jdbcType=TIMESTAMP}, 
+      #{instocktime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER}, #{picorvideo,jdbcType=CHAR}, 
+      #{filepath,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hawksoft.platform.generatorPojo.Waterquality">
+    insert into waterquality
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="stnid != null">
+        stnId,
+      </if>
+      <if test="temperature != null">
+        temperature,
+      </if>
+      <if test="conductivity != null">
+        conductivity,
+      </if>
+      <if test="salinity != null">
+        salinity,
+      </if>
+      <if test="tds != null">
+        tds,
+      </if>
+      <if test="density != null">
+        density,
+      </if>
+      <if test="ph != null">
+        ph,
+      </if>
+      <if test="dissolvedoxygen != null">
+        dissolvedOxygen,
+      </if>
+      <if test="dosaturation != null">
+        doSaturation,
+      </if>
+      <if test="redox != null">
+        redox,
+      </if>
+      <if test="turbidity != null">
+        turbidity,
+      </if>
+      <if test="tss != null">
+        tss,
+      </if>
+      <if test="chlorophyla != null">
+        chlorophylA,
+      </if>
+      <if test="phycocyanobilin != null">
+        phycocyanobilin,
+      </if>
+      <if test="hatchopen != null">
+        hatchOpen,
+      </if>
+      <if test="waterpenetration != null">
+        waterPenetration,
+      </if>
+      <if test="voltage != null">
+        voltage,
+      </if>
+      <if test="transparency != null">
+        transparency,
+      </if>
+      <if test="nh3 != null">
+        NH3,
+      </if>
+      <if test="collectiontime != null">
+        collectionTime,
+      </if>
+      <if test="instocktime != null">
+        instockTime,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="picorvideo != null">
+        picOrVideo,
+      </if>
+      <if test="filepath != null">
+        FilePath,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="stnid != null">
+        #{stnid,jdbcType=INTEGER},
+      </if>
+      <if test="temperature != null">
+        #{temperature,jdbcType=VARCHAR},
+      </if>
+      <if test="conductivity != null">
+        #{conductivity,jdbcType=DECIMAL},
+      </if>
+      <if test="salinity != null">
+        #{salinity,jdbcType=DECIMAL},
+      </if>
+      <if test="tds != null">
+        #{tds,jdbcType=DECIMAL},
+      </if>
+      <if test="density != null">
+        #{density,jdbcType=DECIMAL},
+      </if>
+      <if test="ph != null">
+        #{ph,jdbcType=DECIMAL},
+      </if>
+      <if test="dissolvedoxygen != null">
+        #{dissolvedoxygen,jdbcType=DECIMAL},
+      </if>
+      <if test="dosaturation != null">
+        #{dosaturation,jdbcType=DECIMAL},
+      </if>
+      <if test="redox != null">
+        #{redox,jdbcType=DECIMAL},
+      </if>
+      <if test="turbidity != null">
+        #{turbidity,jdbcType=DECIMAL},
+      </if>
+      <if test="tss != null">
+        #{tss,jdbcType=DECIMAL},
+      </if>
+      <if test="chlorophyla != null">
+        #{chlorophyla,jdbcType=DECIMAL},
+      </if>
+      <if test="phycocyanobilin != null">
+        #{phycocyanobilin,jdbcType=DECIMAL},
+      </if>
+      <if test="hatchopen != null">
+        #{hatchopen,jdbcType=DECIMAL},
+      </if>
+      <if test="waterpenetration != null">
+        #{waterpenetration,jdbcType=DECIMAL},
+      </if>
+      <if test="voltage != null">
+        #{voltage,jdbcType=DECIMAL},
+      </if>
+      <if test="transparency != null">
+        #{transparency,jdbcType=DECIMAL},
+      </if>
+      <if test="nh3 != null">
+        #{nh3,jdbcType=DECIMAL},
+      </if>
+      <if test="collectiontime != null">
+        #{collectiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="instocktime != null">
+        #{instocktime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="picorvideo != null">
+        #{picorvideo,jdbcType=CHAR},
+      </if>
+      <if test="filepath != null">
+        #{filepath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <resultMap id="BaseResultMap" type="com.hawksoft.platform.generatorPojo.Waterquality">
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="stnId" jdbcType="INTEGER" property="stnid" />
+    <result column="temperature" jdbcType="VARCHAR" property="temperature" />
+    <result column="conductivity" jdbcType="DECIMAL" property="conductivity" />
+    <result column="salinity" jdbcType="DECIMAL" property="salinity" />
+    <result column="tds" jdbcType="DECIMAL" property="tds" />
+    <result column="density" jdbcType="DECIMAL" property="density" />
+    <result column="ph" jdbcType="DECIMAL" property="ph" />
+    <result column="dissolvedOxygen" jdbcType="DECIMAL" property="dissolvedoxygen" />
+    <result column="doSaturation" jdbcType="DECIMAL" property="dosaturation" />
+    <result column="redox" jdbcType="DECIMAL" property="redox" />
+    <result column="turbidity" jdbcType="DECIMAL" property="turbidity" />
+    <result column="tss" jdbcType="DECIMAL" property="tss" />
+    <result column="chlorophylA" jdbcType="DECIMAL" property="chlorophyla" />
+    <result column="phycocyanobilin" jdbcType="DECIMAL" property="phycocyanobilin" />
+    <result column="hatchOpen" jdbcType="DECIMAL" property="hatchopen" />
+    <result column="waterPenetration" jdbcType="DECIMAL" property="waterpenetration" />
+    <result column="voltage" jdbcType="DECIMAL" property="voltage" />
+    <result column="transparency" jdbcType="DECIMAL" property="transparency" />
+    <result column="NH3" jdbcType="DECIMAL" property="nh3" />
+    <result column="collectionTime" jdbcType="TIMESTAMP" property="collectiontime" />
+    <result column="instockTime" jdbcType="TIMESTAMP" property="instocktime" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="picOrVideo" jdbcType="CHAR" property="picorvideo" />
+    <result column="FilePath" jdbcType="VARCHAR" property="filepath" />
+  </resultMap>
+  <insert id="insert" parameterType="com.hawksoft.platform.generatorPojo.Waterquality">
+    insert into waterquality (id, stnId, temperature, 
+      conductivity, salinity, tds, 
+      density, ph, dissolvedOxygen, 
+      doSaturation, redox, turbidity, 
+      tss, chlorophylA, phycocyanobilin, 
+      hatchOpen, waterPenetration, voltage, 
+      transparency, NH3, collectionTime, 
+      instockTime, state, picOrVideo, 
+      FilePath)
+    values (#{id,jdbcType=BIGINT}, #{stnid,jdbcType=INTEGER}, #{temperature,jdbcType=VARCHAR}, 
+      #{conductivity,jdbcType=DECIMAL}, #{salinity,jdbcType=DECIMAL}, #{tds,jdbcType=DECIMAL}, 
+      #{density,jdbcType=DECIMAL}, #{ph,jdbcType=DECIMAL}, #{dissolvedoxygen,jdbcType=DECIMAL}, 
+      #{dosaturation,jdbcType=DECIMAL}, #{redox,jdbcType=DECIMAL}, #{turbidity,jdbcType=DECIMAL}, 
+      #{tss,jdbcType=DECIMAL}, #{chlorophyla,jdbcType=DECIMAL}, #{phycocyanobilin,jdbcType=DECIMAL}, 
+      #{hatchopen,jdbcType=DECIMAL}, #{waterpenetration,jdbcType=DECIMAL}, #{voltage,jdbcType=DECIMAL}, 
+      #{transparency,jdbcType=DECIMAL}, #{nh3,jdbcType=DECIMAL}, #{collectiontime,jdbcType=TIMESTAMP}, 
+      #{instocktime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER}, #{picorvideo,jdbcType=CHAR}, 
+      #{filepath,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hawksoft.platform.generatorPojo.Waterquality">
+    insert into waterquality
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="stnid != null">
+        stnId,
+      </if>
+      <if test="temperature != null">
+        temperature,
+      </if>
+      <if test="conductivity != null">
+        conductivity,
+      </if>
+      <if test="salinity != null">
+        salinity,
+      </if>
+      <if test="tds != null">
+        tds,
+      </if>
+      <if test="density != null">
+        density,
+      </if>
+      <if test="ph != null">
+        ph,
+      </if>
+      <if test="dissolvedoxygen != null">
+        dissolvedOxygen,
+      </if>
+      <if test="dosaturation != null">
+        doSaturation,
+      </if>
+      <if test="redox != null">
+        redox,
+      </if>
+      <if test="turbidity != null">
+        turbidity,
+      </if>
+      <if test="tss != null">
+        tss,
+      </if>
+      <if test="chlorophyla != null">
+        chlorophylA,
+      </if>
+      <if test="phycocyanobilin != null">
+        phycocyanobilin,
+      </if>
+      <if test="hatchopen != null">
+        hatchOpen,
+      </if>
+      <if test="waterpenetration != null">
+        waterPenetration,
+      </if>
+      <if test="voltage != null">
+        voltage,
+      </if>
+      <if test="transparency != null">
+        transparency,
+      </if>
+      <if test="nh3 != null">
+        NH3,
+      </if>
+      <if test="collectiontime != null">
+        collectionTime,
+      </if>
+      <if test="instocktime != null">
+        instockTime,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="picorvideo != null">
+        picOrVideo,
+      </if>
+      <if test="filepath != null">
+        FilePath,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="stnid != null">
+        #{stnid,jdbcType=INTEGER},
+      </if>
+      <if test="temperature != null">
+        #{temperature,jdbcType=VARCHAR},
+      </if>
+      <if test="conductivity != null">
+        #{conductivity,jdbcType=DECIMAL},
+      </if>
+      <if test="salinity != null">
+        #{salinity,jdbcType=DECIMAL},
+      </if>
+      <if test="tds != null">
+        #{tds,jdbcType=DECIMAL},
+      </if>
+      <if test="density != null">
+        #{density,jdbcType=DECIMAL},
+      </if>
+      <if test="ph != null">
+        #{ph,jdbcType=DECIMAL},
+      </if>
+      <if test="dissolvedoxygen != null">
+        #{dissolvedoxygen,jdbcType=DECIMAL},
+      </if>
+      <if test="dosaturation != null">
+        #{dosaturation,jdbcType=DECIMAL},
+      </if>
+      <if test="redox != null">
+        #{redox,jdbcType=DECIMAL},
+      </if>
+      <if test="turbidity != null">
+        #{turbidity,jdbcType=DECIMAL},
+      </if>
+      <if test="tss != null">
+        #{tss,jdbcType=DECIMAL},
+      </if>
+      <if test="chlorophyla != null">
+        #{chlorophyla,jdbcType=DECIMAL},
+      </if>
+      <if test="phycocyanobilin != null">
+        #{phycocyanobilin,jdbcType=DECIMAL},
+      </if>
+      <if test="hatchopen != null">
+        #{hatchopen,jdbcType=DECIMAL},
+      </if>
+      <if test="waterpenetration != null">
+        #{waterpenetration,jdbcType=DECIMAL},
+      </if>
+      <if test="voltage != null">
+        #{voltage,jdbcType=DECIMAL},
+      </if>
+      <if test="transparency != null">
+        #{transparency,jdbcType=DECIMAL},
+      </if>
+      <if test="nh3 != null">
+        #{nh3,jdbcType=DECIMAL},
+      </if>
+      <if test="collectiontime != null">
+        #{collectiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="instocktime != null">
+        #{instocktime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="picorvideo != null">
+        #{picorvideo,jdbcType=CHAR},
+      </if>
+      <if test="filepath != null">
+        #{filepath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <resultMap id="BaseResultMap" type="com.hawksoft.platform.generatorPojo.Waterquality">
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="stnId" jdbcType="INTEGER" property="stnid" />
+    <result column="temperature" jdbcType="VARCHAR" property="temperature" />
+    <result column="conductivity" jdbcType="DECIMAL" property="conductivity" />
+    <result column="salinity" jdbcType="DECIMAL" property="salinity" />
+    <result column="tds" jdbcType="DECIMAL" property="tds" />
+    <result column="density" jdbcType="DECIMAL" property="density" />
+    <result column="ph" jdbcType="DECIMAL" property="ph" />
+    <result column="dissolvedOxygen" jdbcType="DECIMAL" property="dissolvedoxygen" />
+    <result column="doSaturation" jdbcType="DECIMAL" property="dosaturation" />
+    <result column="redox" jdbcType="DECIMAL" property="redox" />
+    <result column="turbidity" jdbcType="DECIMAL" property="turbidity" />
+    <result column="tss" jdbcType="DECIMAL" property="tss" />
+    <result column="chlorophylA" jdbcType="DECIMAL" property="chlorophyla" />
+    <result column="phycocyanobilin" jdbcType="DECIMAL" property="phycocyanobilin" />
+    <result column="hatchOpen" jdbcType="DECIMAL" property="hatchopen" />
+    <result column="waterPenetration" jdbcType="DECIMAL" property="waterpenetration" />
+    <result column="voltage" jdbcType="DECIMAL" property="voltage" />
+    <result column="transparency" jdbcType="DECIMAL" property="transparency" />
+    <result column="NH3" jdbcType="DECIMAL" property="nh3" />
+    <result column="collectionTime" jdbcType="TIMESTAMP" property="collectiontime" />
+    <result column="instockTime" jdbcType="TIMESTAMP" property="instocktime" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="picOrVideo" jdbcType="CHAR" property="picorvideo" />
+    <result column="FilePath" jdbcType="VARCHAR" property="filepath" />
+  </resultMap>
+  <insert id="insert" parameterType="com.hawksoft.platform.generatorPojo.Waterquality">
+    insert into waterquality (id, stnId, temperature, 
+      conductivity, salinity, tds, 
+      density, ph, dissolvedOxygen, 
+      doSaturation, redox, turbidity, 
+      tss, chlorophylA, phycocyanobilin, 
+      hatchOpen, waterPenetration, voltage, 
+      transparency, NH3, collectionTime, 
+      instockTime, state, picOrVideo, 
+      FilePath)
+    values (#{id,jdbcType=BIGINT}, #{stnid,jdbcType=INTEGER}, #{temperature,jdbcType=VARCHAR}, 
+      #{conductivity,jdbcType=DECIMAL}, #{salinity,jdbcType=DECIMAL}, #{tds,jdbcType=DECIMAL}, 
+      #{density,jdbcType=DECIMAL}, #{ph,jdbcType=DECIMAL}, #{dissolvedoxygen,jdbcType=DECIMAL}, 
+      #{dosaturation,jdbcType=DECIMAL}, #{redox,jdbcType=DECIMAL}, #{turbidity,jdbcType=DECIMAL}, 
+      #{tss,jdbcType=DECIMAL}, #{chlorophyla,jdbcType=DECIMAL}, #{phycocyanobilin,jdbcType=DECIMAL}, 
+      #{hatchopen,jdbcType=DECIMAL}, #{waterpenetration,jdbcType=DECIMAL}, #{voltage,jdbcType=DECIMAL}, 
+      #{transparency,jdbcType=DECIMAL}, #{nh3,jdbcType=DECIMAL}, #{collectiontime,jdbcType=TIMESTAMP}, 
+      #{instocktime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER}, #{picorvideo,jdbcType=CHAR}, 
+      #{filepath,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hawksoft.platform.generatorPojo.Waterquality">
+    insert into waterquality
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="stnid != null">
+        stnId,
+      </if>
+      <if test="temperature != null">
+        temperature,
+      </if>
+      <if test="conductivity != null">
+        conductivity,
+      </if>
+      <if test="salinity != null">
+        salinity,
+      </if>
+      <if test="tds != null">
+        tds,
+      </if>
+      <if test="density != null">
+        density,
+      </if>
+      <if test="ph != null">
+        ph,
+      </if>
+      <if test="dissolvedoxygen != null">
+        dissolvedOxygen,
+      </if>
+      <if test="dosaturation != null">
+        doSaturation,
+      </if>
+      <if test="redox != null">
+        redox,
+      </if>
+      <if test="turbidity != null">
+        turbidity,
+      </if>
+      <if test="tss != null">
+        tss,
+      </if>
+      <if test="chlorophyla != null">
+        chlorophylA,
+      </if>
+      <if test="phycocyanobilin != null">
+        phycocyanobilin,
+      </if>
+      <if test="hatchopen != null">
+        hatchOpen,
+      </if>
+      <if test="waterpenetration != null">
+        waterPenetration,
+      </if>
+      <if test="voltage != null">
+        voltage,
+      </if>
+      <if test="transparency != null">
+        transparency,
+      </if>
+      <if test="nh3 != null">
+        NH3,
+      </if>
+      <if test="collectiontime != null">
+        collectionTime,
+      </if>
+      <if test="instocktime != null">
+        instockTime,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="picorvideo != null">
+        picOrVideo,
+      </if>
+      <if test="filepath != null">
+        FilePath,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="stnid != null">
+        #{stnid,jdbcType=INTEGER},
+      </if>
+      <if test="temperature != null">
+        #{temperature,jdbcType=VARCHAR},
+      </if>
+      <if test="conductivity != null">
+        #{conductivity,jdbcType=DECIMAL},
+      </if>
+      <if test="salinity != null">
+        #{salinity,jdbcType=DECIMAL},
+      </if>
+      <if test="tds != null">
+        #{tds,jdbcType=DECIMAL},
+      </if>
+      <if test="density != null">
+        #{density,jdbcType=DECIMAL},
+      </if>
+      <if test="ph != null">
+        #{ph,jdbcType=DECIMAL},
+      </if>
+      <if test="dissolvedoxygen != null">
+        #{dissolvedoxygen,jdbcType=DECIMAL},
+      </if>
+      <if test="dosaturation != null">
+        #{dosaturation,jdbcType=DECIMAL},
+      </if>
+      <if test="redox != null">
+        #{redox,jdbcType=DECIMAL},
+      </if>
+      <if test="turbidity != null">
+        #{turbidity,jdbcType=DECIMAL},
+      </if>
+      <if test="tss != null">
+        #{tss,jdbcType=DECIMAL},
+      </if>
+      <if test="chlorophyla != null">
+        #{chlorophyla,jdbcType=DECIMAL},
+      </if>
+      <if test="phycocyanobilin != null">
+        #{phycocyanobilin,jdbcType=DECIMAL},
+      </if>
+      <if test="hatchopen != null">
+        #{hatchopen,jdbcType=DECIMAL},
+      </if>
+      <if test="waterpenetration != null">
+        #{waterpenetration,jdbcType=DECIMAL},
+      </if>
+      <if test="voltage != null">
+        #{voltage,jdbcType=DECIMAL},
+      </if>
+      <if test="transparency != null">
+        #{transparency,jdbcType=DECIMAL},
+      </if>
+      <if test="nh3 != null">
+        #{nh3,jdbcType=DECIMAL},
+      </if>
+      <if test="collectiontime != null">
+        #{collectiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="instocktime != null">
+        #{instocktime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="picorvideo != null">
+        #{picorvideo,jdbcType=CHAR},
+      </if>
+      <if test="filepath != null">
+        #{filepath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <resultMap id="BaseResultMap" type="com.hawksoft.platform.generatorPojo.Waterquality">
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="stnId" jdbcType="INTEGER" property="stnid" />
+    <result column="temperature" jdbcType="VARCHAR" property="temperature" />
+    <result column="conductivity" jdbcType="DECIMAL" property="conductivity" />
+    <result column="salinity" jdbcType="DECIMAL" property="salinity" />
+    <result column="tds" jdbcType="DECIMAL" property="tds" />
+    <result column="density" jdbcType="DECIMAL" property="density" />
+    <result column="ph" jdbcType="DECIMAL" property="ph" />
+    <result column="dissolvedOxygen" jdbcType="DECIMAL" property="dissolvedoxygen" />
+    <result column="doSaturation" jdbcType="DECIMAL" property="dosaturation" />
+    <result column="redox" jdbcType="DECIMAL" property="redox" />
+    <result column="turbidity" jdbcType="DECIMAL" property="turbidity" />
+    <result column="tss" jdbcType="DECIMAL" property="tss" />
+    <result column="chlorophylA" jdbcType="DECIMAL" property="chlorophyla" />
+    <result column="phycocyanobilin" jdbcType="DECIMAL" property="phycocyanobilin" />
+    <result column="hatchOpen" jdbcType="DECIMAL" property="hatchopen" />
+    <result column="waterPenetration" jdbcType="DECIMAL" property="waterpenetration" />
+    <result column="voltage" jdbcType="DECIMAL" property="voltage" />
+    <result column="transparency" jdbcType="DECIMAL" property="transparency" />
+    <result column="NH3" jdbcType="DECIMAL" property="nh3" />
+    <result column="collectionTime" jdbcType="TIMESTAMP" property="collectiontime" />
+    <result column="instockTime" jdbcType="TIMESTAMP" property="instocktime" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="picOrVideo" jdbcType="CHAR" property="picorvideo" />
+    <result column="FilePath" jdbcType="VARCHAR" property="filepath" />
+  </resultMap>
+  <insert id="insert" parameterType="com.hawksoft.platform.generatorPojo.Waterquality">
+    insert into waterquality (id, stnId, temperature, 
+      conductivity, salinity, tds, 
+      density, ph, dissolvedOxygen, 
+      doSaturation, redox, turbidity, 
+      tss, chlorophylA, phycocyanobilin, 
+      hatchOpen, waterPenetration, voltage, 
+      transparency, NH3, collectionTime, 
+      instockTime, state, picOrVideo, 
+      FilePath)
+    values (#{id,jdbcType=BIGINT}, #{stnid,jdbcType=INTEGER}, #{temperature,jdbcType=VARCHAR}, 
+      #{conductivity,jdbcType=DECIMAL}, #{salinity,jdbcType=DECIMAL}, #{tds,jdbcType=DECIMAL}, 
+      #{density,jdbcType=DECIMAL}, #{ph,jdbcType=DECIMAL}, #{dissolvedoxygen,jdbcType=DECIMAL}, 
+      #{dosaturation,jdbcType=DECIMAL}, #{redox,jdbcType=DECIMAL}, #{turbidity,jdbcType=DECIMAL}, 
+      #{tss,jdbcType=DECIMAL}, #{chlorophyla,jdbcType=DECIMAL}, #{phycocyanobilin,jdbcType=DECIMAL}, 
+      #{hatchopen,jdbcType=DECIMAL}, #{waterpenetration,jdbcType=DECIMAL}, #{voltage,jdbcType=DECIMAL}, 
+      #{transparency,jdbcType=DECIMAL}, #{nh3,jdbcType=DECIMAL}, #{collectiontime,jdbcType=TIMESTAMP}, 
+      #{instocktime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER}, #{picorvideo,jdbcType=CHAR}, 
+      #{filepath,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hawksoft.platform.generatorPojo.Waterquality">
+    insert into waterquality
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="stnid != null">
+        stnId,
+      </if>
+      <if test="temperature != null">
+        temperature,
+      </if>
+      <if test="conductivity != null">
+        conductivity,
+      </if>
+      <if test="salinity != null">
+        salinity,
+      </if>
+      <if test="tds != null">
+        tds,
+      </if>
+      <if test="density != null">
+        density,
+      </if>
+      <if test="ph != null">
+        ph,
+      </if>
+      <if test="dissolvedoxygen != null">
+        dissolvedOxygen,
+      </if>
+      <if test="dosaturation != null">
+        doSaturation,
+      </if>
+      <if test="redox != null">
+        redox,
+      </if>
+      <if test="turbidity != null">
+        turbidity,
+      </if>
+      <if test="tss != null">
+        tss,
+      </if>
+      <if test="chlorophyla != null">
+        chlorophylA,
+      </if>
+      <if test="phycocyanobilin != null">
+        phycocyanobilin,
+      </if>
+      <if test="hatchopen != null">
+        hatchOpen,
+      </if>
+      <if test="waterpenetration != null">
+        waterPenetration,
+      </if>
+      <if test="voltage != null">
+        voltage,
+      </if>
+      <if test="transparency != null">
+        transparency,
+      </if>
+      <if test="nh3 != null">
+        NH3,
+      </if>
+      <if test="collectiontime != null">
+        collectionTime,
+      </if>
+      <if test="instocktime != null">
+        instockTime,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="picorvideo != null">
+        picOrVideo,
+      </if>
+      <if test="filepath != null">
+        FilePath,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="stnid != null">
+        #{stnid,jdbcType=INTEGER},
+      </if>
+      <if test="temperature != null">
+        #{temperature,jdbcType=VARCHAR},
+      </if>
+      <if test="conductivity != null">
+        #{conductivity,jdbcType=DECIMAL},
+      </if>
+      <if test="salinity != null">
+        #{salinity,jdbcType=DECIMAL},
+      </if>
+      <if test="tds != null">
+        #{tds,jdbcType=DECIMAL},
+      </if>
+      <if test="density != null">
+        #{density,jdbcType=DECIMAL},
+      </if>
+      <if test="ph != null">
+        #{ph,jdbcType=DECIMAL},
+      </if>
+      <if test="dissolvedoxygen != null">
+        #{dissolvedoxygen,jdbcType=DECIMAL},
+      </if>
+      <if test="dosaturation != null">
+        #{dosaturation,jdbcType=DECIMAL},
+      </if>
+      <if test="redox != null">
+        #{redox,jdbcType=DECIMAL},
+      </if>
+      <if test="turbidity != null">
+        #{turbidity,jdbcType=DECIMAL},
+      </if>
+      <if test="tss != null">
+        #{tss,jdbcType=DECIMAL},
+      </if>
+      <if test="chlorophyla != null">
+        #{chlorophyla,jdbcType=DECIMAL},
+      </if>
+      <if test="phycocyanobilin != null">
+        #{phycocyanobilin,jdbcType=DECIMAL},
+      </if>
+      <if test="hatchopen != null">
+        #{hatchopen,jdbcType=DECIMAL},
+      </if>
+      <if test="waterpenetration != null">
+        #{waterpenetration,jdbcType=DECIMAL},
+      </if>
+      <if test="voltage != null">
+        #{voltage,jdbcType=DECIMAL},
+      </if>
+      <if test="transparency != null">
+        #{transparency,jdbcType=DECIMAL},
+      </if>
+      <if test="nh3 != null">
+        #{nh3,jdbcType=DECIMAL},
+      </if>
+      <if test="collectiontime != null">
+        #{collectiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="instocktime != null">
+        #{instocktime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="picorvideo != null">
+        #{picorvideo,jdbcType=CHAR},
+      </if>
+      <if test="filepath != null">
+        #{filepath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <resultMap id="BaseResultMap" type="com.hawksoft.platform.generatorPojo.Waterquality">
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="stnId" jdbcType="INTEGER" property="stnid" />
+    <result column="temperature" jdbcType="VARCHAR" property="temperature" />
+    <result column="conductivity" jdbcType="DECIMAL" property="conductivity" />
+    <result column="salinity" jdbcType="DECIMAL" property="salinity" />
+    <result column="tds" jdbcType="DECIMAL" property="tds" />
+    <result column="density" jdbcType="DECIMAL" property="density" />
+    <result column="ph" jdbcType="DECIMAL" property="ph" />
+    <result column="dissolvedOxygen" jdbcType="DECIMAL" property="dissolvedoxygen" />
+    <result column="doSaturation" jdbcType="DECIMAL" property="dosaturation" />
+    <result column="redox" jdbcType="DECIMAL" property="redox" />
+    <result column="turbidity" jdbcType="DECIMAL" property="turbidity" />
+    <result column="tss" jdbcType="DECIMAL" property="tss" />
+    <result column="chlorophylA" jdbcType="DECIMAL" property="chlorophyla" />
+    <result column="phycocyanobilin" jdbcType="DECIMAL" property="phycocyanobilin" />
+    <result column="hatchOpen" jdbcType="DECIMAL" property="hatchopen" />
+    <result column="waterPenetration" jdbcType="DECIMAL" property="waterpenetration" />
+    <result column="voltage" jdbcType="DECIMAL" property="voltage" />
+    <result column="transparency" jdbcType="DECIMAL" property="transparency" />
+    <result column="NH3" jdbcType="DECIMAL" property="nh3" />
+    <result column="collectionTime" jdbcType="TIMESTAMP" property="collectiontime" />
+    <result column="instockTime" jdbcType="TIMESTAMP" property="instocktime" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="picOrVideo" jdbcType="CHAR" property="picorvideo" />
+    <result column="FilePath" jdbcType="VARCHAR" property="filepath" />
+  </resultMap>
+  <insert id="insert" parameterType="com.hawksoft.platform.generatorPojo.Waterquality">
+    insert into waterquality (id, stnId, temperature, 
+      conductivity, salinity, tds, 
+      density, ph, dissolvedOxygen, 
+      doSaturation, redox, turbidity, 
+      tss, chlorophylA, phycocyanobilin, 
+      hatchOpen, waterPenetration, voltage, 
+      transparency, NH3, collectionTime, 
+      instockTime, state, picOrVideo, 
+      FilePath)
+    values (#{id,jdbcType=BIGINT}, #{stnid,jdbcType=INTEGER}, #{temperature,jdbcType=VARCHAR}, 
+      #{conductivity,jdbcType=DECIMAL}, #{salinity,jdbcType=DECIMAL}, #{tds,jdbcType=DECIMAL}, 
+      #{density,jdbcType=DECIMAL}, #{ph,jdbcType=DECIMAL}, #{dissolvedoxygen,jdbcType=DECIMAL}, 
+      #{dosaturation,jdbcType=DECIMAL}, #{redox,jdbcType=DECIMAL}, #{turbidity,jdbcType=DECIMAL}, 
+      #{tss,jdbcType=DECIMAL}, #{chlorophyla,jdbcType=DECIMAL}, #{phycocyanobilin,jdbcType=DECIMAL}, 
+      #{hatchopen,jdbcType=DECIMAL}, #{waterpenetration,jdbcType=DECIMAL}, #{voltage,jdbcType=DECIMAL}, 
+      #{transparency,jdbcType=DECIMAL}, #{nh3,jdbcType=DECIMAL}, #{collectiontime,jdbcType=TIMESTAMP}, 
+      #{instocktime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER}, #{picorvideo,jdbcType=CHAR}, 
+      #{filepath,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hawksoft.platform.generatorPojo.Waterquality">
+    insert into waterquality
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="stnid != null">
+        stnId,
+      </if>
+      <if test="temperature != null">
+        temperature,
+      </if>
+      <if test="conductivity != null">
+        conductivity,
+      </if>
+      <if test="salinity != null">
+        salinity,
+      </if>
+      <if test="tds != null">
+        tds,
+      </if>
+      <if test="density != null">
+        density,
+      </if>
+      <if test="ph != null">
+        ph,
+      </if>
+      <if test="dissolvedoxygen != null">
+        dissolvedOxygen,
+      </if>
+      <if test="dosaturation != null">
+        doSaturation,
+      </if>
+      <if test="redox != null">
+        redox,
+      </if>
+      <if test="turbidity != null">
+        turbidity,
+      </if>
+      <if test="tss != null">
+        tss,
+      </if>
+      <if test="chlorophyla != null">
+        chlorophylA,
+      </if>
+      <if test="phycocyanobilin != null">
+        phycocyanobilin,
+      </if>
+      <if test="hatchopen != null">
+        hatchOpen,
+      </if>
+      <if test="waterpenetration != null">
+        waterPenetration,
+      </if>
+      <if test="voltage != null">
+        voltage,
+      </if>
+      <if test="transparency != null">
+        transparency,
+      </if>
+      <if test="nh3 != null">
+        NH3,
+      </if>
+      <if test="collectiontime != null">
+        collectionTime,
+      </if>
+      <if test="instocktime != null">
+        instockTime,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="picorvideo != null">
+        picOrVideo,
+      </if>
+      <if test="filepath != null">
+        FilePath,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="stnid != null">
+        #{stnid,jdbcType=INTEGER},
+      </if>
+      <if test="temperature != null">
+        #{temperature,jdbcType=VARCHAR},
+      </if>
+      <if test="conductivity != null">
+        #{conductivity,jdbcType=DECIMAL},
+      </if>
+      <if test="salinity != null">
+        #{salinity,jdbcType=DECIMAL},
+      </if>
+      <if test="tds != null">
+        #{tds,jdbcType=DECIMAL},
+      </if>
+      <if test="density != null">
+        #{density,jdbcType=DECIMAL},
+      </if>
+      <if test="ph != null">
+        #{ph,jdbcType=DECIMAL},
+      </if>
+      <if test="dissolvedoxygen != null">
+        #{dissolvedoxygen,jdbcType=DECIMAL},
+      </if>
+      <if test="dosaturation != null">
+        #{dosaturation,jdbcType=DECIMAL},
+      </if>
+      <if test="redox != null">
+        #{redox,jdbcType=DECIMAL},
+      </if>
+      <if test="turbidity != null">
+        #{turbidity,jdbcType=DECIMAL},
+      </if>
+      <if test="tss != null">
+        #{tss,jdbcType=DECIMAL},
+      </if>
+      <if test="chlorophyla != null">
+        #{chlorophyla,jdbcType=DECIMAL},
+      </if>
+      <if test="phycocyanobilin != null">
+        #{phycocyanobilin,jdbcType=DECIMAL},
+      </if>
+      <if test="hatchopen != null">
+        #{hatchopen,jdbcType=DECIMAL},
+      </if>
+      <if test="waterpenetration != null">
+        #{waterpenetration,jdbcType=DECIMAL},
+      </if>
+      <if test="voltage != null">
+        #{voltage,jdbcType=DECIMAL},
+      </if>
+      <if test="transparency != null">
+        #{transparency,jdbcType=DECIMAL},
+      </if>
+      <if test="nh3 != null">
+        #{nh3,jdbcType=DECIMAL},
+      </if>
+      <if test="collectiontime != null">
+        #{collectiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="instocktime != null">
+        #{instocktime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="picorvideo != null">
+        #{picorvideo,jdbcType=CHAR},
+      </if>
+      <if test="filepath != null">
+        #{filepath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

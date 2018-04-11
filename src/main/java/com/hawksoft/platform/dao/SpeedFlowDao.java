@@ -1,6 +1,7 @@
 package com.hawksoft.platform.dao;
 
 
+import com.hawksoft.platform.entity.Camera;
 import com.hawksoft.platform.entity.SpeedFlow;
 import org.springframework.stereotype.Repository;
 
@@ -70,5 +71,11 @@ public interface SpeedFlowDao {
      */
     public List<SpeedFlow> getRecentRecords(Map<String, Object> map);
 
+    /**
+     * 从备用表里查询剩下的相机信息，（因为有的站点可能不止5个相机，大于5个的相机们被放在了备用表camera里）
+     * @param stnId
+     * @return
+     */
+    public List<Camera> queryLastSpeedFlowByStdIdAdd(int stnId);
 
 }

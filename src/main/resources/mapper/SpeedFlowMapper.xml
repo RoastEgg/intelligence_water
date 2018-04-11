@@ -22,6 +22,18 @@
           and stnId = #{stnId}
     </select>
 
+    <!--从备用表里查询剩下的相机信息，（因为有的站点可能不止5个相机，大于5个的相机们被放在了备用表camera里）-->
+    <!--此处默认同一个站点的不同相机拍照的时间是同时的-->
+    <select id="queryLastSpeedFlowByStdIdAdd" parameterType="int" resultType="com.hawksoft.platform.entity.Camera">
+        SELECT  * from camera
+        where collectionTime =
+            (
+              SELECT MAX(collectionTime)
+                FROM camera
+                WHERE stnId = #{stnId}
+            )
+          and stnId = #{stnId}
+    </select>
     <!--获取站点的流速流量数据-->
     <select id="querySpeedFlowByStdIdTime" parameterType="Map" resultType="com.hawksoft.platform.entity.SpeedFlow">
         SELECT stnId,waterSpeed1,waterSpeed2,waterSpeed3,waterSpeed4,waterSpeed5,

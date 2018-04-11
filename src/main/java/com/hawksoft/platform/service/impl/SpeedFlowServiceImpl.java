@@ -1,6 +1,8 @@
 package com.hawksoft.platform.service.impl;
 
+import com.hawksoft.platform.VO.SpeedFlowVO;
 import com.hawksoft.platform.dao.SpeedFlowDao;
+import com.hawksoft.platform.entity.Camera;
 import com.hawksoft.platform.entity.Flow;
 import com.hawksoft.platform.entity.SpeedFlow;
 import com.hawksoft.platform.service.FlowService;
@@ -11,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class SpeedFlowServiceImpl implements SpeedFlowService {
@@ -30,8 +29,76 @@ public class SpeedFlowServiceImpl implements SpeedFlowService {
      * @return
      */
     @Override
-    public List<SpeedFlow> queryLastSpeedFlowByStdId(int stnId) {
-        return speedFlowDao.queryLastSpeedFlowByStdId(stnId);
+    public SpeedFlowVO queryLastSpeedFlowByStdId(int stnId) {
+
+        List<SpeedFlow> speedFlowList = speedFlowDao.queryLastSpeedFlowByStdId(stnId);
+        List<Camera> allCameraList = new ArrayList<>();
+        List<Camera> additionalCameraList = speedFlowDao.queryLastSpeedFlowByStdIdAdd(stnId);
+        SpeedFlowVO speedFlowVO = new SpeedFlowVO();
+
+        if (speedFlowList!=null){
+
+            for (SpeedFlow sf: speedFlowList){
+                speedFlowVO.setStnId(stnId);
+                speedFlowVO.setCollectionTime(sf.getCollectionTime());
+                speedFlowVO.setInstockTime(sf.getInstockTime());
+                speedFlowVO.setPicOrVideo(sf.getPicOrVideo());
+
+                Camera camera = new Camera();
+                camera.setStnId(stnId);
+                camera.setCameraNo(1);
+                camera.setFlow(sf.getWaterFlow1());
+                camera.setSpeed(sf.getWaterSpeed1());
+                camera.setState(sf.getState1());
+                camera.setFilePath(sf.getFilePath1());
+                camera.setCollectionTime(sf.getCollectionTime());
+                camera.setInstockTime(sf.getInstockTime());
+                allCameraList.add(camera);
+
+                camera.setStnId(stnId);
+                camera.setCameraNo(2);
+                camera.setFlow(sf.getWaterFlow2());
+                camera.setSpeed(sf.getWaterSpeed2());
+                camera.setState(sf.getState2());
+                camera.setFilePath(sf.getFilePath2());
+                camera.setCollectionTime(sf.getCollectionTime());
+                camera.setInstockTime(sf.getInstockTime());
+                allCameraList.add(camera);
+
+                camera.setStnId(stnId);
+                camera.setCameraNo(3);
+                camera.setFlow(sf.getWaterFlow3());
+                camera.setSpeed(sf.getWaterSpeed3());
+                camera.setState(sf.getState3());
+                camera.setFilePath(sf.getFilePath3());
+                camera.setCollectionTime(sf.getCollectionTime());
+                camera.setInstockTime(sf.getInstockTime());
+                allCameraList.add(camera);
+
+                camera.setStnId(stnId);
+                camera.setCameraNo(4);
+                camera.setFlow(sf.getWaterFlow4());
+                camera.setSpeed(sf.getWaterSpeed4());
+                camera.setState(sf.getState4());
+                camera.setFilePath(sf.getFilePath4());
+                camera.setCollectionTime(sf.getCollectionTime());
+                camera.setInstockTime(sf.getInstockTime());
+                allCameraList.add(camera);
+
+                camera.setStnId(stnId);
+                camera.setCameraNo(5);
+                camera.setFlow(sf.getWaterFlow5());
+                camera.setSpeed(sf.getWaterSpeed5());
+                camera.setState(sf.getState5());
+                camera.setFilePath(sf.getFilePath5());
+                camera.setCollectionTime(sf.getCollectionTime());
+                camera.setInstockTime(sf.getInstockTime());
+                allCameraList.add(camera);
+            }
+            allCameraList.addAll(additionalCameraList);
+        }
+        speedFlowVO.setList(allCameraList);
+        return speedFlowVO;
     }
 
     /**
@@ -164,10 +231,10 @@ public class SpeedFlowServiceImpl implements SpeedFlowService {
     }
 
     @Override
-    public boolean generateData() {
+    public int generateData() {
         SpeedFlow speedFlow = generateSpeedFlow(new Date());
-        saveSpeedFlow(speedFlow);
-        return true;
+        int res = saveSpeedFlow(speedFlow);
+        return res;
     }
 
     @Override
@@ -196,11 +263,11 @@ public class SpeedFlowServiceImpl implements SpeedFlowService {
                 waterSpeed4 = DataUtil.expendData(waterSpeed4, maxSpeed, minSpeed);
                 waterSpeed5 = DataUtil.expendData(waterSpeed5, maxSpeed, minSpeed);
             } else {
-                waterSpeed1 = DataUtil.adjustData(waterSpeed1, maxSpeed, minSpeed);
-                waterSpeed2 = DataUtil.adjustData(waterSpeed2, maxSpeed, minSpeed);
-                waterSpeed3 = DataUtil.adjustData(waterSpeed3, maxSpeed, minSpeed);
-                waterSpeed4 = DataUtil.adjustData(waterSpeed4, maxSpeed, minSpeed);
-                waterSpeed5 = DataUtil.adjustData(waterSpeed5, maxSpeed, minSpeed);
+                waterSpeed1 = DataUtil.adjustDataForFlow(waterSpeed1, maxSpeed, minSpeed);
+                waterSpeed2 = DataUtil.adjustDataForFlow(waterSpeed2, maxSpeed, minSpeed);
+                waterSpeed3 = DataUtil.adjustDataForFlow(waterSpeed3, maxSpeed, minSpeed);
+                waterSpeed4 = DataUtil.adjustDataForFlow(waterSpeed4, maxSpeed, minSpeed);
+                waterSpeed5 = DataUtil.adjustDataForFlow(waterSpeed5, maxSpeed, minSpeed);
             }
         } else {
             waterSpeed1 = DataUtil.getRandom(maxSpeed, minSpeed);

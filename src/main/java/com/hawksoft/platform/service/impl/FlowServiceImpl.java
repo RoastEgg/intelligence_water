@@ -152,10 +152,10 @@ public class FlowServiceImpl implements FlowService {
     }
 
     @Override
-    public boolean generateData() {
+    public int generateData() {
         Flow flow = generateFlow(new Date());
-        saveFlow(flow);
-        return true;
+        int ans = saveFlow(flow);
+        return ans;
     }
 
     @Override
@@ -171,13 +171,15 @@ public class FlowServiceImpl implements FlowService {
             Flow lastFlow = flowList.get(0);
             avgSpeed = lastFlow.getAvgSpeed();
             avgFlow = lastFlow.getAvgFlow();
+            //System.out.println("last record: "+lastFlow.getCollectionTime());
             //若最新数据是今天的，则在这条记录中的字段基础上做扩大型随机
             if (DateUtil.judgeDate(DateUtil.parseString(lastFlow.getCollectionTime()),date)) {
+                //System.out.println("last date is today");
                 avgSpeed = DataUtil.expendData(avgSpeed, maxSpeed, minSpeed);
                 avgFlow = DataUtil.expendData(avgFlow, maxFlow, minFlow);
             } else {//否则，做调整型随机
-                avgSpeed = DataUtil.adjustData(avgSpeed, maxSpeed, minSpeed);
-                avgFlow = DataUtil.adjustData(avgFlow, maxFlow, minFlow);
+                avgSpeed = DataUtil.adjustDataForFlow(avgSpeed, maxSpeed, minSpeed);
+                avgFlow = DataUtil.adjustDataForFlow(avgFlow, maxFlow, minFlow);
             }
         } else {
             avgSpeed = DataUtil.getRandom(maxSpeed, minSpeed);
