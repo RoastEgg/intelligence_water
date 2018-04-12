@@ -76,18 +76,14 @@ public interface SpeedFlowService {
      */
     public List<SpeedFlow> getRecentRecords(Map<String, Object> map);
 
-    /**
-     * schedule定时生成数据
-     * @return
-     */
-    public int generateData();
 
     /**
      * 为了给生成历史数据和schedule复用，将生成数据方法独立出来
-      * @param date
+     * @param stnId
+     * @param date
      * @return
      */
-    public SpeedFlow generateSpeedFlow(Date date);
+    public int generateData(int stnId,Date date);
 
 
 }

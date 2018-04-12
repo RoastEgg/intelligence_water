@@ -117,7 +117,7 @@ public interface WaterQualityDao {
      * @param map
      * @return 站点Id，GPS经纬度，水质参数（温度、PH、溶氧、氧化还原）
      */
-    public List<Map<String ,Object>> queryWaterQualityFromUB(Map<String,Object> map);
+    public Map<String ,Object> queryWaterQualityFromUB(Map<String,Object> map);
 
     /**
      * 查询某站点是否有水质信息

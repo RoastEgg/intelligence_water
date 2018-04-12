@@ -5,6 +5,7 @@ import com.hawksoft.platform.entity.WaterQuality;
 import com.hawksoft.platform.entity.WaterEarlyWarn;
 import com.hawksoft.platform.entity.WaterStation;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -115,7 +116,7 @@ public interface WaterQualityService {
      * @param map
      * @return 站点Id，GPS经纬度，水质参数（温度、PH、溶氧、氧化还原）
      */
-    public List<Map<String ,Object>> queryWaterQualityFromUB(Map<String,Object> map);
+    public Map<String ,Object> queryWaterQualityFromUB(Map<String,Object> map);
 
     /**
      * 查询某站点是否有水质信息
@@ -124,16 +125,12 @@ public interface WaterQualityService {
      */
     public int queryStationInfo(int stnId);
 
-    /**
-     * schedule生成数据
-     * @return
-     */
-    public boolean generateData();
 
     /**
      * 为了给生成历史数据和schedule复用，将生成数据方法独立出来
      * @param stnId
+     * @param date
      * @return
      */
-    public WaterQuality generateWQ(int stnId);
+    public int generateData(int stnId,Date date);
 }

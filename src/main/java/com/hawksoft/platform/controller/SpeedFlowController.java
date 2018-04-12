@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.PermitAll;
 import javax.swing.plaf.synth.SynthEditorPaneUI;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -203,10 +205,10 @@ public class SpeedFlowController {
      * 采集数据
      * @return
      */
-    @RequestMapping(value = "/collectData",method = RequestMethod.GET)
+    @RequestMapping(value = "/collectData/{stnId}",method = RequestMethod.GET)
     @ResponseBody
-    public int collectData(){
-        int res =  speedFlowService.generateData();
+    public int collectData(@PathVariable("stnId") int stnId){
+        int res =  speedFlowService.generateData(stnId,new Date());
         return res;
     }
 }

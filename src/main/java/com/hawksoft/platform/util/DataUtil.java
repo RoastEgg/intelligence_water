@@ -62,4 +62,12 @@ public class DataUtil {
         answer = Double.parseDouble(df.format(answer));
         return answer;
     }
+
+    public static double randomData5per(double base){
+        double range = 0.05*base,answer = 0.0;
+        answer  = getRandom(base + range,
+                base - range);
+//        answer = Double.parseDouble(df.format(answer));
+        return answer;
+    }
 }

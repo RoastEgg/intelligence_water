@@ -3,14 +3,17 @@ package com.hawksoft.platform.controller;
 import com.hawksoft.platform.entity.Flow;
 import com.hawksoft.platform.entity.SpeedFlow;
 import com.hawksoft.platform.entity.WaterQuality;
+import com.hawksoft.platform.entity.WeatherWave;
 import com.hawksoft.platform.service.FlowService;
 import com.hawksoft.platform.service.SpeedFlowService;
 import com.hawksoft.platform.service.WaterQualityService;
+import com.hawksoft.platform.service.WeatherWaveService;
 import com.hawksoft.platform.util.DataUtil;
 import com.hawksoft.platform.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import sun.text.resources.cldr.eu.FormatData_eu;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
@@ -31,11 +34,13 @@ public class InjectDataController {
     private SpeedFlowService speedFlowService;
     @Autowired
     private WaterQualityService waterQualityService;
+    @Autowired
+    private WeatherWaveService weatherWaveService;
 
 
-    @RequestMapping(value = "/flowAndSpeedFlow", method = RequestMethod.GET)
+    @RequestMapping(value = "/flowAndSpeedFlow/{stnId}", method = RequestMethod.GET)
     @ResponseBody
-    public boolean InjectFlowAndSpeedFlow() {
+    public boolean InjectFlowAndSpeedFlow(@PathVariable("stnId") int stnId) {
 
         int time[] = {0, 3, 5, 7, 9, 13, 17};
 
@@ -47,13 +52,9 @@ public class InjectDataController {
                 for (int j = 0; j < 7; j++) {//每天7个时间段
 
                     String cTime = "2018-0" + month + "-" + i + " " + time[j] + ":00:00";//如："2018-02-5 3:00:00"
-                    Date cDate  = DateUtil.parseString(cTime);
+                    Date cDate = DateUtil.parseString(cTime);
+                    flowService.generateData(stnId,cDate);
 
-                    Flow flow = flowService.generateFlow(cDate);
-
-                    cTime = DateUtil.parseDate(cDate);//如："2018-02-05 03:00:00"
-                    flow.setCollectionTime(cTime);
-                    flowService.saveFlow(flow);
                 }
 
                 //注入speedflow数据：
@@ -61,12 +62,7 @@ public class InjectDataController {
 
                     String sTime = "2018-0" + month + "-" + i + " " + time[j] + ":00:00";//如："2018-02-5 3:00:00"
                     Date sDate = DateUtil.parseString(sTime);
-                    SpeedFlow speedFlow = speedFlowService.generateSpeedFlow(sDate);
-
-                    sTime = DateUtil.parseDate(sDate);//如："2018-02-05 03:00:00"
-                    speedFlow.setCollectionTime(sTime);
-                    speedFlow.setInstockTime(sTime);
-                    speedFlowService.saveSpeedFlow(speedFlow);
+                    speedFlowService.generateData(stnId,sDate);
 
                 }
 
@@ -76,47 +72,56 @@ public class InjectDataController {
 
     }
 
-    @RequestMapping(value = "/waterQuality", method = RequestMethod.GET)
+    @RequestMapping(value = "/waterQuality/{stnId}", method = RequestMethod.GET)
     @ResponseBody
-    public boolean InjectWaterQuality() {
-        int stnId = 1;
+    public boolean InjectWaterQuality(@PathVariable("stnId") int stnId) {
 
-        for (int id = 1; id <= 2; id++) {//循环2次，分别生成id=1和id=7的数据
+        for (int month = 1; month <= 3; month++) {  //月
+            for (int i = 1; i <= 31; i++) {        //天
+                if ((month == 2 && i > 28)) {
+                    continue;
+                }
+                for (int j = 0; j < 24; j++) {//小时
 
-            if (id == 1) {
-                stnId = 1;
-            } else {
-                stnId = 7;
-            }
+                    for (int minute = 0; minute < 12; minute++) {//5分钟一次，每小时12次
 
-            for (int month = 1; month <= 3; month++) {  //月
-                for (int i = 1; i <= 31; i++) {        //天
-                    if ((month == 2 && i > 28)) {
-                        continue;
+                        Date wqDate = transWqTime(month, i, j, minute);
+                        waterQualityService.generateData(stnId,wqDate);
                     }
-                    for (int j = 0; j < 24; j++) {//小时
 
-                        for (int minute = 0; minute < 12; minute++) {//5分钟一次，每小时12次
-
-                            String wqTime = getWqTime(month, i, j, minute);
-                            WaterQuality waterQuality = waterQualityService.generateWQ(stnId);
-                            waterQuality.setCollectionTime(wqTime);
-                            waterQuality.setInstockTime(wqTime);
-                            waterQualityService.saveWaterQuality(waterQuality);
-                        }
-
-                    }
                 }
             }
         }
-
         return true;
     }
 
-    public String getWqTime(int month, int day, int hour, int rate) {
+//    @RequestMapping(value = "/weatherWave/{stnId}", method = RequestMethod.GET)
+//    @ResponseBody
+//    public boolean InjectWW(@PathVariable("stnId") int stnId) {
+//
+//        for (int month = 1; month <= 4; month++) {  //月
+//            for (int i = 1; i <= 31; i++) {        //天
+//                if ((month == 2 && i > 28)||(month ==2&&i>12)) {
+//                    continue;
+//                }
+//                for (int j = 0; j < 24; j++) {//小时
+//
+//                    for (int minute = 0; minute < 12; minute++) {//5分钟一次，每小时12次
+//
+//                        Date wqDate = transWqTime(month, i, j, minute);
+//                        weatherWaveService.generateData(stnId,wqDate);
+//                    }
+//
+//                }
+//            }
+//        }
+//        return true;
+//    }
+
+    public Date transWqTime(int month, int day, int hour, int rate) {
         int minute = rate * 5;
         String time = "2018-" + month + "-" + day + " " + hour + ":" + minute + ":00";//如："2018-02-5 3:00:00"
-        time = DateUtil.parseDate(DateUtil.parseString(time));//如："2018-02-05 00:00:00"
-        return time;
+        Date date = DateUtil.parseString(time);//如："2018-02-05 00:00:00"转化为date
+        return date;
     }
 }

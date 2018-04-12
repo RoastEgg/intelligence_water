@@ -44,56 +44,60 @@ public class SpeedFlowServiceImpl implements SpeedFlowService {
                 speedFlowVO.setInstockTime(sf.getInstockTime());
                 speedFlowVO.setPicOrVideo(sf.getPicOrVideo());
 
-                Camera camera = new Camera();
-                camera.setStnId(stnId);
-                camera.setCameraNo(1);
-                camera.setFlow(sf.getWaterFlow1());
-                camera.setSpeed(sf.getWaterSpeed1());
-                camera.setState(sf.getState1());
-                camera.setFilePath(sf.getFilePath1());
-                camera.setCollectionTime(sf.getCollectionTime());
-                camera.setInstockTime(sf.getInstockTime());
-                allCameraList.add(camera);
+                Camera camera1 = new Camera();
+                camera1.setStnId(stnId);
+                camera1.setCameraNo(1);
+                camera1.setFlow(sf.getWaterFlow1());
+                camera1.setSpeed(sf.getWaterSpeed1());
+                camera1.setState(sf.getState1());
+                camera1.setFilePath(sf.getFilePath1());
+                camera1.setCollectionTime(sf.getCollectionTime());
+                camera1.setInstockTime(sf.getInstockTime());
+                allCameraList.add(camera1);
 
-                camera.setStnId(stnId);
-                camera.setCameraNo(2);
-                camera.setFlow(sf.getWaterFlow2());
-                camera.setSpeed(sf.getWaterSpeed2());
-                camera.setState(sf.getState2());
-                camera.setFilePath(sf.getFilePath2());
-                camera.setCollectionTime(sf.getCollectionTime());
-                camera.setInstockTime(sf.getInstockTime());
-                allCameraList.add(camera);
+                Camera camera2 = new Camera();
+                camera2.setStnId(stnId);
+                camera2.setCameraNo(2);
+                camera2.setFlow(sf.getWaterFlow2());
+                camera2.setSpeed(sf.getWaterSpeed2());
+                camera2.setState(sf.getState2());
+                camera2.setFilePath(sf.getFilePath2());
+                camera2.setCollectionTime(sf.getCollectionTime());
+                camera2.setInstockTime(sf.getInstockTime());
+                allCameraList.add(camera2);
 
-                camera.setStnId(stnId);
-                camera.setCameraNo(3);
-                camera.setFlow(sf.getWaterFlow3());
-                camera.setSpeed(sf.getWaterSpeed3());
-                camera.setState(sf.getState3());
-                camera.setFilePath(sf.getFilePath3());
-                camera.setCollectionTime(sf.getCollectionTime());
-                camera.setInstockTime(sf.getInstockTime());
-                allCameraList.add(camera);
+                Camera camera3 = new Camera();
+                camera3.setStnId(stnId);
+                camera3.setCameraNo(3);
+                camera3.setFlow(sf.getWaterFlow3());
+                camera3.setSpeed(sf.getWaterSpeed3());
+                camera3.setState(sf.getState3());
+                camera3.setFilePath(sf.getFilePath3());
+                camera3.setCollectionTime(sf.getCollectionTime());
+                camera3.setInstockTime(sf.getInstockTime());
+                allCameraList.add(camera3);
 
-                camera.setStnId(stnId);
-                camera.setCameraNo(4);
-                camera.setFlow(sf.getWaterFlow4());
-                camera.setSpeed(sf.getWaterSpeed4());
-                camera.setState(sf.getState4());
-                camera.setFilePath(sf.getFilePath4());
-                camera.setCollectionTime(sf.getCollectionTime());
-                camera.setInstockTime(sf.getInstockTime());
-                allCameraList.add(camera);
+                Camera camera4 = new Camera();
+                camera4.setStnId(stnId);
+                camera4.setCameraNo(4);
+                camera4.setFlow(sf.getWaterFlow4());
+                camera4.setSpeed(sf.getWaterSpeed4());
+                camera4.setState(sf.getState4());
+                camera4.setFilePath(sf.getFilePath4());
+                camera4.setCollectionTime(sf.getCollectionTime());
+                camera4.setInstockTime(sf.getInstockTime());
+                allCameraList.add(camera4);
 
-                camera.setStnId(stnId);
-                camera.setCameraNo(5);
-                camera.setFlow(sf.getWaterFlow5());
-                camera.setSpeed(sf.getWaterSpeed5());
-                camera.setState(sf.getState5());
-                camera.setFilePath(sf.getFilePath5());
-                camera.setCollectionTime(sf.getCollectionTime());
-                camera.setInstockTime(sf.getInstockTime());
-                allCameraList.add(camera);
+                Camera camera5 = new Camera();
+                camera5.setStnId(stnId);
+                camera5.setCameraNo(5);
+                camera5.setFlow(sf.getWaterFlow5());
+                camera5.setSpeed(sf.getWaterSpeed5());
+                camera5.setState(sf.getState5());
+                camera5.setFilePath(sf.getFilePath5());
+                camera5.setCollectionTime(sf.getCollectionTime());
+                camera5.setInstockTime(sf.getInstockTime());
+                allCameraList.add(camera5);
             }
             allCameraList.addAll(additionalCameraList);
         }
@@ -230,16 +234,9 @@ public class SpeedFlowServiceImpl implements SpeedFlowService {
         return speedFlowDao.getRecentRecords(map);
     }
 
-    @Override
-    public int generateData() {
-        SpeedFlow speedFlow = generateSpeedFlow(new Date());
-        int res = saveSpeedFlow(speedFlow);
-        return res;
-    }
 
     @Override
-    public SpeedFlow generateSpeedFlow(Date date) {
-        int stnId = 1;
+    public int generateData(int stnId,Date date) {
         double minSpeed = 0.11, maxSpeed = 0.87;//speedflow表需要的数据
         double waterSpeed1, waterSpeed2, waterSpeed3, waterSpeed4, waterSpeed5;
         SpeedFlow lastSpeedFlow = new SpeedFlow();
@@ -291,10 +288,11 @@ public class SpeedFlowServiceImpl implements SpeedFlowService {
         speedFlow.setFilePath4("");
         speedFlow.setFilePath5("");
 
-        String sTime = DateUtil.parseDate(new Date());//获取当前时间
+        String sTime = DateUtil.parseDate(date);//获取当前时间
         speedFlow.setCollectionTime(sTime);
         speedFlow.setInstockTime(sTime);
-        return speedFlow;
+        int ans = saveSpeedFlow(speedFlow);
+        return ans;
     }
 
 }

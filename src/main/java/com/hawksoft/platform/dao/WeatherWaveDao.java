@@ -159,4 +159,11 @@ public interface WeatherWaveDao {
      * @return 气象、波浪预警信息
      */
     public WaterEarlyWarn getWeatherWaveWarn(@Param("stnId") int stnId, @Param("type") int type);
+
+    /**
+     * 构造数据用的，找2月份的今天
+     * @param id
+     * @return
+     */
+    public List<WeatherWave> queryForData(int id);
 }

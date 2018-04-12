@@ -267,4 +267,11 @@
         and collectionTime >= #{startTime}
         and collectionTime <![CDATA[ <= ]]> #{endTime}
     </select>
+
+    <select id ="queryForData" parameterType="int" resultType="com.hawksoft.platform.entity.WeatherWave">
+      SELECT *
+      from weatherwave
+      WHERE id=#{id}
+
+    </select>
 </mapper>

@@ -306,9 +306,10 @@
         FROM unmannedboat ub,waterquality wq
         WHERE
           wq.stnId = #{stnId}
+          AND
           ub.stnId = #{stnId}
           AND wq.collectionTime = (SELECT  MAX(collectionTime) from waterquality)
-          AND ub.time = (SELECT  MAX(time) from unmannedboat)
+          AND ub.time = (SELECT  MAX(`time`) from unmannedboat)
 
     </select>
 

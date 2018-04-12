@@ -39,6 +39,43 @@ public class WeatherWave implements Serializable {
     private String Dmean;//平均波向
     private String Dpeak;//谱峰波向
 
+    public WeatherWave() {
+    }
+
+    public WeatherWave( Integer stnId, String temperature, Double baro, Double humidity, Double rainfall, Double meanWindSpeed10, Double meanWindDirection10, Double windSpeedDeviation10, Double maxWindSpeed10, String maxWindSpeedTime10, Double maxWindSpeedDirection10, Double maxWindSpeedDay, String maxWindSpeedTimeDay, Double maxWindDirectionDay, Double waterPressure, String waterTemperature, String heading, Double flowSpeedX, Double flowSpeedY, Double longitude, Double latitude, String collectionTime, String hs, String ts, String hmax, String tp, String t1, String tz, String dmean, String dpeak) {
+
+        this.stnId = stnId;
+        this.temperature = temperature;
+        this.baro = baro;
+        this.humidity = humidity;
+        this.rainfall = rainfall;
+        this.meanWindSpeed10 = meanWindSpeed10;
+        this.meanWindDirection10 = meanWindDirection10;
+        this.windSpeedDeviation10 = windSpeedDeviation10;
+        this.maxWindSpeed10 = maxWindSpeed10;
+        this.maxWindSpeedTime10 = maxWindSpeedTime10;
+        this.maxWindSpeedDirection10 = maxWindSpeedDirection10;
+        this.maxWindSpeedDay = maxWindSpeedDay;
+        this.maxWindSpeedTimeDay = maxWindSpeedTimeDay;
+        this.maxWindDirectionDay = maxWindDirectionDay;
+        this.waterPressure = waterPressure;
+        this.waterTemperature = waterTemperature;
+        this.heading = heading;
+        this.flowSpeedX = flowSpeedX;
+        this.flowSpeedY = flowSpeedY;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.collectionTime = collectionTime;
+        Hs = hs;
+        Ts = ts;
+        Hmax = hmax;
+        Tp = tp;
+        T1 = t1;
+        Tz = tz;
+        Dmean = dmean;
+        Dpeak = dpeak;
+    }
+
     private String returnDateValue;//注意，本参数是专门给前端返回固定字段名称使用，方便前端，数据库中不存在此字段
     public String getReturnDateValue() {
         return returnDateValue;

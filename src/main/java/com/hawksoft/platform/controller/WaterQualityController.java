@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -268,10 +269,10 @@ public class WaterQualityController {
     @ResponseBody()
     public String getWaterQualityFromUB(@PathVariable("stnId") int stnId){
         params.put("stnId",stnId);
-        List<Map<String ,Object>> infos = waterQualityService.queryWaterQualityFromUB(params);
-        System.out.println("返回记录条数："+infos.size());
-        if (infos.size()>0){
-            return JSON.toJSON(infos).toString();
+        Map<String ,Object> info = waterQualityService.queryWaterQualityFromUB(params);
+        System.out.println("返回记录条数："+info.size());
+        if (info!=null){
+            return JSON.toJSON(info).toString();
         }
         return "{\"msg\" : \"暂时无法获取指定时间最新的流量和水位数据\"}";
     }
@@ -280,10 +281,10 @@ public class WaterQualityController {
      * 采集数据
      * @return
      */
-    @RequestMapping(value = "/collectData",method = RequestMethod.GET)
+    @RequestMapping(value = "/collectData/{stnId}",method = RequestMethod.GET)
     @ResponseBody
-    public boolean collectData(){
-        boolean res = waterQualityService.generateData();
+    public int collectData(@PathVariable ("stnId") int stnId){
+        int res = waterQualityService.generateData(stnId,new Date());
         return res;
     }
 }

@@ -31,23 +31,44 @@ public class SocketOperate extends Thread {
 
         try {
             din = new DataInputStream(socket.getInputStream());
+            byte[] flag = new byte[4];
+            readData(din,flag,4);
+            if (flag.equals("01 03 04")){//表示这是第三方发送程序
 
-            byte[] name = new byte[SocketUtils.LOCATION_NAME_MAX_LEN]; // save location name
-            readData(din, name, name.length);
+                while (!stop){
+                    System.out.println("#### 开始接收数据!");
+                    byte[] phByte = new byte[2];
+                    byte[] temperByte = new byte[2];
+                    int ph,temper;
+                    readData(din,phByte,2);
+                    readData(din,temperByte,2);
+                    ph = SocketUtils.getInteger(phByte,0);
+                    temper = SocketUtils.getInteger(temperByte,0);
+                    System.out.println("ph: "+ph+" temper: "+temper);
+                    SocketSaveToDB.saveWQFromUB(ph,temper);
 
-            int len = SocketUtils.getInteger(name, 0);
-            location = new String(Arrays.copyOfRange(name, 4, len + 4), "UTF-8");
-            Socket s = locSockMap.get(location);
-            if (s != null) {
-                s.close();
-                locSockMap.remove(location);
+                }
+            }
+            else {
+                int len = SocketUtils.getInteger(flag,0);
+                byte[] name = new byte[SocketUtils.LOCATION_NAME_MAX_LEN]; // save location name
+                readData(din, name, name.length);
+
+                //int len = SocketUtils.getInteger(name, 0);
+                location = new String(Arrays.copyOfRange(name, 4, len + 4), "UTF-8");
+                Socket s = locSockMap.get(location);
+                if (s != null) {
+                    s.close();
+                    locSockMap.remove(location);
+                }
+
+                locSockMap.put(location, socket);
+
+                doReceive(din); // 循环命令和数据
+
+                din.close();
             }
 
-            locSockMap.put(location, socket);
-
-            doReceive(din); // 循环命令和数据
-
-            din.close();
         } catch (Exception ex) {
             try {
                 if (null != din) {

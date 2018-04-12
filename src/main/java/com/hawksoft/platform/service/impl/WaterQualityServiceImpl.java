@@ -10,6 +10,7 @@ import com.hawksoft.platform.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -145,7 +146,7 @@ public class WaterQualityServiceImpl implements WaterQualityService {
      * @param map
      * @return 站点Id，GPS经纬度，水质参数（温度、PH、溶氧、氧化还原）
      */
-    public List<Map<String, Object>> queryWaterQualityFromUB(Map<String, Object> map) {
+    public Map<String, Object> queryWaterQualityFromUB(Map<String, Object> map) {
         return WaterQualityDao.queryWaterQualityFromUB(map);
     }
 
@@ -155,65 +156,69 @@ public class WaterQualityServiceImpl implements WaterQualityService {
     }
 
     @Override
-    public boolean generateData() {
-        int stnId = 1;
-
-        for (int i = 1; i <= 2; i++) {//1号站点和7号站点有水质数据
-            if (i == 1) {
-                stnId = 1;
-            } else {
-                stnId = 7;
-            }
-            WaterQuality waterQuality = generateWQ(stnId);
-            saveWaterQuality(waterQuality);
-        }
-        return true;
-    }
-
-    @Override
-    public WaterQuality generateWQ(int stnId) {
+    public int generateData(int stnId, Date date) {
 
         String temper = "";
         double minTemper = 3.00, maxTemper = 8.00;        //温度值
-        double ph, minPh = 6.00, maxPh = 6.70;                 //PH值
-        double dissolvedOxygen, minDissolvedOxygen = 2.00, maxDissolvedOxygen = 3.00;//溶解氧值
-        double redox, minRedox = 100.0, maxRedox = 300.0;//氧化还原值
-        double transparency, maxTransparency = 10.0, minTransparency = 100.0;
-        double conductivity =0.0, minConductivity = 0.381, maxConductivity = 0.900;
-        double turbidity=0.0, minTurbidity = 4.28, maxTurbidity = 243.035;
-        double salinity=0.0, minSalinity = 0.184, maxSalinity = 0.43;
-        double tds=0.0, minTds = 0.255, maxTds = 0.603;
-        double density=0.0, minDensity = 500.046, maxDensity = 1000.319;
-        double doSaturation=0.0, minDoSaturation = 35.129, maxDoSaturation = 138.515;
-        double tss=0.0, minTss = 0.024, maxTss = 0.972;
-        double chlorophylA=0.0, minChlorophylA = -0.744, maxChlorophylA = 124.168;
-        double phycocyanobilin=0.0, minPhycocyanobilin = 9.295, maxPhycocyanobilin = 113.817;
-        double voltage=0.0, minVoltage = 11.850, maxVoltage = 15.892;
+        double ph=0.0, minPh = 6.00, maxPh = 6.70;                 //PH值
+        double dissolvedOxygen=0.0, minDissolvedOxygen = 2.00, maxDissolvedOxygen = 3.00;//溶解氧值
+        double redox=0.0, minRedox = 100.0, maxRedox = 300.0;//氧化还原值
+        double transparency=0.0, minTransparency = 10.0, maxTransparency = 100.0;
+        double conductivity = 0.0, minConductivity = 0.381, maxConductivity = 0.900;
+        double turbidity = 0.0, minTurbidity = 4.28, maxTurbidity = 243.035;
+        double salinity = 0.0, minSalinity = 0.184, maxSalinity = 0.43;
+        double tds = 0.0, minTds = 0.255, maxTds = 0.603;
+        double density = 0.0, minDensity = 500.046, maxDensity = 1000.319;
+        double doSaturation = 0.0, minDoSaturation = 35.129, maxDoSaturation = 138.515;
+        double tss = 0.0, minTss = 0.024, maxTss = 0.972;
+        double chlorophylA = 0.0, minChlorophylA = -0.744, maxChlorophylA = 124.168;
+        double phycocyanobilin = 0.0, minPhycocyanobilin = 9.295, maxPhycocyanobilin = 113.817;
+        double voltage = 0.0, minVoltage = 11.850, maxVoltage = 15.892;
         WaterQuality lastWQ = queryLastWaterQualityByStnId(stnId);
+
+        String wqTime = DateUtil.parseDate(date);
+        //System.out.println("date: "+date+" time:  "+wqTime);
+        WaterQuality waterQuality = new WaterQuality();
         //数据库里如果已有数据，就在此基础上随机，否则就新随机
         if (lastWQ != null) {
-            temper = Double.toString(DataUtil.adjustData(
-                    Double.parseDouble(lastWQ.getTemperature()), maxTemper, minTemper));
-            ph = DataUtil.adjustData(lastWQ.getPh(), maxPh, minPh);
-            dissolvedOxygen = DataUtil.adjustData(lastWQ.getDissolvedOxygen(), maxDissolvedOxygen,
-                    minDissolvedOxygen);
-            redox = DataUtil.adjustData(lastWQ.getRedox(), maxRedox, minRedox);
-            transparency = DataUtil.adjustData(lastWQ.getTransparency(), maxTransparency, minTransparency);
-
-            if (stnId ==7){
-                conductivity = DataUtil.adjustData(lastWQ.getConductivity(), maxConductivity, minConductivity);
-                turbidity = DataUtil.adjustData(lastWQ.getTurbidity(), maxTurbidity, minTurbidity);
-                salinity = DataUtil.adjustData(lastWQ.getSalinity(), maxSalinity, minSalinity);
-                tds = DataUtil.adjustData(lastWQ.getTds(), maxTds, minTds);
-                density = DataUtil.adjustData(lastWQ.getDensity(), maxDensity, minDensity);
-                doSaturation = DataUtil.adjustData(lastWQ.getDoSaturation(), maxDoSaturation,
-                        minDoSaturation);
-                tss = DataUtil.adjustData(lastWQ.getTss(), maxTss, minTss);
-                chlorophylA = DataUtil.adjustData(lastWQ.getChlorophylA(), maxChlorophylA,
-                        minChlorophylA);
-                phycocyanobilin = DataUtil.adjustData(lastWQ.getPhycocyanobilin(), maxPhycocyanobilin,
-                        minPhycocyanobilin);
-                voltage = DataUtil.adjustData(lastWQ.getVoltage(), maxVoltage, minVoltage);
+            switch (stnId){
+                case 1:
+                    temper = Double.toString(DataUtil.adjustData(
+                            Double.parseDouble(lastWQ.getTemperature()), maxTemper, minTemper));
+                    ph = DataUtil.adjustData(lastWQ.getPh(), maxPh, minPh);
+                    dissolvedOxygen = DataUtil.adjustData(lastWQ.getDissolvedOxygen(), maxDissolvedOxygen,
+                            minDissolvedOxygen);
+                    redox = DataUtil.adjustData(lastWQ.getRedox(), maxRedox, minRedox);
+                    transparency = DataUtil.adjustData(lastWQ.getTransparency(), maxTransparency, minTransparency);
+                    break;
+                case 6:
+                    temper = Double.toString(DataUtil.adjustData(
+                            Double.parseDouble(lastWQ.getTemperature()), maxTemper, minTemper));
+                    ph = DataUtil.adjustData(lastWQ.getPh(), maxPh, minPh);
+                    dissolvedOxygen = DataUtil.adjustData(lastWQ.getDissolvedOxygen(), maxDissolvedOxygen,
+                            minDissolvedOxygen);
+                    redox = DataUtil.adjustData(lastWQ.getRedox(), maxRedox, minRedox);
+                    turbidity = DataUtil.getRandom(maxTurbidity, minTurbidity);
+                    doSaturation = DataUtil.adjustData(lastWQ.getDoSaturation(), maxDoSaturation,
+                            minDoSaturation);
+                    break;
+                case 7:
+                    temper = Double.toString(DataUtil.getRandom(maxTemper, minTemper));
+                    ph = DataUtil.getRandom(maxPh, minPh);
+                    dissolvedOxygen = DataUtil.getRandom(maxDissolvedOxygen, minDissolvedOxygen);
+                    redox = DataUtil.getRandom(maxRedox, minRedox);
+                    transparency = DataUtil.getRandom(maxTransparency, minTransparency);
+                    conductivity = DataUtil.getRandom(maxConductivity, minConductivity);
+                    turbidity = DataUtil.getRandom(maxTurbidity, minTurbidity);
+                    salinity = DataUtil.getRandom(maxSalinity, minSalinity);
+                    tds = DataUtil.getRandom(maxTds, minTds);
+                    density = DataUtil.getRandom(maxDensity, minDensity);
+                    doSaturation = DataUtil.getRandom(maxDoSaturation, minDoSaturation);
+                    tss = DataUtil.getRandom(maxTss, minTss);
+                    chlorophylA = DataUtil.getRandom(maxChlorophylA, minChlorophylA);
+                    phycocyanobilin = DataUtil.getRandom(maxPhycocyanobilin, minPhycocyanobilin);
+                    voltage = DataUtil.getRandom(maxVoltage, minVoltage);
+                    break;
             }
         } else {
             temper = Double.toString(DataUtil.getRandom(maxTemper, minTemper));
@@ -221,6 +226,9 @@ public class WaterQualityServiceImpl implements WaterQualityService {
             dissolvedOxygen = DataUtil.getRandom(maxDissolvedOxygen, minDissolvedOxygen);
             redox = DataUtil.getRandom(maxRedox, minRedox);
             transparency = DataUtil.getRandom(maxTransparency, minTransparency);
+
+            //System.out.println("first:  "+transparency);
+
             conductivity = DataUtil.getRandom(maxConductivity, minConductivity);
             turbidity = DataUtil.getRandom(maxTurbidity, minTurbidity);
             salinity = DataUtil.getRandom(maxSalinity, minSalinity);
@@ -233,23 +241,39 @@ public class WaterQualityServiceImpl implements WaterQualityService {
             voltage = DataUtil.getRandom(maxVoltage, minVoltage);
         }
 
-        String wqTime = DateUtil.parseDate(new Date());//获取当前时间
-        WaterQuality waterQuality = new WaterQuality();
-        if (stnId == 1) {//1号站点只生成而温度、ph、溶氧、氧化还原、时间这几个参数
-            waterQuality =
-                    new WaterQuality(stnId, temper, ph, dissolvedOxygen, redox, transparency, null,
-                            null, null, wqTime, wqTime, null, null, null, null, null,
-                            null, null, null, null, null, null, null, null);
 
+        //Calendar cal =Calendar.getInstance();
+        //cal.setTime(date);
+        //int temp = cal.get(Calendar.MONTH) - 2;//上面设置的min和max是2月份的数据，水温变化幅度比较大，
+        // 所以每隔1一个月就加10摄氏度
+        //temper =Double.toString( Double.parseDouble(temper)+temp*10);
 
-        } else {
-            waterQuality =
-                    new WaterQuality(stnId, temper, ph, dissolvedOxygen, redox, transparency, conductivity,
-                            turbidity, 0.0, wqTime, wqTime, "1", "v", "", salinity, tds,
-                            density, doSaturation, tss, chlorophylA, phycocyanobilin, 0.0, 0.0, voltage);
+        switch (stnId){
+            case 1://1号站点只填充温度、ph、溶氧、氧化还原、时间这几个参数
+                waterQuality =
+                        new WaterQuality(stnId, temper, ph, dissolvedOxygen, redox, transparency, null,
+                                null, null, wqTime, wqTime, null, null, null, null, null,
+                                null, null, null, null, null, null, null, null);
+                break;
+
+            case 6://6号站点只填充温度、ph、溶氧、氧化还原、浊度，cod、时间这几个参数
+                waterQuality =
+                        new WaterQuality(stnId, temper, ph, dissolvedOxygen, redox, null, null,
+                                turbidity, null, wqTime, wqTime, null, null, null, null, null,
+                                null, doSaturation, null, null, null, null, null, null);
+                break;
+
+            case 7:
+                waterQuality =
+                        new WaterQuality(stnId, temper, ph, dissolvedOxygen, redox, transparency, conductivity,
+                                turbidity, 0.0, wqTime, wqTime, "1", "v", "", salinity, tds,
+                                density, doSaturation, tss, chlorophylA, phycocyanobilin, 0.0, 0.0, voltage);
+                break;
 
         }
-        return waterQuality;
+
+        int ans = saveWaterQuality(waterQuality);
+        return ans;
     }
 
 }

@@ -283,6 +283,21 @@ public class SocketSaveToDB {
         }
     }
 
+    public static void saveWQFromUB(int ph,int temper){
+        WaterQuality wq = new WaterQuality();
+        wq.setPh(ph*1.0/1000);
+        wq.setTemperature(temper*1.0/1000+"");
+        if (waterQualityService == null) {
+            initEnv();
+        }
+
+        if (waterQualityService != null) {
+            System.out.println(">>>>>>>" + wq.toString());
+            waterQualityService.saveWaterQuality(wq);
+        } else {
+            System.out.println("Init Water Quality Service Failed!");
+        }
+    }
     public static void save(RtuHeaderInfo headerInfo, String path, String colTime) {
         switch (headerInfo.getType()) {
             case 1: // Water Level

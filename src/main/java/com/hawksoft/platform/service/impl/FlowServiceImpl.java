@@ -151,16 +151,9 @@ public class FlowServiceImpl implements FlowService {
         return flowDao.queryStationInfo(stnId);
     }
 
-    @Override
-    public int generateData() {
-        Flow flow = generateFlow(new Date());
-        int ans = saveFlow(flow);
-        return ans;
-    }
 
     @Override
-    public Flow generateFlow(Date date){
-        int stnId = 1;
+    public int generateData(int stnId,Date date){
         double minSpeed = 0.1100, maxSpeed = 0.8700;
         double minFlow = 100, maxFlow = 700;
         double avgSpeed, avgFlow;//flow表需要的数据
@@ -189,8 +182,10 @@ public class FlowServiceImpl implements FlowService {
         flow.setStnId(stnId);
         flow.setAvgSpeed(avgSpeed);
         flow.setAvgFlow(avgFlow);
-        String cTime = DateUtil.parseDate(new Date());//当前时间
+        String cTime = DateUtil.parseDate(date);//当前时间
         flow.setCollectionTime(cTime);
-        return flow;
+
+        int ans = saveFlow(flow);
+        return ans;
     }
 }

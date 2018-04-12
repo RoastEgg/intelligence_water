@@ -4,6 +4,7 @@ package com.hawksoft.platform.service;
 import com.hawksoft.platform.entity.*;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -150,4 +151,12 @@ public interface WeatherWaveService {
      */
     public WaterEarlyWarn getWeatherWaveWarn(@Param("stnId") int stnId, @Param("type") int type);
 
+
+    /**
+     * 为了给生成历史数据和schedule复用，将生成数据方法独立出来
+     * @param stnId
+     * @param date
+     * @return
+     */
+    public int generateData(int stnId,Date date);
 }

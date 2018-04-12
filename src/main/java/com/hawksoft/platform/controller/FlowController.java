@@ -249,10 +249,10 @@ public class FlowController {
      * 采集数据
      * @return
      */
-    @RequestMapping(value = "/collectData",method = RequestMethod.GET)
+    @RequestMapping(value = "/collectData/{stnId}",method = RequestMethod.GET)
     @ResponseBody
-    public int collectData(){
-        int res = flowService.generateData();
+    public int collectData(@PathVariable("stnId") int stnId){
+        int res = flowService.generateData(stnId,new Date());
         return res;
     }
 

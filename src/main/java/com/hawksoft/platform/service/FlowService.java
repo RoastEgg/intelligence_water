@@ -106,12 +106,12 @@ public interface FlowService {
      */
     public int queryStationInfo(int stnId);
 
-    public int generateData();
-
     /**
-     * 为了给生成历史数据和schedule复用，将生成数据方法独立出来
+     * 根据站点和时间生成流量数据
+     * @param stnId
+     * @param date
      * @return
      */
-    public Flow generateFlow(Date date);
+    public int generateData(int stnId,Date date);
 
 }
