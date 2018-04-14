@@ -4,6 +4,7 @@ import com.hawksoft.platform.entity.UnmannedBoat;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface UnmannedBoatDao {
@@ -20,5 +21,10 @@ public interface UnmannedBoatDao {
      */
     public int queryStationInfo(int stnId);
 
+    /**
+     * 设置一下数据库里已经的历史数据的时间这个字段
+     * @param map
+     */
+    public void setUBtime(Map<String,Object> map);
 
 }

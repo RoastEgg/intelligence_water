@@ -302,7 +302,7 @@
     </select>
     <!--根据站点Id和时间，从无人船中获取水质数据-->
     <select id = "queryWaterQualityFromUB" parameterType="Map" resultType="Map">
-        SELECT  ub.stnId,ub.longitude,ub.latitude,wq.temperature,wq.ph,wq.dissolvedOxygen,wq.redox
+        SELECT  ub.stnId,ub.longitude,ub.latitude,wq.temperature,wq.ph
         FROM unmannedboat ub,waterquality wq
         WHERE
           wq.stnId = #{stnId}
@@ -311,6 +311,18 @@
           AND wq.collectionTime = (SELECT  MAX(collectionTime) from waterquality)
           AND ub.time = (SELECT  MAX(`time`) from unmannedboat)
 
+    </select>
+
+    <!--根据站点Id和起始时间，从无人船中获取历史水质数据-->
+    <select id="queryUBHistory" parameterType="Map" resultType="Map">
+        SELECT  ub.stnId,ub.longitude,ub.latitude,wq.temperature,wq.ph
+        FROM unmannedboat ub,waterquality wq
+        WHERE
+          wq.stnId = #{stnId}
+          AND
+          ub.stnId = #{stnId}
+          AND wq.collectionTime >= #{startTime}
+          AND collectionTime <![CDATA[ <= ]]> #{endTime}
     </select>
 
     <!--查询某站点是否有水质信息-->

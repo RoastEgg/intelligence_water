@@ -19,11 +19,11 @@ public class SocketOperate extends Thread {
     private byte[] inputByte;
 
     public SocketOperate(Socket socket, Map<String, Socket> clientMap) {
-        this.stop       = false;
-        this.socket     = socket;
+        this.stop = false;
+        this.socket = socket;
         this.locSockMap = clientMap;
         this.headerInfo = new RtuHeaderInfo();
-        this.inputByte  = new byte[SocketUtils.PIC_MSG_SIZE];
+        this.inputByte = new byte[SocketUtils.PIC_MSG_SIZE];
     }
 
     public void run() {
@@ -31,43 +31,22 @@ public class SocketOperate extends Thread {
 
         try {
             din = new DataInputStream(socket.getInputStream());
-            byte[] flag = new byte[4];
-            readData(din,flag,4);
-            if (flag.equals("01 03 04")){//表示这是第三方发送程序
 
-                while (!stop){
-                    System.out.println("#### 开始接收数据!");
-                    byte[] phByte = new byte[2];
-                    byte[] temperByte = new byte[2];
-                    int ph,temper;
-                    readData(din,phByte,2);
-                    readData(din,temperByte,2);
-                    ph = SocketUtils.getInteger(phByte,0);
-                    temper = SocketUtils.getInteger(temperByte,0);
-                    System.out.println("ph: "+ph+" temper: "+temper);
-                    SocketSaveToDB.saveWQFromUB(ph,temper);
+            byte[] name = new byte[SocketUtils.LOCATION_NAME_MAX_LEN]; // save location name
+            readData(din, name, name.length);
 
-                }
+            int len = SocketUtils.getInteger(name, 0);
+            location = new String(Arrays.copyOfRange(name, 4, len + 4), "UTF-8");
+            Socket s = locSockMap.get(location);
+            if (s != null) {
+                s.close();
+                locSockMap.remove(location);
             }
-            else {
-                int len = SocketUtils.getInteger(flag,0);
-                byte[] name = new byte[SocketUtils.LOCATION_NAME_MAX_LEN]; // save location name
-                readData(din, name, name.length);
 
-                //int len = SocketUtils.getInteger(name, 0);
-                location = new String(Arrays.copyOfRange(name, 4, len + 4), "UTF-8");
-                Socket s = locSockMap.get(location);
-                if (s != null) {
-                    s.close();
-                    locSockMap.remove(location);
-                }
+            locSockMap.put(location, socket);
 
-                locSockMap.put(location, socket);
-
-                doReceive(din); // 循环命令和数据
-
-                din.close();
-            }
+            doReceive(din); // 循环命令和数据
+            din.close();
 
         } catch (Exception ex) {
             try {
@@ -148,7 +127,11 @@ public class SocketOperate extends Thread {
                 e.printStackTrace();
                 if (e instanceof SocketException) {
                     System.out.println("#### client connect exit or socket exception.");
-                    try { socket.close(); } catch (Exception e1) { e1.printStackTrace(); }
+                    try {
+                        socket.close();
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
 
                     locSockMap.remove(location);
                     stop = true;
@@ -159,7 +142,7 @@ public class SocketOperate extends Thread {
 
     private int decodeHeader(DataInputStream din, int type) throws Exception {
         headerInfo.setType(type);
-        System.out.println("type: "+ type);
+        System.out.println("type: " + type);
         int hd_size = 0;
         switch (SocketUtils.IWRtuMsgType.getName(type)) {
             case WQ:
@@ -183,8 +166,8 @@ public class SocketOperate extends Thread {
                 headerInfo.setMsgType(SocketUtils.IWRtuMsgType.OPACITY);
                 break;
             case UB:
-                hd_size = SocketUtils.IWRtuMsgType.UB.getHeaderSize()-4;
-                System.out.println("ub  head size:  "+hd_size);
+                hd_size = SocketUtils.IWRtuMsgType.UB.getHeaderSize() - 4;
+                System.out.println("ub  head size:  " + hd_size);
                 headerInfo.setMsgType(SocketUtils.IWRtuMsgType.UB);
                 break;
 
@@ -214,16 +197,16 @@ public class SocketOperate extends Thread {
                 headerInfo.setSize(SocketUtils.getInteger(header, 36));
                 break;
             case UB:
-                headerInfo.setUbNo(new String(Arrays.copyOfRange(header,4,24)).trim());//最长20位的无人船编号，去除头尾空格
-                headerInfo.setStime(new String(Arrays.copyOfRange(header,24,43)));//20位的日期，去掉末尾空格
-                headerInfo.setSize(SocketUtils.getInteger(header,44));
+                headerInfo.setUbNo(new String(Arrays.copyOfRange(header, 4, 24)).trim());//最长20位的无人船编号，去除头尾空格
+                headerInfo.setStime(new String(Arrays.copyOfRange(header, 24, 43)));//20位的日期，去掉末尾空格
+                headerInfo.setSize(SocketUtils.getInteger(header, 44));
                 break;
         }
 
         return 0;
     }
 
-    private void readData(DataInputStream din, byte[] buf, int size)  throws Exception {
+    private void readData(DataInputStream din, byte[] buf, int size) throws Exception {
         int idx = 0;
         while (size > 0) {
             int len = din.read(buf, idx, size);

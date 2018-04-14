@@ -363,4 +363,13 @@
         limit #{days}
     </select>
 
+    <select id="queryFlowMap" parameterType="int" resultType="String">
+        SELECT FilePath3
+        FROM  speedflow
+        WHERE
+        stnId = #{stnId}
+        AND  collectionTime = (
+        SELECT  max(collectionTime) from speedflow where stnId = #{stnId}
+        ) limit 1;
+    </select>
 </mapper>

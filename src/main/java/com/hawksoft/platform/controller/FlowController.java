@@ -6,6 +6,7 @@ import com.hawksoft.platform.entity.Flow;
 
 import com.hawksoft.platform.service.FlowService;
 
+import com.hawksoft.platform.service.SpeedFlowService;
 import com.hawksoft.platform.service.VideoService;
 import com.hawksoft.platform.service.WaterStationService;
 import com.hawksoft.platform.util.DateUtil;
@@ -40,6 +41,8 @@ public class FlowController {
     private VideoService videoService;
     @Autowired
     private WaterStationService waterStationService;
+    @Autowired
+    private SpeedFlowService speedFlowService;
 
     private Map<String, Object> params = new HashMap<>();
 
@@ -183,7 +186,7 @@ public class FlowController {
     }
 
     /**
-     * 根据站点Id和时间，获取这个时间点的流量，水位和5个相机的5个视频url
+     * 根据站点Id和时间，获取这个时间点的流量，水位和5个相机，5张照片的文件路径
      * @param stnId
      * @param time
      * @return
@@ -246,9 +249,26 @@ public class FlowController {
     }
 
     /**
-     * 采集数据
+     * 通过站点ID查询流量图
+     * @param stnId
      * @return
      */
+    @RequestMapping(value = "/flowMap/{stnId}",method = RequestMethod.GET)
+    @ResponseBody
+    public String getFlowMap(@PathVariable("stnId") int stnId) {
+        String ans =  speedFlowService.queryFlowMap(stnId);
+        if (ans!=null){
+            System.out.println("文件路径： "+ans);
+            return ans;
+        }
+        System.out.println("未查到最新的流量图filePath3");
+        return "{\"msg\" : \"暂时无法获取流量图数据\"}";
+    }
+
+        /**
+         * 采集数据
+         * @return
+         */
     @RequestMapping(value = "/collectData/{stnId}",method = RequestMethod.GET)
     @ResponseBody
     public int collectData(@PathVariable("stnId") int stnId){

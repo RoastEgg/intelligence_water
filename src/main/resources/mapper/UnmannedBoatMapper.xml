@@ -152,5 +152,9 @@
         WHERE stnId = #{stnId}
     </select>
 
+    <update id="setUBtime" parameterType="Map">
+        update unmannedboat set `time`= #{time}
+        WHERE id = #{id}
+    </update>
 
 </mapper>

@@ -17,4 +17,8 @@ public interface UnmannedBoatService {
      */
     public int queryStationInfo(int stnId);
 
+    /**
+     * 设置一下数据库里已经的历史数据的时间这个字段
+     */
+    public void setUBtime();
 }

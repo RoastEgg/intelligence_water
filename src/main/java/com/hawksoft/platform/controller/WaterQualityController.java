@@ -5,6 +5,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.hawksoft.platform.entity.WaterQuality;
 import com.hawksoft.platform.service.WaterQualityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.jpa.vendor.OpenJpaDialect;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -263,24 +264,44 @@ public class WaterQualityController {
     /**
      * 从无人船中获取水质信息
      * @param stnId
-     * @return 站点Id，GPS经纬度，水质参数（温度、PH、溶氧、氧化还原）
+     * @return 站点Id，GPS经纬度，水质参数（温度、PH）
      */
     @RequestMapping(value = "/UnmannedBoat/{stnId}",method = RequestMethod.GET)
     @ResponseBody()
     public String getWaterQualityFromUB(@PathVariable("stnId") int stnId){
         params.put("stnId",stnId);
         Map<String ,Object> info = waterQualityService.queryWaterQualityFromUB(params);
-        System.out.println("返回记录条数："+info.size());
-        if (info!=null){
-            return JSON.toJSON(info).toString();
+         if (info!=null){
+             System.out.println("返回记录条数："+info.size());
+             return JSON.toJSON(info).toString();
         }
         return "{\"msg\" : \"暂时无法获取指定时间最新的流量和水位数据\"}";
     }
 
     /**
-     * 采集数据
-     * @return
+     * 从无人船中获取水质历史信息
+     * @param stnId
+     * @return 站点Id，GPS经纬度，水质参数（温度、PH）
      */
+    @RequestMapping(value = "/UnmannedBoatHisInfo/{stnId}",method = RequestMethod.GET)
+    @ResponseBody()
+    public String getWaterQualityFromUBHis(@PathVariable("stnId") int stnId){
+        params.put("stnId",stnId);
+        params.put("startTime","2018-04-13 10:00:00");
+        params.put("endTime","2018-04-13 10:05:00");
+        List<Map<String,Object>> infoList = waterQualityService.queryUBHistory(params);
+        if (infoList.size()>0){
+            System.out.println("获取到了无人船的历史水质数据");
+            return JSON.toJSON(infoList).toString();
+        }
+        return "{\"msg\" : \"暂时无法获取指定时间最新的流量和水位数据\"}";
+    }
+
+
+        /**
+         * 采集数据
+         * @return
+         */
     @RequestMapping(value = "/collectData/{stnId}",method = RequestMethod.GET)
     @ResponseBody
     public int collectData(@PathVariable ("stnId") int stnId){

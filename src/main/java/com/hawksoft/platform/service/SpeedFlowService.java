@@ -85,5 +85,11 @@ public interface SpeedFlowService {
      */
     public int generateData(int stnId,Date date);
 
+    /**
+     * 通过站点ID查询流量图
+     * @param stnId
+     * @return
+     */
+    public String queryFlowMap(int stnId);
 
 }

@@ -4,10 +4,7 @@ import com.hawksoft.platform.entity.Flow;
 import com.hawksoft.platform.entity.SpeedFlow;
 import com.hawksoft.platform.entity.WaterQuality;
 import com.hawksoft.platform.entity.WeatherWave;
-import com.hawksoft.platform.service.FlowService;
-import com.hawksoft.platform.service.SpeedFlowService;
-import com.hawksoft.platform.service.WaterQualityService;
-import com.hawksoft.platform.service.WeatherWaveService;
+import com.hawksoft.platform.service.*;
 import com.hawksoft.platform.util.DataUtil;
 import com.hawksoft.platform.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +33,8 @@ public class InjectDataController {
     private WaterQualityService waterQualityService;
     @Autowired
     private WeatherWaveService weatherWaveService;
-
+    @Autowired
+    private UnmannedBoatService unmannedBoatService;
 
     @RequestMapping(value = "/flowAndSpeedFlow/{stnId}", method = RequestMethod.GET)
     @ResponseBody
@@ -92,6 +90,28 @@ public class InjectDataController {
                 }
             }
         }
+        return true;
+//        for (int month = 4; month <= 4; month++) {  //月
+//            for (int i = 1; i <= 12; i++) {        //天
+//
+//                for (int j = 0; j < 24; j++) {//小时
+//
+//                    for (int minute = 0; minute < 12; minute++) {//5分钟一次，每小时12次
+//
+//                        Date wqDate = transWqTime(month, i, j, minute);
+//                        waterQualityService.generateData(stnId,wqDate);
+//                    }
+//
+//                }
+//            }
+//        }
+//        return true;
+    }
+
+    @RequestMapping(value = "/setUBtime",method = RequestMethod.GET)
+    @ResponseBody
+    public boolean setUBtime(){
+        unmannedBoatService.setUBtime();
         return true;
     }
 

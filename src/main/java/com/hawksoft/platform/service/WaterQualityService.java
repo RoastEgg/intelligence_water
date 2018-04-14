@@ -119,6 +119,13 @@ public interface WaterQualityService {
     public Map<String ,Object> queryWaterQualityFromUB(Map<String,Object> map);
 
     /**
+     * 从无人船中获取水质历史信息
+     * @param map
+     * @return 站点Id，GPS经纬度，水质参数（温度、PH）
+     */
+    public List<Map<String,Object>> queryUBHistory(Map<String,Object> map);
+
+    /**
      * 查询某站点是否有水质信息
      * @param stnId
      * @return 记录条数

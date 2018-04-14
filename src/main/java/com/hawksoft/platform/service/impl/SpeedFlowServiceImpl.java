@@ -295,4 +295,9 @@ public class SpeedFlowServiceImpl implements SpeedFlowService {
         return ans;
     }
 
+    @Override
+    public String queryFlowMap(int stnId) {
+        return speedFlowDao.queryFlowMap(stnId);
+    }
+
 }

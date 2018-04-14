@@ -78,4 +78,11 @@ public interface SpeedFlowDao {
      */
     public List<Camera> queryLastSpeedFlowByStdIdAdd(int stnId);
 
+    /**
+     * 通过站点ID查询流量图
+     * @param stnId
+     * @return
+     */
+    public String queryFlowMap(int stnId);
+
 }

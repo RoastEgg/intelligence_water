@@ -51,9 +51,9 @@
 
     <insert id="saveFloatingMatter" parameterType="com.hawksoft.platform.entity.FloatingMatter">
         INSERT INTO floatingmatter
-            (stnId,collectionTime,camIndex)
+            (stnId,collectionTime,camIndex,filePathResult)
         VALUES
-        (#{stnId},#{collectionTime},#{camIndex})
+        (#{stnId},#{collectionTime},#{camIndex},#{filePathResult})
     </insert>
 
     <!--根据站点Id查询最新3张漂浮物图片-->
@@ -62,7 +62,7 @@
         FROM floatingmatter
         WHERE stnId = #{stnId}
         order by collectionTime DESC
-        LIMIT 3
+        LIMIT 4
     </select>
 
     <!--查询某站点是否有漂浮物信息-->

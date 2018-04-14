@@ -151,6 +151,11 @@ public class WaterQualityServiceImpl implements WaterQualityService {
     }
 
     @Override
+    public List<Map<String, Object>> queryUBHistory(Map<String, Object> map) {
+        return WaterQualityDao.queryUBHistory(map);
+    }
+
+    @Override
     public int queryStationInfo(int stnId) {
         return WaterQualityDao.queryStationInfo(stnId);
     }

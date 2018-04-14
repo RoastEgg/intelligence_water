@@ -1,5 +1,6 @@
 package com.hawksoft.platform.service;
 
+import com.hawksoft.platform.VO.HistoryRecordVO;
 import com.hawksoft.platform.entity.WaterStation;
 
 import java.util.List;
@@ -26,4 +27,9 @@ public interface WaterStationService {
      * @return
      */
     public List<Map<String,Object>> queryAllStationInfo();
+
+    /**
+     * 部分站点没有水位水质等信息，只有历史信息，包括PDF信息和picture路径
+     */
+    public HistoryRecordVO queryHistoryInfo(int stnId);
 }

@@ -1,6 +1,9 @@
 package com.hawksoft.platform.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.hawksoft.platform.VO.HistoryRecordVO;
+import com.hawksoft.platform.VO.HistoryStationInfoVO;
+import com.hawksoft.platform.VO.PdfVO;
 import com.hawksoft.platform.dao.*;
 import com.hawksoft.platform.entity.WaterStation;
 import com.hawksoft.platform.service.WaterStationService;
@@ -40,6 +43,12 @@ public class WaterStationServiceImpl implements WaterStationService {
         Boolean hasWaterFlow = flowDao.queryStationInfo(stnId)>0?true:false;
         Boolean hasFloatingMaterial = floatingMatterDao.queryStationInfo(stnId)>0?true:false;
         Boolean hasUnmannedShip = unmannedBoatDao.queryStationInfo(stnId)>0?true:false;
+        Boolean hasHistoryRecord = true;
+        HistoryRecordVO historyRecordVO = queryHistoryInfo(stnId);
+        if (historyRecordVO.getPdfVOList()==null&&historyRecordVO.getPicList()==null){
+            hasHistoryRecord = false;
+        }
+
         //Boolean hasUnmannedShip = stnId==1?true:false;
 
         Map<String ,Object> map = new HashMap<>();
@@ -48,6 +57,7 @@ public class WaterStationServiceImpl implements WaterStationService {
         map.put("hasWaterFlow",hasWaterFlow);
         map.put("hasFloatingMaterial",hasFloatingMaterial);
         map.put("hasUnmannedShip",hasUnmannedShip);
+        map.put("hasHistoryRecord",hasHistoryRecord);
         return map;
     }
 
@@ -64,5 +74,16 @@ public class WaterStationServiceImpl implements WaterStationService {
             mapList.add(map);
         }
         return mapList;
+    }
+
+    @Override
+    public HistoryRecordVO queryHistoryInfo(int stnId) {
+        HistoryRecordVO historyRecordVO = new HistoryRecordVO();
+
+        List<PdfVO> pdfList = HistoryStationInfoVO.pdfMap.get(stnId);
+        List<String> picList = HistoryStationInfoVO.picMap.get(stnId);
+        historyRecordVO.setPdfVOList(pdfList);
+        historyRecordVO.setPicList(picList);
+        return historyRecordVO;
     }
 }

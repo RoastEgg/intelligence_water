@@ -32,6 +32,9 @@ public class SocketUtils {
         checkTypeENName.put(2, "Flux");   // 流量
         checkTypeENName.put(3, "WaterQ"); // 水质
         checkTypeENName.put(4, "WaterOp");// 透明度
+        checkTypeENName.put(5,"FOR");// 漂浮物
+        checkTypeENName.put(10,"UB");// 无人船
+
     }
 
     public enum IWRtuMsgType {
