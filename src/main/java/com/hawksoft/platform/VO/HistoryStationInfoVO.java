@@ -97,8 +97,8 @@ public class HistoryStationInfoVO {
 
             List<String> list16 = new ArrayList<String>(){
                 {
-                    add("/historyRecord/16/picture/MLW1.png");
-                    add("/historyRecord/16/picture/MLW2.png");
+                    add("/historyRecord/16/picture/MLW1.jpg");
+                    add("/historyRecord/16/picture/MLW2.jpg");
                 }
             };
             put(16,list16);

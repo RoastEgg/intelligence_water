@@ -27,7 +27,7 @@ public class GenerateDataSchedule {
     void generateFlowAndSpeedFlow(){
         if (DateUtil.parseDate(new Date()).compareTo("2018-04-13 00:00:00") > 0){
             flowService.generateData(1,new Date());
-            speedFlowService.generateData(1,new Date());
+            //speedFlowService.generateData(1,new Date());//这张表的实时数据由采集程序发送来
         }
     }
 
