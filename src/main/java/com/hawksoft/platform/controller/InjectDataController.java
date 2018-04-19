@@ -72,7 +72,7 @@ public class InjectDataController {
 
     @RequestMapping(value = "/waterQuality/{stnId}", method = RequestMethod.GET)
     @ResponseBody
-    public boolean InjectWaterQuality(@PathVariable("stnId") int stnId) {
+    public boolean InjectWaterQuality(@PathVariable("stnId") int stnId) throws Exception {
 
         for (int month = 1; month <= 3; month++) {  //月
             for (int i = 1; i <= 31; i++) {        //天

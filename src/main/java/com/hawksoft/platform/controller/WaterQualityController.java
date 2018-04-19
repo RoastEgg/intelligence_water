@@ -304,7 +304,7 @@ public class WaterQualityController {
          */
     @RequestMapping(value = "/collectData/{stnId}",method = RequestMethod.GET)
     @ResponseBody
-    public int collectData(@PathVariable ("stnId") int stnId){
+    public int collectData(@PathVariable ("stnId") int stnId) throws Exception {
         int res = waterQualityService.generateData(stnId,new Date());
         return res;
     }
