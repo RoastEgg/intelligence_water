@@ -131,4 +131,18 @@ public interface WaterQualityDao {
      * @return 记录条数
      */
     public int queryStationInfo(int stnId);
+
+    /**
+     * 根据数据库id查询水质记录（返回的参数有：站点Id、时间）（本方法是为了修改历史数据里的温度参数）
+     * @param id
+     * @return
+     */
+    public WaterQuality queryWaterQualityById(int id);
+
+    /**
+     * 根据记录id修改温度字段
+     * @param map
+     * @return
+     */
+    public void updateTime(Map<String,Object> map);
 }

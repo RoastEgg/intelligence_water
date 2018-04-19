@@ -14,17 +14,17 @@ public class HistoryStationInfoVO {
 //            list11.add(pdf11);
 //            put(11,list11);
 
-            PdfVO pdf12 = new PdfVO("乌东德原观实验报告","/historyRecord/12/pdf/乌东德原观实验报告.pdf","2018-04-13");
+            PdfVO pdf12 = new PdfVO("乌东德原观实验报告","/historyRecord/12/pdf/乌东德原观实验报告.pdf","2016.09");
             List<PdfVO> list12 = new ArrayList<PdfVO>();
             list12.add(pdf12);
             put(12,list12);
 
-            PdfVO pdf13 = new PdfVO("云南龙开口水电站水流表面流场测量","/historyRecord/13/pdf/云南龙开口水电站水流表面流场测量.pdf","2018-04-13");
+            PdfVO pdf13 = new PdfVO("云南龙开口水电站水流表面流场测量","/historyRecord/13/pdf/云南龙开口水电站水流表面流场测量.pdf","2016.11");
             List<PdfVO> list13 = new ArrayList<PdfVO>();
             list13.add(pdf13);
             put(13,list13);
 
-            PdfVO pdf14 = new PdfVO("201401四川成都都江堰龙池镇南岳测试报告","/historyRecord/14/pdf/201401四川成都都江堰龙池镇南岳测试报告.pdf","2018-04-13");
+            PdfVO pdf14 = new PdfVO("201401四川成都都江堰龙池镇南岳测试报告","/historyRecord/14/pdf/201401四川成都都江堰龙池镇南岳测试报告.pdf","2017.03");
             List<PdfVO> list14 = new ArrayList<>();
             list14.add(pdf14);
             put(14,list14);
@@ -35,7 +35,7 @@ public class HistoryStationInfoVO {
 //            list15.add(pdf15);
 //            put(15,list15);
 
-            PdfVO pdf16 = new PdfVO("太湖梅梁湾原型观测项目报告-V1.1","/historyRecord/16/pdf/太湖梅梁湾原型观测项目报告-V1.1.pdf","2018-04-13");
+            PdfVO pdf16 = new PdfVO("太湖梅梁湾原型观测项目报告-V1.1","/historyRecord/16/pdf/太湖梅梁湾原型观测项目报告-V1.1.pdf","2017.10");
             List<PdfVO> list16 = new ArrayList<PdfVO>();
             list16.add(pdf16);
             put(16,list16);

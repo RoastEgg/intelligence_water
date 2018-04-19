@@ -1,5 +1,8 @@
 package com.hawksoft.platform.service.impl;
 
+import com.google.gson.Gson;
+import com.hawksoft.platform.VO.WeatherRespVO;
+import com.hawksoft.platform.VO.WeatherVO;
 import com.hawksoft.platform.dao.WaterQualityDao;
 import com.hawksoft.platform.entity.WaterQuality;
 import com.hawksoft.platform.entity.WaterEarlyWarn;
@@ -10,14 +13,16 @@ import com.hawksoft.platform.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class WaterQualityServiceImpl implements WaterQualityService {
 
+    public static int[] city = {0,1015,2,3,1015,5,410,2063 };
     @Autowired
     private WaterQualityDao WaterQualityDao;
 
@@ -161,7 +166,7 @@ public class WaterQualityServiceImpl implements WaterQualityService {
     }
 
     @Override
-    public int generateData(int stnId, Date date) {
+    public int generateData(int stnId, Date date) throws Exception {
 
         String temper = "";
         double minTemper = 3.00, maxTemper = 8.00;        //温度值
@@ -246,13 +251,7 @@ public class WaterQualityServiceImpl implements WaterQualityService {
             voltage = DataUtil.getRandom(maxVoltage, minVoltage);
         }
 
-
-        //Calendar cal =Calendar.getInstance();
-        //cal.setTime(date);
-        //int temp = cal.get(Calendar.MONTH) - 2;//上面设置的min和max是2月份的数据，水温变化幅度比较大，
-        // 所以每隔1一个月就加10摄氏度
-        //temper =Double.toString( Double.parseDouble(temper)+temp*10);
-
+        temper  = Double.toString(getTemper(wqTime,stnId));//温度值采用真实数据
         switch (stnId){
             case 1://1号站点只填充温度、ph、溶氧、氧化还原、时间这几个参数
                 waterQuality =
@@ -279,6 +278,69 @@ public class WaterQualityServiceImpl implements WaterQualityService {
 
         int ans = saveWaterQuality(waterQuality);
         return ans;
+    }
+
+    @Override
+    public void updateTemper(int id) throws Exception {
+        WaterQuality waterQuality = WaterQualityDao.queryWaterQualityById(id);
+        String date = waterQuality.getCollectionTime();
+        int stnId = waterQuality.getStnId();
+        String temperature = Double.toString(getTemper(date,stnId));
+        Map<String,Object> map = new HashMap<>();
+        map.put("id",id);
+        map.put("temperature",temperature);
+        WaterQualityDao.updateTime(map);
+    }
+
+    public double getTemper(String date,int stnId) throws Exception{
+        SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date d = sdf1.parse(date);
+        SimpleDateFormat sdf2=new SimpleDateFormat("yyyyMMdd");
+        String day = sdf2.format(d);
+        int cityId = city[stnId];
+        String url = "http://api.k780.com/?app=weather.history&weaid="+cityId+"&date="+day+"&appkey=32850&sign=64edbc529ea08d3442a6cb7b784b5db7&format=json";
+
+        URL u=new URL(url);
+        InputStream in=u.openStream();
+        ByteArrayOutputStream out=new ByteArrayOutputStream();
+        try {
+            byte buf[]=new byte[1024];
+            int read = 0;
+            while ((read = in.read(buf)) > 0) {
+                out.write(buf, 0, read);
+            }
+        }  finally {
+            if (in != null) {
+                in.close();
+            }
+        }
+        byte b[]=out.toByteArray( );
+        String s = new String(b,"utf-8");
+
+        Gson gson = new Gson();
+        WeatherRespVO weatherRespVO  =  gson.fromJson(s,WeatherRespVO.class);
+        List<WeatherVO> list = weatherRespVO.getResult();
+        int size = list.size();
+        if (size>0){
+            //如果当天有真实的天气数据，则选取离date最近的一条真实数据
+            int count  = 0;
+            while (count<size){
+                if (date.compareTo(list.get(count).getUptime())>0){
+                    count++;
+                }
+                else {
+                    break;
+                }
+            }
+            count  = Math.max(count-1,0);
+            return list.get(count).getTemp();
+        }
+        else {
+            //如果当天还没有真实天气数据，取数据库最新一条数据，用它的温度字段作为date时间的温度
+            System.out.println("no data today");
+            WaterQuality lastWQ = queryLastWaterQualityByStnId(stnId);
+            return Double.parseDouble(lastWQ.getTemperature());
+        }
     }
 
 }

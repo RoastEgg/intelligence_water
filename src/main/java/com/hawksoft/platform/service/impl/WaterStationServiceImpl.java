@@ -29,6 +29,8 @@ public class WaterStationServiceImpl implements WaterStationService {
     private FloatingMatterDao floatingMatterDao;
     @Autowired
     private UnmannedBoatDao unmannedBoatDao;
+    @Autowired
+    private WeatherWaveDao weatherWaveDao;
 
 
     @Override
@@ -48,6 +50,8 @@ public class WaterStationServiceImpl implements WaterStationService {
         if (historyRecordVO.getPdfVOList()==null&&historyRecordVO.getPicList()==null){
             hasHistoryRecord = false;
         }
+        Boolean hasWeather = weatherWaveDao.findLastWeather(stnId).size()>0?true:false;
+        Boolean hasWave = weatherWaveDao.findLastWave(stnId).size()>0?true:false;
 
         //Boolean hasUnmannedShip = stnId==1?true:false;
 
@@ -58,6 +62,8 @@ public class WaterStationServiceImpl implements WaterStationService {
         map.put("hasFloatingMaterial",hasFloatingMaterial);
         map.put("hasUnmannedShip",hasUnmannedShip);
         map.put("hasHistoryRecord",hasHistoryRecord);
+        map.put("hasWeather",hasWeather);
+        map.put("hasWave",hasWave);
         return map;
     }
 

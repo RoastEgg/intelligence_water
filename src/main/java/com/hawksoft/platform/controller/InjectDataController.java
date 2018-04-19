@@ -115,6 +115,15 @@ public class InjectDataController {
         return true;
     }
 
+    @RequestMapping(value = "/updateWQTime",method = RequestMethod.GET)
+    @ResponseBody
+    public boolean updateWQTime() throws Exception {
+        for (int i=109173;i<=109273;i++){
+            waterQualityService.updateTemper(i);
+        }
+        return true;
+    }
+
 //    @RequestMapping(value = "/weatherWave/{stnId}", method = RequestMethod.GET)
 //    @ResponseBody
 //    public boolean InjectWW(@PathVariable("stnId") int stnId) {

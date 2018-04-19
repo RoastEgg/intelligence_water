@@ -318,11 +318,12 @@
         SELECT  ub.stnId,ub.longitude,ub.latitude,wq.temperature,wq.ph
         FROM unmannedboat ub,waterquality wq
         WHERE
-          wq.stnId = #{stnId}
-          AND
-          ub.stnId = #{stnId}
-          AND wq.collectionTime >= #{startTime}
-          AND collectionTime <![CDATA[ <= ]]> #{endTime}
+        wq.stnId = #{stnId}
+        AND
+        ub.stnId = #{stnId}
+        AND wq.collectionTime >= #{startTime}
+        AND wq.collectionTime <![CDATA[ <= ]]> #{endTime}
+        AND DATE_FORMAT(wq.collectionTime,"%Y-%m-%d %T") = left(ub.time,19);
     </select>
 
     <!--查询某站点是否有水质信息-->
@@ -332,4 +333,14 @@
         WHERE stnId = #{stnId}
     </select>
 
+    <select id="queryWaterQualityById" parameterType="int" resultType="com.hawksoft.platform.entity.WaterQuality">
+        select stnId,collectionTime
+        FROM  waterquality
+        where id = #{id}
+    </select>
+
+    <select id="updateTime" parameterType="Map">
+        update waterquality set temperature = #{temperature}
+        WHERE id = #{id}
+    </select>
 </mapper>

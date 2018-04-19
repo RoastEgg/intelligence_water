@@ -139,5 +139,12 @@ public interface WaterQualityService {
      * @param date
      * @return
      */
-    public int generateData(int stnId,Date date);
+    public int generateData(int stnId,Date date) throws Exception;
+
+    /**
+     * 根据记录Id修改该条记录的温度参数值
+     * @param id
+     * @return
+     */
+    public void updateTemper(int id) throws Exception;
 }
