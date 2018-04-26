@@ -118,9 +118,14 @@ public class InjectDataController {
     @RequestMapping(value = "/updateWQTime",method = RequestMethod.GET)
     @ResponseBody
     public boolean updateWQTime() throws Exception {
-        for (int i=109173;i<=109273;i++){
-            waterQualityService.updateTemper(i);
+        for (int i=208827;i<=214001;i++){
+            if (waterQualityService.queryById(i)!=null){
+                waterQualityService.updateTemper(i);
+            }
         }
+//        if (waterQualityService.queryById(193453) == null){
+//            return false;
+//        }
         return true;
     }
 

@@ -343,4 +343,8 @@
         update waterquality set temperature = #{temperature}
         WHERE id = #{id}
     </select>
+
+    <select id ="queryById" parameterType="int" resultType="com.hawksoft.platform.entity.WaterQuality">
+        SELECT  * from waterquality WHERE  id=#{id}
+    </select>
 </mapper>

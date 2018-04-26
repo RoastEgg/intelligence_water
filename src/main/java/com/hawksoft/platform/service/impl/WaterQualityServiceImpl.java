@@ -292,6 +292,11 @@ public class WaterQualityServiceImpl implements WaterQualityService {
         WaterQualityDao.updateTime(map);
     }
 
+    @Override
+    public WaterQuality queryById(int id) {
+        return WaterQualityDao.queryById(id);
+    }
+
     public double getTemper(String date,int stnId) throws Exception{
         SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date d = sdf1.parse(date);

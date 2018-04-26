@@ -147,4 +147,11 @@ public interface WaterQualityService {
      * @return
      */
     public void updateTemper(int id) throws Exception;
+
+    /**
+     * 查询数据库里是否有此id
+     * @param id
+     * @return
+     */
+    public WaterQuality queryById(int id);
 }

@@ -1,6 +1,7 @@
 package com.hawksoft.platform.dao;
 
 
+import com.hawksoft.platform.entity.Water;
 import com.hawksoft.platform.entity.WaterQuality;
 import com.hawksoft.platform.entity.WaterEarlyWarn;
 import com.hawksoft.platform.entity.WaterStation;
@@ -145,4 +146,11 @@ public interface WaterQualityDao {
      * @return
      */
     public void updateTime(Map<String,Object> map);
+
+    /**
+     * 查询数据库里是否有此id
+     * @param id
+     * @return
+     */
+    public WaterQuality queryById(int id);
 }
