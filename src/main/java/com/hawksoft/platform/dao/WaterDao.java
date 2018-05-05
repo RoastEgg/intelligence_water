@@ -137,4 +137,18 @@ public interface WaterDao {
      * @return 记录条数
      */
     public int queryStationInfo(int stnId);
+
+    /**
+     * 修改水位数据
+     * @param water
+     * @return
+     */
+    int updateWater(Water water);
+
+    /**
+     * 删除水位信息
+     * @param id
+     * @return
+     */
+    int deleteWater(int id);
 }

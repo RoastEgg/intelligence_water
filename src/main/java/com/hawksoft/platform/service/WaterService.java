@@ -46,4 +46,17 @@ public interface WaterService {
      * @return
      */
     public Water_queryLastAndHisVO queryLastAndHis(Map<String ,Object> map);
+
+    /**
+     * 修改水位信息
+     * @return
+     */
+    int updateWater(Water water);
+
+    /**
+     * 删除水位数据
+     * @param id
+     * @return
+     */
+    int deleteWater(int id);
 }

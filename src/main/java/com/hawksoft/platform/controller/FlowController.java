@@ -276,4 +276,13 @@ public class FlowController {
         return res;
     }
 
+    /**
+     * 根据站点ID获取相机拍摄流量信息
+     */
+    @RequestMapping(value = "/getScoketMessage/{stnId}", method = RequestMethod.GET)
+    @ResponseBody
+    public void getScoketMessage(@PathVariable("stnId") int stnId){
+
+    }
+
 }

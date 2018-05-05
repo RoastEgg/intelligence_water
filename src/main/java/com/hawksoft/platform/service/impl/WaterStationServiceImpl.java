@@ -92,4 +92,14 @@ public class WaterStationServiceImpl implements WaterStationService {
         historyRecordVO.setPicList(picList);
         return historyRecordVO;
     }
+
+    @Override
+    public int queryIdByName(String name) {
+        return waterStationDao.queryIdByName(name);
+    }
+
+    @Override
+    public String queryCodeById(int stnId) {
+        return waterStationDao.queryCodeById(stnId);
+    }
 }

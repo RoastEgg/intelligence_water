@@ -64,4 +64,19 @@ public class UserController {
 
         return (userService.findUserByName(uname) != null)?"false" : "true";
     }
+
+
+    /**
+     * 检验用户是否是管理员
+     * @param uname 用户名
+     * @return 是 则返回true 否 则返回flase
+     */
+    @RequestMapping("checkIsAdmin/{uname}")
+    @ResponseBody
+    public String checkIsAdmin(@PathVariable("uname") String uname){
+        User user=userService.findUserByName(uname);
+        return (user.getPrivilege()==0)?"true" : "false";
+    }
+
+
 }

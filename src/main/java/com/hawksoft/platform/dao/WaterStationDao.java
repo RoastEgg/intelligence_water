@@ -26,4 +26,18 @@ public interface WaterStationDao {
      * 部分站点没有水位水质等信息，只有历史信息，包括PDF信息和picture路径
      */
     public String queryHistoryInfo(int stnId);
+
+    /**
+     * 通过站点名称查询站点ID
+     * @param name
+     * @return
+     */
+    int queryIdByName(String name);
+
+    /**
+     * 通过站点ID查询站点名称
+     * @param stnId
+     * @return
+     */
+    String queryCodeById(int stnId);
 }

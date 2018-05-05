@@ -164,6 +164,11 @@ public class SocketUtils {
                                      so.getOutputStream()), true);
         writer.println(message);
     }
+    public static void sendMessage(Socket so, byte[] message) throws IOException {
+        PrintWriter writer = new PrintWriter(new OutputStreamWriter(
+                so.getOutputStream()), true);
+        writer.println(message);
+    }
     
     public static String recvMessage(Socket so) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(

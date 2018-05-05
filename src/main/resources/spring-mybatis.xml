@@ -44,17 +44,21 @@
 		<property name="houseKeepingTestSql">
 			<value>select 1 from dual</value>
 		</property>
+		<!--最大连接数-->
 		<property name="maximumConnectionCount">
 			<value>10</value>
 		</property>
+		<!--最小连接数-->
 		<property name="minimumConnectionCount">
 			<value>5</value>
 		</property>
+		<!--最大活动时间（超过此时间线程将被kill）(单位：毫秒)-->
 		<property name="maximumActiveTime">
 			<value>36000000</value>
 		</property>
+		<!--任意时刻可以同时建立的最大连接数-->
 		<property name="simultaneousBuildThrottle">
-			<value>4</value>
+			<value>5</value>
 		</property>
 		<property name="verbose">
 			<value>true</value>
@@ -99,5 +103,4 @@
 		<aop:pointcut expression="execution(* com.hawksoft.platform.service..*.*(..))" id="pointcut"/>
 		<aop:advisor advice-ref="txadvice" pointcut-ref="pointcut"/>
 	</aop:config>
-
 </beans>

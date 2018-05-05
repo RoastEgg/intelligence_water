@@ -53,9 +53,9 @@
     <select id="hisWater" parameterType="Map" resultType="com.hawksoft.platform.entity.Water">
         SELECT * FROM water
           WHERE
-          DATE_FORMAT(c_time,'%Y-%m-%d') >= #{startTime}
+          c_time >= #{startTime}
           AND
-          DATE_FORMAT(c_time,'%Y-%m-%d') <![CDATA[ <= ]]> #{endTime}
+          c_time <![CDATA[ <= ]]> #{endTime}
           AND
           stnId = #{stnId}
           ORDER by c_time
@@ -200,5 +200,28 @@
         FROM water
         WHERE stnId = #{stnId}
     </select>
+    <!--修改水位数据-->
+    <update id="updateWater" parameterType="com.hawksoft.platform.entity.Water">
+       UPDATE water
+       <trim prefix="set" prefixOverrides=",">
+           <if test="stnId !=null">
+              stnId=#{stnId},
+           </if>
+           <if test="waterLevel !=null">
+               waterLevel=#{waterLevel},
+           </if>
+           <if test="c_time !=null">
+               c_time=#{c_time},
+           </if>
+           <if test="picPath !=null">
+               picPath=#{picPath},
+           </if>
+       </trim>
+        where id=#{id}
+    </update>
 
+    <!--删除水位数据-->
+    <delete id="deleteWater" parameterType="int">
+        DELETE from water where id=#{id}
+    </delete>
 </mapper>

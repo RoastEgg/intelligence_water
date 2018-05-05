@@ -18,4 +18,14 @@
         from waterstation
     </select>
 
+    <!--通过站点名称查询站点ID-->
+    <select id="queryIdByName" resultType="Integer">
+        select id from waterstation where stnName=#{name}
+    </select>
+
+    <!--通过站点ID查询站点Code-->
+    <select id="queryCodeById" parameterType="int" resultType="String">
+        select stnCode from waterstation where id=#{stnId}
+    </select>
+
 </mapper>
