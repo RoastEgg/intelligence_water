@@ -47,4 +47,7 @@ Temporary Items
 .apdisk
 
 ##ignore this file##
-/target/ 
+/target/
+
+*.iml
+
