@@ -52,4 +52,14 @@ public class FloatingMatterServiceImpl implements FloatingMatterService {
         return floatingMatterDao.queryStationInfo(stnId);
     }
 
+    /**
+     * 根据月份查询漂浮物天数
+     * @param map
+     * @return
+     */
+    @Override
+    public int findDaysByMonth(Map<String, Object> map) {
+        return floatingMatterDao.findDaysByMonth(map);
+    }
+
 }

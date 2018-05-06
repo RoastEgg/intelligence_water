@@ -4,6 +4,8 @@ package com.hawksoft.platform.socket;
 import com.hawksoft.platform.constant.WaterConstant;
 import com.hawksoft.platform.entity.*;
 import com.hawksoft.platform.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -25,6 +27,8 @@ public class SocketSaveToDB {
     private static double RiverArea3=16.43;//摄像头3的断面面积
     private static double RiverArea4=14.01;//摄像头4的断面面积
     private static double RiverArea5=15.78;//摄像头5的断面面积
+
+    static Logger logger= LoggerFactory.getLogger(SocketSaveToDB.class);
 
     public  static void initEnv() {
         if (applicationContext == null)
@@ -67,12 +71,15 @@ public class SocketSaveToDB {
         water.setC_time(collectionTime);
         water.setPicPath(picPath);
 
+        logger.info("water---"+water);
+
         if (waterService == null) {
             initEnv();
         }
 
         if (waterService != null) {
             waterService.saveWater(water);
+            logger.info("saveWater success");
         } else {
             System.out.println("Init Water Service Failed!");
         }
@@ -145,9 +152,13 @@ public class SocketSaveToDB {
             }
 
             if (update) {
+                logger.info("update speedFlow---"+speedFlow);
                 speedFlowService.updateSpeedFlow(speedFlow);
+                logger.info("update success");
             } else {
+                logger.info("save speedFlow---"+speedFlow);
                 speedFlowService.saveSpeedFlow(speedFlow);
+                logger.info("save success");
             }
         } else {
             System.out.println("Init Speed Flow Service Failed!");

@@ -147,8 +147,8 @@ public interface WaterDao {
 
     /**
      * 删除水位信息
-     * @param id
+     * @param water
      * @return
      */
-    int deleteWater(int id);
+    int deleteWater(Water water);
 }

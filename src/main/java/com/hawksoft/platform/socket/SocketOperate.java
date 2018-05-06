@@ -195,6 +195,7 @@ public class SocketOperate extends Thread {
                 headerInfo.setValue(SocketUtils.getInteger(header, 8));
                 headerInfo.setFilename(new String(Arrays.copyOfRange(header, 12, 36), "UTF-8"));
                 headerInfo.setSize(SocketUtils.getInteger(header, 36));
+//                headerInfo.setMode(SocketUtils.getInteger(header, 36))
                 break;
             case UB:
                 headerInfo.setUbNo(new String(Arrays.copyOfRange(header, 4, 24)).trim());//最长20位的无人船编号，去除头尾空格

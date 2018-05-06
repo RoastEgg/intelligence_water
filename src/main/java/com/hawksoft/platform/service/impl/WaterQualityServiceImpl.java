@@ -47,7 +47,7 @@ public class WaterQualityServiceImpl implements WaterQualityService {
     }
 
     @Override
-    public WaterQuality queryLastWaterQualityByStnId(int stnId) {
+    public List<WaterQuality> queryLastWaterQualityByStnId(int stnId) {
         return WaterQualityDao.queryLastWaterQualityByStnId(stnId);
     }
 
@@ -184,8 +184,11 @@ public class WaterQualityServiceImpl implements WaterQualityService {
         double chlorophylA = 0.0, minChlorophylA = -0.744, maxChlorophylA = 124.168;
         double phycocyanobilin = 0.0, minPhycocyanobilin = 9.295, maxPhycocyanobilin = 113.817;
         double voltage = 0.0, minVoltage = 11.850, maxVoltage = 15.892;
-        WaterQuality lastWQ = queryLastWaterQualityByStnId(stnId);
-
+        WaterQuality lastWQ=null;
+        List<WaterQuality> lastWQList = queryLastWaterQualityByStnId(stnId);
+        if (lastWQList.size()>0) {
+            lastWQ=lastWQList.get(0);
+        }
         String wqTime = DateUtil.parseDate(date);
         //System.out.println("date: "+date+" time:  "+wqTime);
         WaterQuality waterQuality = new WaterQuality();
@@ -343,7 +346,7 @@ public class WaterQualityServiceImpl implements WaterQualityService {
         else {
             //如果当天还没有真实天气数据，取数据库最新一条数据，用它的温度字段作为date时间的温度
             System.out.println("no data today");
-            WaterQuality lastWQ = queryLastWaterQualityByStnId(stnId);
+            WaterQuality lastWQ = queryLastWaterQualityByStnId(stnId).get(0);
             return Double.parseDouble(lastWQ.getTemperature());
         }
     }

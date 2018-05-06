@@ -203,10 +203,7 @@
     <!--修改水位数据-->
     <update id="updateWater" parameterType="com.hawksoft.platform.entity.Water">
        UPDATE water
-       <trim prefix="set" prefixOverrides=",">
-           <if test="stnId !=null">
-              stnId=#{stnId},
-           </if>
+       <trim prefix="set" suffixOverrides=",">
            <if test="waterLevel !=null">
                waterLevel=#{waterLevel},
            </if>
@@ -217,11 +214,11 @@
                picPath=#{picPath},
            </if>
        </trim>
-        where id=#{id}
+        where id=#{id} and c_time=#{c_time}
     </update>
 
     <!--删除水位数据-->
-    <delete id="deleteWater" parameterType="int">
-        DELETE from water where id=#{id}
+    <delete id="deleteWater" parameterType="com.hawksoft.platform.entity.Water">
+        DELETE from water where id=#{id} and c_time=#{c_time}
     </delete>
 </mapper>

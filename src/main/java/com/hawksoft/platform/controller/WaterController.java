@@ -327,31 +327,21 @@ public class WaterController {
         if (stnCode.isEmpty()) {
             return "该站点不支持实时采集";
         }
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //获取发送请求时间
-        Date sendDate=new Date();
-        String sendTime=simpleDateFormat.format(sendDate);
+        String sendTime=DateUtil.getNowDate();
         logger.debug("startTime:"+sendTime);
 
         Socket so = SocketUtils.findSocket(stnCode);
         if (so != null && so.isConnected()) {
             // build message and send to RTU
-            byte[] message = new byte[3];
-            //实时采集指令
-            message[0] = (byte)0x0100;
-            //站点ID
-            message[1] = (byte)stnId;
-            //采集水位
-            message[2] = (byte)0x0002;
-
+             StringBuilder message=new StringBuilder("CMD:1:WL");
             try {
-                SocketUtils.sendMessage(so, message);
+                SocketUtils.sendMessage(so, message.toString());
                 int i=0;
                 do {
                     i++;
                     //获取发送完时间
-                    Date receiveDate=new Date();
-                    String receiveTime=simpleDateFormat.format(receiveDate);
+                    String receiveTime=DateUtil.getNowDate();
                     logger.debug("endTime:"+receiveTime);
 
                     Map<String,Object> timeMap=new HashMap<>();
@@ -365,10 +355,12 @@ public class WaterController {
                     }
                     Thread.sleep(100);
                 } while (i<=600);
+
             } catch (IOException e) {
                 logger.error("Send scoket message error");
                 e.printStackTrace();
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e) {
                 logger.error("Thread running error");
                 e.printStackTrace();
             }
@@ -399,10 +391,10 @@ public class WaterController {
     /**
      * 取消 删除水位信息
      */
-    @RequestMapping(value = "/deleteWater/{id}")
+    @RequestMapping(value = "/deleteWater")
     @ResponseBody
-    public String deleteWater(@PathVariable("id") int id){
-        int result=waterService.deleteWater(id);
+    public String deleteWater(Water water){
+        int result=waterService.deleteWater(water);
         if (result>0) {
             return "success";
         }else{

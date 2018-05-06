@@ -49,6 +49,20 @@
             stnId = #{stnId}
     </select>
 
+    <!--根据月份查询漂浮物天数-->
+    <select id = "findDaysByMonth" parameterType="Map" resultType="int">
+        SELECT count(DISTINCT DATE_FORMAT(collectionTime,'%Y-%m-%d'))
+        FROM floatingmatter
+        WHERE
+        LEVEL =#{level}
+        AND
+        DATE_FORMAT(collectionTime,'%Y-%m-%d') >= #{startTime}
+        AND
+        DATE_FORMAT(collectionTime,'%Y-%m-%d') <![CDATA[ < ]]> #{endTime}
+        AND
+        stnId = #{stnId}
+    </select>
+
     <insert id="saveFloatingMatter" parameterType="com.hawksoft.platform.entity.FloatingMatter">
         INSERT INTO floatingmatter
             (stnId,collectionTime,camIndex,filePathResult)
@@ -56,7 +70,7 @@
         (#{stnId},#{collectionTime},#{camIndex},#{filePathResult})
     </insert>
 
-    <!--根据站点Id查询最新3张漂浮物图片-->
+    <!--根据站点Id查询最新4张漂浮物图片-->
     <select id="queryLastRecord" parameterType="int" resultType="com.hawksoft.platform.entity.FloatingMatter">
         SELECT  stnId,filePathResult
         FROM floatingmatter

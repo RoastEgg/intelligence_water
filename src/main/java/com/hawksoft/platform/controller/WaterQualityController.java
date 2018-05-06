@@ -125,10 +125,10 @@ public class WaterQualityController {
     @ResponseBody
     public String lastWaterQuality(@PathVariable("stnId") int stnId){
 
-        WaterQuality waterquality = waterQualityService.queryLastWaterQualityByStnId(stnId);
-        if (waterquality != null){
+        List<WaterQuality> waterquality = waterQualityService.queryLastWaterQualityByStnId(stnId);
+        if (waterquality.size()>0){
             //return JSON.toJSON(waterquality).toString();
-            return JSON.toJSONString(waterquality, SerializerFeature.WriteMapNullValue);
+            return JSON.toJSONString(waterquality.get(0), SerializerFeature.WriteMapNullValue);
         }
         return "{\"msg\" : \"暂时无法获取水质数据\"}";
     }
@@ -212,11 +212,11 @@ public class WaterQualityController {
     @RequestMapping(value = "/lastWaterQualityToView/{stnId}", method = RequestMethod.GET)
      public String lastWaterQualityToView(@PathVariable("stnId" ) int stnId,ModelMap mm){
 
-        WaterQuality waterquality = waterQualityService.queryLastWaterQualityByStnId(stnId);
+        List<WaterQuality> waterquality = waterQualityService.queryLastWaterQualityByStnId(stnId);
         if (waterquality != null){
 
-           mm.put("id",waterquality.getId());
-           mm.put("picPath",waterquality.getFilePath());
+           mm.put("id",waterquality.get(0).getId());
+           mm.put("picPath",waterquality.get(0).getFilePath());
 
            mm.addAttribute("aa","ccc");
             mm.addAttribute("bb","dddd");

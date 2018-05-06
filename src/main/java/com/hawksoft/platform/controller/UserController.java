@@ -75,7 +75,7 @@ public class UserController {
     @ResponseBody
     public String checkIsAdmin(@PathVariable("uname") String uname){
         User user=userService.findUserByName(uname);
-        return (user.getPrivilege()==0)?"true" : "false";
+        return (user != null&&user.getPrivilege() == 0) ? "true" : "false";
     }
 
 

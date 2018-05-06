@@ -57,7 +57,7 @@ public interface WaterQualityDao {
      * @param stnId
      * @return
      */
-    public WaterQuality queryLastWaterQualityByStnId(int stnId);
+    public List<WaterQuality> queryLastWaterQualityByStnId(int stnId);
 
     /**
      * 查询上周水质

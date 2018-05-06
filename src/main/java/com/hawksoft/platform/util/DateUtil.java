@@ -57,6 +57,21 @@ public class DateUtil {
         Date date = new Date();
         return parseDate(date);
     }
+
+    /**
+     * 取得当前月份
+     */
+    public static int getNowMonth(){
+        Calendar calendar=Calendar.getInstance();
+        return calendar.get(Calendar.MONTH)+1;
+    }
+    /**
+     * 取得当前年份
+     */
+    public static int getNowYear(){
+        Calendar calendar=Calendar.getInstance();
+        return calendar.get(Calendar.YEAR);
+    }
     /**
      * 取得当前日期之前7天的时间
      * @return 取得当前日期，七天前的日期
@@ -222,17 +237,21 @@ public class DateUtil {
         return sdf2.format(newdate);
 
     }
+
+//    public static String[] getN
     public static void main(String[] arg) throws Exception
     {
 
-        DateUtil.getBefore30Dates();
-        DateUtil.getLastMonday(null);
-        DateUtil.getLastWeek(null);
-        DateUtil.getLastWeek("2017-12-21");
-        DateUtil.getLastMonth(null);
-        DateUtil.getLastMonth("2017-12-08");
-        DateUtil.getLastYear(null);
-        DateUtil.getLastYear("2016-12-08");
-        DateUtil.transData("01-12-2017");
+//        DateUtil.getBefore30Dates();
+//        DateUtil.getLastMonday(null);
+//        DateUtil.getLastWeek(null);
+//        DateUtil.getLastWeek("2017-12-21");
+//        DateUtil.getLastMonth(null);
+//        DateUtil.getLastMonth("2017-12-08");
+//        DateUtil.getLastYear(null);
+//        DateUtil.getLastYear("2016-12-08");
+//        DateUtil.transData("01-12-2017");
+        System.out.println(DateUtil.getNowMonth());
+        System.out.println(DateUtil.getNowYear());
     }
 }

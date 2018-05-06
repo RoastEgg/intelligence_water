@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.hawksoft.platform.entity.FloatingMatter;
 import com.hawksoft.platform.service.FloatingMatterService;
 import com.hawksoft.platform.util.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +32,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/floating")
 public class FloatingMatterController {
-
+    Logger logger= LoggerFactory.getLogger(FloatingMatterController.class);
     @Autowired
     private FloatingMatterService floatingMatterService;
     private Map<String, Object> params = new HashMap<>();
@@ -166,5 +168,140 @@ public class FloatingMatterController {
             return JSON.toJSON(records).toString();
         }
         return "{\"msg\" : \"暂时没有或无法获取漂浮物图片\"}";
+    }
+
+    /**
+     * 根据站点Id查询本年1月至当前月的级别 I类和 V类的数据
+     * @param stnId
+     * @return
+     */
+    @RequestMapping(value = "/findDaysByMonth/{stnId}",method = RequestMethod.GET)
+    @ResponseBody
+    public String findDaysByMonth(@PathVariable("stnId") int stnId){
+        //获取当前年份
+        int nowYear = DateUtil.getNowYear();
+        //获取当前月份
+        int nowMonth = DateUtil.getNowMonth();
+        //存放日期
+        Integer[] month = new Integer[nowMonth];
+        //存放I类漂浮物天数
+        Integer[] Idays = new Integer[nowMonth];
+        //存放V类漂浮物天数
+        Integer[] Vdays = new Integer[nowMonth];
+        //存放参数
+        Map<String,Object> condition = new HashMap<>();
+        condition.put("stnId",stnId);
+        for (int i=0;i<nowMonth;i++) {
+            month[i]=i+1;
+            String startTime = nowYear+"-"+((i+1)<10?"0"+(i+1):(i+1))+"-01";
+            String endTime=nowYear+"-"+((i+2)<10?"0"+(i+2):(i+2))+"-01";
+            if(nowMonth==12){
+               endTime=(nowYear+1)+"-"+"01-01";
+            }
+            condition.put("startTime",startTime);
+            condition.put("endTime",endTime);
+            //查询I类漂浮物天数
+            condition.put("level",1);
+            Idays[i]=floatingMatterService.findDaysByMonth(condition);
+            //查询V类漂浮物天数
+            condition.put("level",5);
+            Vdays[i]=floatingMatterService.findDaysByMonth(condition);
+        }
+        Map<String,Object> returnMap=new HashMap<>();
+        returnMap.put("month",month);
+        returnMap.put("Idays",Idays);
+        returnMap.put("Vdays",Vdays);
+        return JSON.toJSON(returnMap).toString();
+    }
+
+    /**
+     * 根据站点Id查询最近月份5类天数
+     * @param stnId
+     * @return
+     */
+    @RequestMapping(value = "/findDaysNowMonth/{stnId}",method = RequestMethod.GET)
+    @ResponseBody
+    public String findDaysNowMonth(@PathVariable("stnId") int stnId){
+        //获取当前年份
+        int nowYear = DateUtil.getNowYear();
+        //获取当前月份
+        int nowMonth = DateUtil.getNowMonth();
+        //存放漂浮物天数
+        Integer[] FloatingDays = new Integer[5];
+        //存放参数
+        Map<String,Object> condition = new HashMap<>();
+        condition.put("stnId",stnId);
+        String startTime = nowYear+"-"+((nowMonth)<10?"0"+(nowMonth):(nowMonth))+"-01";
+        String endTime=nowYear+"-"+((nowMonth+1)<10?"0"+(nowMonth+1):(nowMonth+1))+"-01";
+        if(nowMonth==12){
+            endTime=(nowYear+1)+"-01-01";
+        }
+        condition.put("startTime",startTime);
+        condition.put("endTime",endTime);
+        for (int i=0;i<=4;i++) {
+            //查询漂浮物天数
+            condition.put("level",i+1);
+            FloatingDays[i]=floatingMatterService.findDaysByMonth(condition);
+        }
+        return JSON.toJSON(FloatingDays).toString();
+    }
+
+    /**
+     * 根据站点Id查询今年5类天数
+     * @param stnId
+     * @return
+     */
+    @RequestMapping(value = "/findDaysNowYear/{stnId}",method = RequestMethod.GET)
+    @ResponseBody
+    public String findDaysNowYear(@PathVariable("stnId") int stnId){
+        //获取当前年份
+        int nowYear = DateUtil.getNowYear();
+        //获取当前月份
+        int nowMonth = DateUtil.getNowMonth();
+        //存放漂浮物天数
+        Integer[] FloatingDays = new Integer[5];
+        //存放参数
+        Map<String,Object> condition = new HashMap<>();
+        condition.put("stnId",stnId);
+        String startTime = nowYear+"-01-01";
+        String endTime=nowYear+"-"+((nowMonth+1)<10?"0"+(nowMonth+1):(nowMonth+1))+"-01";
+        if(nowMonth==12){
+            endTime=(nowYear+1)+"-01-01";
+        }
+        condition.put("startTime",startTime);
+        condition.put("endTime",endTime);
+        for (int i=0;i<=4;i++) {
+            //查询漂浮物天数
+            condition.put("level",i+1);
+            FloatingDays[i]=floatingMatterService.findDaysByMonth(condition);
+        }
+        return JSON.toJSON(FloatingDays).toString();
+    }
+
+    /**
+     * 根据站点Id查询去年5类天数
+     * @param stnId
+     * @return
+     */
+    @RequestMapping(value = "/findDaysLastYear/{stnId}",method = RequestMethod.GET)
+    @ResponseBody
+    public String findDaysLastYear(@PathVariable("stnId") int stnId){
+        //获取当前年份
+        int nowYear = DateUtil.getNowYear();
+        //存放漂浮物天数
+        Integer[] FloatingDays = new Integer[5];
+        //存放参数
+        Map<String,Object> condition = new HashMap<>();
+        condition.put("stnId",stnId);
+        String startTime = (nowYear-1)+"-01-01";
+        String endTime=nowYear+"-01-01";
+        condition.put("startTime",startTime);
+        condition.put("endTime",endTime);
+        for (int i=0;i<=4;i++) {
+            //查询漂浮物天数
+            condition.put("level",i+1);
+            FloatingDays[i]=floatingMatterService.findDaysByMonth(condition);
+        }
+        return JSON.toJSON(FloatingDays).toString();
     }
 }

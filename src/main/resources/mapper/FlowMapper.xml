@@ -228,14 +228,14 @@
                 remark=#{remark},
             </if>
         </set>
-        WHERE flowId=#{flowId}
+        WHERE flowId=#{flowId} and collectionTime=#{collectionTime}
     </update>
 
     <!-- 通过ID删除 flow 表里的流速流量记录 -->
     <delete id="deleteFlow" parameterType="map">
         DELETE
           FROM flow
-          WHERE flowId = #{flowId}
+          WHERE flowId = #{flowId} and collectionTime=#{collectionTime}
     </delete>
 
     <!-- 取最新的DAYS条实时水位 -->

@@ -55,8 +55,8 @@ public interface WaterService {
 
     /**
      * 删除水位数据
-     * @param id
+     * @param water
      * @return
      */
-    int deleteWater(int id);
+    int deleteWater(Water water);
 }

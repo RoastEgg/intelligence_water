@@ -1,5 +1,8 @@
 package com.hawksoft.platform.socket;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,6 +17,7 @@ public class SocketUtils {
     public static final int PIC_MSG_SIZE = 1024;
 
     public static final Map<Integer, String> siteENName;
+    static Logger logger= LoggerFactory.getLogger(SocketUtils.class);
     static
     {
         siteENName = new HashMap<Integer, String>();
@@ -162,13 +166,14 @@ public class SocketUtils {
     public static void sendMessage(Socket so, String message) throws IOException {
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(
                                      so.getOutputStream()), true);
+        logger.info("message::::"+message);
         writer.println(message);
     }
-    public static void sendMessage(Socket so, byte[] message) throws IOException {
-        PrintWriter writer = new PrintWriter(new OutputStreamWriter(
-                so.getOutputStream()), true);
-        writer.println(message);
-    }
+//    public static void sendMessage(Socket so, byte[] message) throws IOException {
+//        PrintWriter writer = new PrintWriter(new OutputStreamWriter(
+//                so.getOutputStream()), true);
+//        writer.println(message);
+//    }
     
     public static String recvMessage(Socket so) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(

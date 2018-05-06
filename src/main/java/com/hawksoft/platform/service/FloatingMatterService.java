@@ -53,4 +53,11 @@ public interface FloatingMatterService {
      * @return 记录条数
      */
     public int queryStationInfo(int stnId);
+
+    /**
+     * 根据月份查询漂浮物天数
+     * @param map
+     * @return
+     */
+    int findDaysByMonth(Map<String,Object> map);
 }

@@ -191,12 +191,12 @@ public class WaterServiceImpl implements WaterService {
 
     /**
      * 删除水位信息
-     * @param id
+     * @param water
      * @return
      */
     @Override
-    public int deleteWater(int id) {
-        return waterDao.deleteWater(id);
+    public int deleteWater(Water water) {
+        return waterDao.deleteWater(water);
     }
 
 }
