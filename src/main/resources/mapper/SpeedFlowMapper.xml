@@ -36,7 +36,7 @@
     </select>
     <!--获取站点的流速流量数据-->
     <select id="querySpeedFlowByStdIdTime" parameterType="Map" resultType="com.hawksoft.platform.entity.SpeedFlow">
-        SELECT stnId,waterSpeed1,waterSpeed2,waterSpeed3,waterSpeed4,waterSpeed5,
+        SELECT speedflowid,stnId,waterSpeed1,waterSpeed2,waterSpeed3,waterSpeed4,waterSpeed5,
                 waterFlow1,waterFlow2,waterFlow3,waterFlow4,waterFlow5,
                 state1,state2,state3,state4,state5,
                 picOrVideo,collectionTime,instockTime,
@@ -219,7 +219,7 @@
     <!-- set 标签会自动判断哪个是最后的一个字段，会自动去掉最后一个，号 -->
     <update id="updateSpeedFlow" parameterType="map">
         UPDATE speedflow
-        <set>
+        <trim prefix="set" suffixOverrides=",">
             <if test="stnId!=null">
                 stnId=#{stnId},
             </if>
@@ -295,13 +295,16 @@
                 instockTime=#{instockTime},
             </if>
 
-        </set>
+        </trim>
         WHERE speedflowid=#{speedflowid}
     </update>
 
     <!-- 通过ID删除 speedflow 表里的流速流量记录 -->
     <delete id="deleteSpeedFlow" parameterType="map">
         DELETE FROM speedflow WHERE speedflowid = #{speedflowid}
+        <if test="collectionTime !=null">
+            AND collectionTime=#{collectionTime}
+        </if>
     </delete>
     <sql id="dynamicField">
        <trim suffixOverrides=",">

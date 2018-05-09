@@ -5,13 +5,20 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hawksoft.platform.VO.SpeedFlowVO;
 import com.hawksoft.platform.entity.SpeedFlow;
 import com.hawksoft.platform.service.SpeedFlowService;
+import com.hawksoft.platform.service.WaterStationService;
+import com.hawksoft.platform.socket.SocketUtils;
 import com.hawksoft.platform.util.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
 import javax.swing.plaf.synth.SynthEditorPaneUI;
+import java.io.IOException;
+import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +40,9 @@ public class SpeedFlowController {
 
     @Autowired
     private SpeedFlowService speedFlowService;
+    @Autowired
+    private WaterStationService waterStationService;
+    Logger logger= LoggerFactory.getLogger(SpeedFlowController.class);
     private Map<String, Object> params = new HashMap<>();
 
 
@@ -210,5 +220,69 @@ public class SpeedFlowController {
     public int collectData(@PathVariable("stnId") int stnId){
         int res =  speedFlowService.generateData(stnId,new Date());
         return res;
+    }
+
+    /**
+     * 根据站点ID获取相机拍摄采集流量信息
+     */
+    @RequestMapping(value = "/RealTimeAcquisitionData/{stnId}", method = RequestMethod.GET)
+    @ResponseBody
+    public String RealTimeAcquisitionData(@PathVariable("stnId") int stnId) {
+        String realTimeAcquisitionData="";
+        //通过站点ID获取站点名称
+        String stnCode = waterStationService.queryCodeById(stnId);
+        if (stnCode.isEmpty()) {
+            logger.error("该站点不支持实时采集");
+            return "fail";
+        }
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //获取发送请求时间
+        String sendTime=DateUtil.getTimeByMinute(-1);
+        logger.debug("startTime:"+sendTime);
+
+        Socket so = SocketUtils.findSocket(stnCode);
+        if (so != null && so.isConnected()) {
+            // build message and send to RTU
+            StringBuilder message=new StringBuilder("CMD:");
+            message.append(stnId);
+            message.append(":FLUX");
+            try {
+                SocketUtils.sendMessage(so, message.toString());
+                int i=0;
+                do {
+                    i++;
+                    //获取发送完时间
+                    String receiveTime=DateUtil.getTimeByMinute(sendTime,2);
+                    logger.debug("endTime:"+receiveTime);
+
+                    Map<String,Object> timeMap=new HashMap<>();
+                    timeMap.put("startTime",sendTime);
+                    timeMap.put("endTime",receiveTime);
+                    timeMap.put("stnId",stnId);
+                    List<SpeedFlow> speedFlowList=speedFlowService.querySpeedFlowByStdIdTime(timeMap);
+                    if (speedFlowList.size()>0) {
+                        realTimeAcquisitionData= JSON.toJSON(speedFlowList.get(speedFlowList.size()-1)).toString();
+                        break;
+                    }
+                    Thread.sleep(100);
+                } while (i<=1200);
+            } catch (IOException e) {
+                logger.error("Send scoket message error");
+                e.printStackTrace();
+            }
+            catch (InterruptedException e) {
+                logger.error("Thread running error");
+                e.printStackTrace();
+            }
+        } else {
+            logger.error("The connection with RTU was lost!");
+            return "fail";
+        }
+
+        if(realTimeAcquisitionData.equals("")){
+            logger.error("RealTimeAcquisitionData is failing");
+            return "fail";
+        }
+        return realTimeAcquisitionData;
     }
 }

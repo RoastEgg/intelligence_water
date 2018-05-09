@@ -20,7 +20,7 @@ import java.util.Calendar;
 import java.util.List;
 
 @Component
-public class WaterRobotProcessor implements PageProcessor {
+public class ChangJiangRiverRobotProcessor implements PageProcessor {
     private ApplicationContext context;
     @Autowired
     private WaterStationDao  waterStationDao;

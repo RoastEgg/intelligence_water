@@ -2,8 +2,10 @@ package com.hawksoft.platform.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.hawksoft.platform.entity.FloatingMatter;
+import com.hawksoft.platform.service.DatadictionaryService;
 import com.hawksoft.platform.service.FloatingMatterService;
 import com.hawksoft.platform.util.DateUtil;
+import com.hawksoft.platform.util.FloatGradeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,10 @@ public class FloatingMatterController {
     Logger logger= LoggerFactory.getLogger(FloatingMatterController.class);
     @Autowired
     private FloatingMatterService floatingMatterService;
+
+    @Autowired
+    private FloatGradeUtil floatGradeUtil;
+
     private Map<String, Object> params = new HashMap<>();
 
     /**
@@ -196,7 +202,7 @@ public class FloatingMatterController {
             String startTime = nowYear+"-"+((i+1)<10?"0"+(i+1):(i+1))+"-01";
             String endTime=nowYear+"-"+((i+2)<10?"0"+(i+2):(i+2))+"-01";
             if(nowMonth==12){
-               endTime=(nowYear+1)+"-"+"01-01";
+               endTime=(nowYear+1)+"-01-01";
             }
             condition.put("startTime",startTime);
             condition.put("endTime",endTime);
@@ -303,5 +309,62 @@ public class FloatingMatterController {
             FloatingDays[i]=floatingMatterService.findDaysByMonth(condition);
         }
         return JSON.toJSON(FloatingDays).toString();
+    }
+
+    /**
+     *  根据站点对统计本月份与本年度的漂浮物数量并进行评级
+     * @param stnId
+     * @return
+     */
+    @RequestMapping(value = "/queryFloatLevelAndCount/{stnId}", method = RequestMethod.GET)
+    @ResponseBody
+    public String queryFloatLevelAndCount(@PathVariable("stnId") int stnId){
+        //获取当前年份
+        int nowYear=DateUtil.getNowYear();
+        //获取当前月份
+        int nowMonth=DateUtil.getNowMonth();
+        Map<String,Object> condition=new HashMap<>();
+        condition.put("stnId",stnId);
+        //获取当月的漂浮物数量与总漂浮物面积
+        String startTime = nowYear+"-"+((nowMonth)<10?"0"+(nowMonth):(nowMonth))+"-01";
+        String endTime = nowYear+"-"+((nowMonth+1)<10?"0"+(nowMonth+1):(nowMonth+1))+"-01";
+        if (nowMonth == 12) {
+            endTime = (nowYear+1)+"-01-01";
+        }
+        condition.put("startTime",startTime);
+        condition.put("endTime",endTime);
+        Map<String,Object> nowMonthMap=floatingMatterService.queryFloatCountAndSumArea(condition);
+        //当月漂浮物总数量
+        int monthTotalCount = Integer.parseInt(nowMonthMap.get("totalCount").toString());
+        //当月漂浮物总面积
+        Double totalArea = Double.parseDouble(nowMonthMap.get("totalArea").toString());
+        //当月平均漂浮物面积
+        Double avgArea=0.0;
+        if (monthTotalCount != 0) {
+            avgArea = totalArea/monthTotalCount;
+        }
+        //进行评级
+        int monthGrade=floatGradeUtil.getFloatGrade(avgArea);
+        //获取全年的漂浮物数量与总漂浮物面积
+        startTime=nowYear+"-01-01";
+        condition.put("startTime",startTime);
+        Map<String,Object> nowYearMap=floatingMatterService.queryFloatCountAndSumArea(condition);
+        //当月漂浮物总数量
+        int yearTotalCount = Integer.parseInt(nowYearMap.get("totalCount").toString());
+        //当月漂浮物总面积
+        totalArea = Double.parseDouble(nowYearMap.get("totalArea").toString());
+        //当月平均漂浮物面积
+        if (yearTotalCount != 0) {
+            avgArea = totalArea/yearTotalCount;
+        }
+        //进行评级
+        int yearGrade=floatGradeUtil.getFloatGrade(avgArea);
+
+        Map<String,Object> resultMap=new HashMap<>();
+        resultMap.put("monthTotalCount",monthTotalCount);
+        resultMap.put("monthGrade",monthGrade);
+        resultMap.put("yearTotalCount",yearTotalCount);
+        resultMap.put("yearGrade",yearGrade);
+        return JSON.toJSON(resultMap).toString();
     }
 }

@@ -1,5 +1,8 @@
 package com.hawksoft.platform.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -12,7 +15,7 @@ import java.util.Map;
  * Created by Administrator on 2017/9/18.
  */
 public class DateUtil {
-
+    static Logger logger = LoggerFactory.getLogger(DateUtil.class);
     private static SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /**
@@ -235,9 +238,72 @@ public class DateUtil {
        // System.out.println("**sdf2.format(newdate):"+sdf2.format(newdate));
 
         return sdf2.format(newdate);
-
     }
 
+    /**
+     * 获取当前时间之前或之后的几小时时间
+     * @param hour
+     * @return
+     */
+    public static String getTimeByHour(int hour) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) + hour);
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime());
+    }
+
+    /**
+     * 获取某个特定时间之前或之后的几个小时时间
+     * @param time
+     * @param hour
+     * @return
+     */
+    public static String getTimeByHour(String time,int hour){
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String format="";
+        try {
+            calendar.setTime(dateFormat.parse(time));
+//            calendar.add(Calendar.HOUR_OF_DAY,hour);
+            calendar.set(Calendar.HOUR_OF_DAY,calendar.get(Calendar.HOUR_OF_DAY)+hour);
+            format=dateFormat.format(calendar.getTime());
+        } catch (ParseException e) {
+            logger.info("DateUtil.getTimeByHour:",e.getMessage());
+            e.printStackTrace();
+        }
+        return format;
+    }
+
+    /**
+     * 获取当前时间之前或之后的几分钟时间
+     * @param minute
+     * @return
+     */
+    public static String getTimeByMinute(int minute) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, minute);
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime());
+    }
+
+    /**
+     * 获取某个特定时间之前或之后的几分钟时间
+     * @param time
+     * @param minute
+     * @return
+     */
+    public static String getTimeByMinute(String time,int minute){
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String format = "";
+        try {
+            calendar.setTime(dateFormat.parse(time));
+            calendar.add(Calendar.MINUTE,minute);
+            format = dateFormat.format(calendar.getTime());
+        } catch (ParseException e) {
+            logger.info("DateUtil.getTimeByMinute:",e.getMessage());
+            e.printStackTrace();
+        }
+        return format;
+    }
 //    public static String[] getN
     public static void main(String[] arg) throws Exception
     {
@@ -251,7 +317,7 @@ public class DateUtil {
 //        DateUtil.getLastYear(null);
 //        DateUtil.getLastYear("2016-12-08");
 //        DateUtil.transData("01-12-2017");
-        System.out.println(DateUtil.getNowMonth());
-        System.out.println(DateUtil.getNowYear());
+        System.out.println(getTimeByHour("2017-12-08 00:00:00",-1));
+//        System.out.println(DateUtil.getNowYear());
     }
 }

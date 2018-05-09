@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hawksoft.platform.dao.DatadictionaryDao">
+    
+    <sql id="selectFlied">
+        id,dicname,pid,value
+    </sql>
+    <!--查询数据字典信息-->
+    <select id="getDatadictionary" parameterType="Map" resultType="com.hawksoft.platform.entity.Datadictionary">
+        select
+        <include refid="selectFlied"/>
+        FROM datadictionary
+        WHERE 1=1
+        <if test="id != null">
+            AND id=#{id}
+        </if>
+        <if test="dicname != null">
+            AND dicname=#{dicname}
+        </if>
+        <if test="pid != null">
+            AND pid=#{pid}
+        </if>
+        <if test="id != null">
+            AND value=#{value}
+        </if>
+    </select>
+</mapper>

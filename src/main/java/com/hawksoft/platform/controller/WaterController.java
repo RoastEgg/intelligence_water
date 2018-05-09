@@ -9,12 +9,14 @@ import com.hawksoft.platform.entity.WaterStation;
 import com.hawksoft.platform.service.WaterService;
 import com.hawksoft.platform.service.WaterStationService;
 import com.hawksoft.platform.socket.SocketUtils;
+import com.hawksoft.platform.util.DataUtil;
 import com.hawksoft.platform.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -325,23 +327,26 @@ public class WaterController {
         //通过站点ID获取站点名称
         String stnCode = waterStationService.queryCodeById(stnId);
         if (stnCode.isEmpty()) {
-            return "该站点不支持实时采集";
+            logger.error("该站点不支持实时采集");
+            return "fail";
         }
         //获取发送请求时间
-        String sendTime=DateUtil.getNowDate();
+        String sendTime=DateUtil.getTimeByMinute(-1);
         logger.debug("startTime:"+sendTime);
 
         Socket so = SocketUtils.findSocket(stnCode);
         if (so != null && so.isConnected()) {
             // build message and send to RTU
-             StringBuilder message=new StringBuilder("CMD:1:WL");
+             StringBuilder message=new StringBuilder("CMD:");
+             message.append(stnId);
+             message.append(":WL");
             try {
                 SocketUtils.sendMessage(so, message.toString());
                 int i=0;
                 do {
                     i++;
                     //获取发送完时间
-                    String receiveTime=DateUtil.getNowDate();
+                    String receiveTime=DateUtil.getTimeByMinute(sendTime,1);
                     logger.debug("endTime:"+receiveTime);
 
                     Map<String,Object> timeMap=new HashMap<>();
@@ -350,7 +355,7 @@ public class WaterController {
                     timeMap.put("stnId",stnId);
                     List<Water> waterList=waterService.hisWater(timeMap);
                     if (waterList.size()>0) {
-                        realTimeAcquisitionData= JSON.toJSON(waterList.get(0)).toString();
+                        realTimeAcquisitionData= JSON.toJSON(waterList.get(waterList.size()-1)).toString();
                         break;
                     }
                     Thread.sleep(100);
@@ -365,11 +370,13 @@ public class WaterController {
                 e.printStackTrace();
             }
         } else {
-            return "The connection with RTU was lost!";
+            logger.error("The connection with RTU was lost!");
+            return "fail";
         }
 
         if(realTimeAcquisitionData.equals("")){
-            return "RealTimeAcquisitionData is failing";
+            logger.error("RealTimeAcquisitionData is failing");
+            return "fail";
         }
         return realTimeAcquisitionData;
     }
@@ -380,6 +387,12 @@ public class WaterController {
     @RequestMapping(value = "/updateWater", method = RequestMethod.POST)
     @ResponseBody
     public String updateWater(Water water){
+        logger.debug("water.getId()--",water.getId());
+        Object[] objects={water,water.getId()};
+        if (!DataUtil.anyNotEmpty(objects)) {
+            logger.error("Parameter ERROR");
+            return "fail";
+        }
         int result=waterService.updateWater(water);
         if (result>0) {
             return "success";
@@ -394,6 +407,11 @@ public class WaterController {
     @RequestMapping(value = "/deleteWater")
     @ResponseBody
     public String deleteWater(Water water){
+        Object[] objects={water,water.getId()};
+        if (!DataUtil.anyNotEmpty(objects)) {
+            logger.error("Parameter ERROR");
+            return "fail";
+        }
         int result=waterService.deleteWater(water);
         if (result>0) {
             return "success";

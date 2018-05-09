@@ -190,7 +190,7 @@
     <!-- set 标签会自动判断哪个是最后的一个字段，会自动去掉最后一个，号 -->
     <update id="updateFlow" parameterType="map">
         UPDATE flow
-        <set>
+        <trim prefix="set" suffixOverrides=",">
             <if test="stnId!=null">
                 stnId=#{stnId},
             </if>
@@ -227,7 +227,7 @@
             <if test="remark!=null">
                 remark=#{remark},
             </if>
-        </set>
+        </trim>
         WHERE flowId=#{flowId} and collectionTime=#{collectionTime}
     </update>
 

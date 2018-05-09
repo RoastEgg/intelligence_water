@@ -85,4 +85,16 @@
         FROM floatingmatter
         WHERE stnId = #{stnId}
     </select>
+
+    <!--查询漂浮物的数量与总的漂浮物面积-->
+    <select id="queryFloatCountAndSumArea" parameterType="Map" resultType="Map">
+       SELECT count(*) totalCount,sum(area) totalArea
+        FROM floatingmatter
+        WHERE
+        DATE_FORMAT(collectionTime,'%Y-%m-%d') >= #{startTime}
+        AND
+        DATE_FORMAT(collectionTime,'%Y-%m-%d') <![CDATA[ < ]]> #{endTime}
+        AND
+        stnId = #{stnId}
+    </select>
 </mapper>

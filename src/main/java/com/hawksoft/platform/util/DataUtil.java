@@ -1,6 +1,9 @@
 package com.hawksoft.platform.util;
 
+import org.springframework.util.StringUtils;
+
 import java.text.DecimalFormat;
+import java.util.List;
 
 public class DataUtil {
 
@@ -69,5 +72,27 @@ public class DataUtil {
                 base - range);
 //        answer = Double.parseDouble(df.format(answer));
         return answer;
+    }
+
+
+    /**
+     * 判断对象数组中任意元素不为空
+     * @param objects
+     * @return
+     */
+    public static boolean anyNotEmpty(Object[] objects){
+        for (int i = 0;i<objects.length;i++) {
+            Object o = objects[i];
+            boolean b = StringUtils.isEmpty(o);
+            if (b == true) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void main(String[] args){
+        Object[] objects={1,null,new Object()};
+        System.out.println(DataUtil.anyNotEmpty(objects));
     }
 }

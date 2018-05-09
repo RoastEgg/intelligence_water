@@ -62,4 +62,13 @@ public class FloatingMatterServiceImpl implements FloatingMatterService {
         return floatingMatterDao.findDaysByMonth(map);
     }
 
+    /**
+     * 查询漂浮物的数量与总的漂浮物面积
+     * @param param
+     * @return
+     */
+    @Override
+    public  Map<String,Object> queryFloatCountAndSumArea(Map<String,Object> param){
+        return floatingMatterDao.queryFloatCountAndSumArea(param);
+    }
 }

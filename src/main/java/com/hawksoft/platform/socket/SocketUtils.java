@@ -166,7 +166,6 @@ public class SocketUtils {
     public static void sendMessage(Socket so, String message) throws IOException {
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(
                                      so.getOutputStream()), true);
-        logger.info("message::::"+message);
         writer.println(message);
     }
 //    public static void sendMessage(Socket so, byte[] message) throws IOException {

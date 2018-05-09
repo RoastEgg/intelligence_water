@@ -20,6 +20,7 @@ public class MethodTest {
     private WaterQualityService waterQualityService;
     private WaterService waterService;
 
+
     private ApplicationContext applicationContext;
 
     @Before
