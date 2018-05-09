@@ -3,10 +3,13 @@ package com.hawksoft.platform.controller;
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hawksoft.platform.VO.SpeedFlowVO;
+import com.hawksoft.platform.entity.Flow;
 import com.hawksoft.platform.entity.SpeedFlow;
+import com.hawksoft.platform.service.FlowService;
 import com.hawksoft.platform.service.SpeedFlowService;
 import com.hawksoft.platform.service.WaterStationService;
 import com.hawksoft.platform.socket.SocketUtils;
+import com.hawksoft.platform.util.DataUtil;
 import com.hawksoft.platform.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +45,9 @@ public class SpeedFlowController {
     private SpeedFlowService speedFlowService;
     @Autowired
     private WaterStationService waterStationService;
+    @Autowired
+    private FlowService flowService;
+
     Logger logger= LoggerFactory.getLogger(SpeedFlowController.class);
     private Map<String, Object> params = new HashMap<>();
 
@@ -237,22 +243,24 @@ public class SpeedFlowController {
         }
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //获取发送请求时间
-        String sendTime=DateUtil.getTimeByMinute(-1);
+        String sendTime="2018-05-01 00:00:00";
+//        String sendTime=DateUtil.getTimeByMinute(-1);
         logger.debug("startTime:"+sendTime);
 
-        Socket so = SocketUtils.findSocket(stnCode);
-        if (so != null && so.isConnected()) {
+//        Socket so = SocketUtils.findSocket(stnCode);
+//        if (so != null && so.isConnected()) {
             // build message and send to RTU
             StringBuilder message=new StringBuilder("CMD:");
             message.append(stnId);
             message.append(":FLUX");
             try {
-                SocketUtils.sendMessage(so, message.toString());
+//                SocketUtils.sendMessage(so, message.toString());
                 int i=0;
                 do {
                     i++;
                     //获取发送完时间
-                    String receiveTime=DateUtil.getTimeByMinute(sendTime,2);
+                    String receiveTime="2018-05-10 00:00:00";
+//                    String receiveTime=DateUtil.getTimeByMinute(sendTime,2);
                     logger.debug("endTime:"+receiveTime);
 
                     Map<String,Object> timeMap=new HashMap<>();
@@ -261,23 +269,55 @@ public class SpeedFlowController {
                     timeMap.put("stnId",stnId);
                     List<SpeedFlow> speedFlowList=speedFlowService.querySpeedFlowByStdIdTime(timeMap);
                     if (speedFlowList.size()>0) {
-                        realTimeAcquisitionData= JSON.toJSON(speedFlowList.get(speedFlowList.size()-1)).toString();
+                        //获取流速数据
+                        SpeedFlow speedFlow=speedFlowList.get(speedFlowList.size()-1);
+                        //计算平均流速
+                        Double[] speedFlows = {speedFlow.getWaterSpeed1(),speedFlow.getWaterSpeed2(),
+                                speedFlow.getWaterSpeed3(),speedFlow.getWaterSpeed4(),speedFlow.getWaterSpeed5()};
+                        Double avgSpeed=DataUtil.getAvgCount(speedFlows);
+                        //计算平均流量
+                        Double[] waterFlows={speedFlow.getWaterFlow1(),speedFlow.getWaterFlow2(),
+                                speedFlow.getWaterFlow3(),speedFlow.getWaterFlow4(),speedFlow.getWaterFlow5()};
+                        Double avgFlow=DataUtil.getAvgCount(waterFlows);
+                        Flow flow=new Flow();
+                        flow.setStnId(stnId);
+                        flow.setAvgSpeed(avgSpeed);
+                        flow.setAvgFlow(avgFlow);
+                        flow.setCollectionTime(speedFlow.getCollectionTime());
+                        //将流量数据插入流量表
+                        int saveFlow=flowService.saveFlow(flow);
+                        if (saveFlow==0) {
+                            logger.error("flowService.saveFlow ERROR");
+                            return "fail";
+                        }
+                        Map<String,Object> resultMap=new HashMap<>();
+                        resultMap.put("flowId",flow.getFlowId());
+                        resultMap.put("avgFlow",avgFlow);
+                        resultMap.put("speedflowid",speedFlow.getSpeedflowid());
+                        resultMap.put("waterSpeed1",speedFlow.getWaterSpeed1());
+                        resultMap.put("waterSpeed2",speedFlow.getWaterSpeed2());
+                        resultMap.put("waterSpeed3",speedFlow.getWaterSpeed3());
+                        resultMap.put("waterSpeed4",speedFlow.getWaterSpeed4());
+                        resultMap.put("waterSpeed5",speedFlow.getWaterSpeed5());
+                        realTimeAcquisitionData= JSON.toJSONString(resultMap);
                         break;
                     }
                     Thread.sleep(100);
                 } while (i<=1200);
-            } catch (IOException e) {
-                logger.error("Send scoket message error");
-                e.printStackTrace();
             }
+//            catch (IOException e) {
+//                logger.error("Send scoket message error");
+//                e.printStackTrace();
+//            }
             catch (InterruptedException e) {
                 logger.error("Thread running error");
                 e.printStackTrace();
             }
-        } else {
-            logger.error("The connection with RTU was lost!");
-            return "fail";
-        }
+//        }
+//        else {
+//            logger.error("The connection with RTU was lost!");
+//            return "fail";
+//        }
 
         if(realTimeAcquisitionData.equals("")){
             logger.error("RealTimeAcquisitionData is failing");

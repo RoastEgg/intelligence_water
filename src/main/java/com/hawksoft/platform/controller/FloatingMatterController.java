@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.hawksoft.platform.entity.FloatingMatter;
 import com.hawksoft.platform.service.DatadictionaryService;
 import com.hawksoft.platform.service.FloatingMatterService;
+import com.hawksoft.platform.util.DataUtil;
 import com.hawksoft.platform.util.DateUtil;
 import com.hawksoft.platform.util.FloatGradeUtil;
 import org.slf4j.Logger;
@@ -344,7 +345,7 @@ public class FloatingMatterController {
             avgArea = totalArea/monthTotalCount;
         }
         //进行评级
-        int monthGrade=floatGradeUtil.getFloatGrade(avgArea);
+        String monthGrade=DataUtil.a2r(floatGradeUtil.getFloatGrade(avgArea));
         //获取全年的漂浮物数量与总漂浮物面积
         startTime=nowYear+"-01-01";
         condition.put("startTime",startTime);
@@ -358,7 +359,7 @@ public class FloatingMatterController {
             avgArea = totalArea/yearTotalCount;
         }
         //进行评级
-        int yearGrade=floatGradeUtil.getFloatGrade(avgArea);
+        String yearGrade=DataUtil.a2r(floatGradeUtil.getFloatGrade(avgArea));
 
         Map<String,Object> resultMap=new HashMap<>();
         resultMap.put("monthTotalCount",monthTotalCount);
